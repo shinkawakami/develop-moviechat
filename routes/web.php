@@ -14,8 +14,11 @@ use App\Http\Controllers\MovieController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [MovieController::class, 'index']);
 
-Route::get('/movies', [MovieController::class, 'index']);  
+Route::get('/movies/make', [MovieController::class ,'make']);
+
+Route::get('/movies/search', [MovieController::class ,'search']);
+
+Route::get('/movies/showlist', [MovieController::class ,'showlist']);
+
