@@ -4,27 +4,41 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Movie;
+use App\Models\Group;
 
 class MovieController extends Controller
 {
-    public function index(Movie $movies)
+    public function index(Movie $movie)
     {
-        return view('movies.index')->with(['pages' => $movies->getByLimit()]);  
-       //blade内で使う変数'pages'と設定。'pages'の中身にgetを使い、インスタンス化した$moiesを代入。
+        return view('movies.index');  
     }
     
-    public function make(Movie $movies)
+    public function make(Movie $movie)
     {
         return view('movies.make');
     }
     
-    public function search(Movie $movies)
+    public function search(Movie $movie)
     {
         return view('movies.search');
     }
     
-    public function showlist(Movie $movies)
+    public function showlist(Movie $movie)
     {
-        return view('movies.showlist');
+        $groups = Group::all();
+        return view('movies.showlist', compact('groups'));
+    }
+    
+    public function store(Group $group, Request $request)
+    {
+        $input = $request['group'];
+        // グループの作成
+        
+        $group->fill($input);
+        $group->created_id = 3;
+        $group->save();
+
+        // 成功時の処理（例: 成功メッセージを表示してリダイレクト）
+        return redirect('/movies/showlist');
     }
 }
