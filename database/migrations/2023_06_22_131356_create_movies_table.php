@@ -15,10 +15,13 @@ return new class extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 50);
-            $table->string('body', 200);
-            $table->timestamps();
-            $table->softDeletes();
+            $table->unsignedBigInteger('genre_id');
+            $table->unsignedBigInteger('subscription_id');
+            $table->string('title');
+            $table->integer('released_at');
+            
+            $table->foreign('genre_id')->references('id')->on('genres')->onDelete('cascade');
+            $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('cascade');
         });
     }
 
