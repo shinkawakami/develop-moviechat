@@ -7,17 +7,29 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     </head>
     <body>
-        <h1>Show Group List</h1>
-        <div class='button'>
-            <div class='group_make_page'>
-                <a href="/movies/make">グループ作成</a>
+        <x-app-layout>
+            <x-slot name="header">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    Make Group
+                </h2>
+            </x-slot>
+            <div class='button'>
+                <div class='group_make_page'>
+                    <a href="/movies/make">グループ作成</a>
+                </div>
+                <div class='group_search_page'>
+                    <a href="/movies/search">グループ検索</a>
+                </div>
+                <div class='group_showlist_page'>
+                    <a href="/movies/showlist">グループ一覧</a>
+                </div>
+                <ul>
+                    @foreach ($groups as $group)
+                        <li>{{ $group->name }}</li>
+                        <a href="/movies/showlist">グループ一覧</a>
+                    @endforeach
+                </ul>
             </div>
-            <div class='group_search_page'>
-                <a href="/movies/search">グループ検索</a>
-            </div>
-            <div class='group_showlist_page'>
-                <a href="/movies/showlist">グループ一覧</a>
-            </div>
-        </div>
+        </x-app-layout>
     </body>
 </html>

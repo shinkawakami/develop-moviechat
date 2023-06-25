@@ -15,8 +15,8 @@ class Movie extends Model
     protected $fillable = [
         'name',
         'genre_id',
-        'subscription_id'
-        'released_at'
+        'subscription_id',
+        'released_at',
     ];
 
     public function groups()
