@@ -9,8 +9,28 @@ class Movie extends Model
 {
     use HasFactory;
     
-    public function getByLimit(int $limit_count = 10)
+    protected $table = 'movies';
+    protected $primaryKey = 'id';
+
+    protected $fillable = [
+        'name',
+        'genre_id',
+        'subscription_id'
+        'released_at'
+    ];
+
+    public function groups()
     {
-        return $this->orderby('updated_at', 'DESC')->limit($limit_count)->get();
+        return $this->hasMany(Group::class, 'movie_id');
+    }
+    
+    public function genre()
+    {
+        return $this->belongsTo(Genre::class, 'genre_id');
+    }
+    
+    public function subscription()
+    {
+        return $this->belongsTo(Subscription::class, 'subscription_id');
     }
 }
