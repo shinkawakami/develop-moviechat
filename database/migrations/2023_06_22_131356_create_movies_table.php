@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('subscription_id');
             $table->string('title');
             $table->integer('released_at');
+            $table->timestamps();
             
             $table->foreign('genre_id')->references('id')->on('genres')->onDelete('cascade');
             $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('cascade');
