@@ -26,7 +26,6 @@
                 <ul>
                     @foreach ($groups as $group)
                         <li>{{ $group->name }}</li>
-                        <a href="/movies/showlist">グループ一覧</a>
                     @endforeach
                 </ul>
             </div>
