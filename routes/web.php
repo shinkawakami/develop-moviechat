@@ -21,8 +21,8 @@ Route::get('/dashboard', function () {
 
 Route::controller(MovieController::class)->middleware(['auth'])->group(function(){
     Route::get('/', 'index')->name('index');
-    Route::get('/movies/make', 'make')->name('make');
     Route::post('/movies', 'store')->name('store');
+    Route::get('/movies/make', 'make')->name('make');
     Route::get('/movies/search', 'search')->name('search');
     Route::get('/movies/showlist', 'showlist')->name('showlist');
 });

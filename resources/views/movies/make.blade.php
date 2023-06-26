@@ -42,13 +42,29 @@
         
                 <div>
                     <label for="movie">Movie</label>
-                    <input type="text" name="group[movie_id]">
+                    <input type="text" name="movie[title]">
                 </div>
                 
-                <input type="hidden" name="creator" value="{{ Auth::user()->id }}">
+                <div>
+                    <label for="genre">Genre</label>
+                    <input type="text" name="genre[name]">
+                </div>
+                
+                <div>
+                    <label for="movie">Subscription</label>
+                    <input type="text" name="subscription[name]">
+                </div>
+                
+                <div>
+                    <label for="released_at">Released_at</label>
+                    <input type="number" name="movie[released_at]">
+                </div>
+                
+                <input type="hidden" name="group[created_id]" value="{{ Auth::user()->id }}">
         
                 <button type="submit">Create</button>
             </form>
+                
         </x-app-layout>
     </body>
 </html>
