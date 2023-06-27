@@ -27,7 +27,7 @@
             </div>
             <h1>Create Group</h1>
     
-            <form action="/movies" method="post">
+            <form action="/movies/make" method="post">
                 @csrf
         
                 <div>

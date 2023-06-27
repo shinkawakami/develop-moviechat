@@ -19,12 +19,14 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::controller(MovieController::class)->middleware(['auth'])->group(function(){
-    Route::get('/', 'index')->name('index');
-    Route::post('/movies', 'store')->name('store');
-    Route::get('/movies/make', 'make')->name('make');
-    Route::get('/movies/search', 'search')->name('search');
-    Route::get('/movies/showlist', 'showlist')->name('showlist');
+Route::middleware(['auth'])->group(function(){
+    Route::get('/', [MovieController::class, 'index'])->name('index');
+    Route::post('/movies/make', [MovieController::class, 'store'])->name('store');
+    Route::get('/movies/make', [MovieController::class, 'make'])->name('make');
+    Route::get('/movies/search', [MovieController::class, 'search'])->name('search');
+    Route::get('/movies/showlist', [MovieController::class, 'showlist'])->name('showlist');
+    Route::post('/movies/groups/{group}', [MovieController::class, 'joinGroup'])->name('joinGroup');
+    Route::get('/movies/groups/{group}', [MovieController::class, 'showGroup'])->name('showGroup');
 });
 
 Route::middleware('auth')->group(function () {
