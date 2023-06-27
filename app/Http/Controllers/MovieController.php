@@ -8,6 +8,8 @@ use App\Models\Group;
 use App\Models\Genre;
 use App\Models\Subscription;
 use App\Models\User;
+use App\Models\GroupUser;
+use Illuminate\Support\Facades\Auth;
 
 class MovieController extends Controller
 {
@@ -62,8 +64,31 @@ class MovieController extends Controller
         $group->name = $validatedData['group']['name'];
         $group->capacity = $validatedData['group']['capacity'];
         $group->save();
+        
+        $user = Auth::user();
+        $group->users()->attach($user);
 
         // 成功時の処理（例: 成功メッセージを表示してリダイレクト）
-        return redirect()->route('make');
+        return redirect()->route('showlist');
+    }
+    
+    public function joinGroup($groupId)
+    {
+        // ログインしているユーザーを取得
+        $user = Auth::user();
+        
+        // グループを取得
+        $group = Group::findOrFail($groupId);
+        
+        // ユーザーをグループに参加させる
+        $group->users()->attach($user);
+        
+        // 成功時の処理（例: 成功メッセージを表示してリダイレクト）
+        return view('movies.index');  
+    }
+    
+    public function showGroup(Group $group)
+    {
+        return view('groups.index', compact('group'));
     }
 }
