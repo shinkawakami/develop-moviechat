@@ -10,7 +10,7 @@
         <x-app-layout>
             <x-slot name="header">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Make Group
+                    Group Details
                 </h2>
             </x-slot>
             <div class='button'>
@@ -25,20 +25,16 @@
                 </div>
             </div>
             <div>
-                <thead>
-                    <tr>
-                        <th>Group Name</th>
-                        <th>Capacity</th>
-                        <th>Movie</th>
-                    </tr>
-                </thead>
-                
-                @foreach ($groups as $group)
-                    <div>
-                      <a href="/movies/groups/{{ $group->id }}">{{ $group->name }}</a>  
-                    </div>
-                @endforeach
-                
+                <p>Group Name: {{ $group->name }}</p>
+                <p>Group Member
+                    @foreach ($group->users as $user)
+                        <p>・{{ $user->name }}</p>
+                    @endforeach</p>
+                </div>
+                <form action="{{ route('joinGroup', ['group' => $group->id]) }}" method="POST">
+                    @csrf
+                    <button type="submit">join</button>
+                </form>
             </div>
         </x-app-layout>
     </body>

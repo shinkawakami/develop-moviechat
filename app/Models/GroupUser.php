@@ -9,15 +9,15 @@ class GroupUser extends Model
 {
     use HasFactory;
     
-    protected $table = 'group_user';
+    protected $table = 'group_users';
     protected $primaryKey = 'id';
 
-    public function user()
+    public function users()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function group()
+    public function groups()
     {
         return $this->belongsTo(Group::class, 'group_id');
     }
