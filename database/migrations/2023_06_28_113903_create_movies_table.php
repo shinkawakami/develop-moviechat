@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('genre_id');
-            $table->unsignedBigInteger('subscription_id');
             $table->string('title');
-            $table->integer('released_at');
+            $table->unsignedBigInteger('genre_id')->nullable();
+            $table->unsignedBigInteger('subscription_id')->nullable();
+            $table->integer('released_at')->nullable();
             $table->timestamps();
             
-            $table->foreign('genre_id')->references('id')->on('genres')->onDelete('cascade');
-            $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('cascade');
+            $table->foreign('genre_id')->references('id')->on('genres')->onDelete('set null');
+            $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('set null');
         });
     }
 

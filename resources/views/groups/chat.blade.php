@@ -10,7 +10,7 @@
         <x-app-layout>
             <x-slot name="header">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Group List
+                    Chat
                 </h2>
             </x-slot>
             <div class='button'>
@@ -25,11 +25,23 @@
                 </div>
             </div>
             <div>
-                @foreach ($groups as $group)
-                    <div>
-                      <a href="/movies/groups/{{ $group->id }}">・{{ $group->name }}</a>  
-                    </div>
+                <p>Group Name: {{ $group->name }}</p>
+                <p>Group Member
+                    @foreach ($group->users as $member)
+                        <p>・{{ $member->name }}</p>
+                    @endforeach
+                </p>
+                <p>Movie: {{ $group->movie->title }}</p>
+                
+                @foreach ($group->messages as $message)
+                    <p>{{ $message->user->name }}: {{ $message->content }}: {{ $message->created_at }}</p>
                 @endforeach
+                
+                <form action="/movies/groups/{{ $group->id }}/chat" method="POST">
+                    @csrf
+                    <input type="text" name="message" placeholder="メッセージを入力">
+                    <button type="submit">送信</button>
+                </form>
                 
             </div>
         </x-app-layout>
