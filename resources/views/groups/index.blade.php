@@ -29,9 +29,11 @@
                 <p>Group Member
                     @foreach ($group->users as $user)
                         <p>・{{ $user->name }}</p>
-                    @endforeach</p>
-                </div>
-                <form action="{{ route('joinGroup', ['group' => $group->id]) }}" method="POST">
+                    @endforeach
+                </p>
+                <p>Movie: {{ $group->movie->title }}</p>
+                
+                <form action="/movies/groups/{{ $group->id }}" method="POST">
                     @csrf
                     <button type="submit">join</button>
                 </form>

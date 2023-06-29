@@ -9,16 +9,16 @@ class GroupUser extends Model
 {
     use HasFactory;
     
-    protected $table = 'group_users';
+    protected $table = 'group_user';
     protected $primaryKey = 'id';
 
     public function users()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     public function groups()
     {
-        return $this->belongsTo(Group::class, 'group_id');
+        return $this->belongsTo(Group::class);
     }
 }

@@ -25,8 +25,10 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/movies/make', [MovieController::class, 'make'])->name('make');
     Route::get('/movies/search', [MovieController::class, 'search'])->name('search');
     Route::get('/movies/showlist', [MovieController::class, 'showlist'])->name('showlist');
-    Route::post('/movies/groups/{group}', [MovieController::class, 'joinGroup'])->name('joinGroup');
-    Route::get('/movies/groups/{group}', [MovieController::class, 'showGroup'])->name('showGroup');
+    Route::post('/movies/groups/{groupId}', [MovieController::class, 'joinGroup'])->name('joinGroup');
+    Route::get('/movies/groups/{groupId}', [MovieController::class, 'showGroup'])->name('showGroup');
+    Route::get('/movies/groups/{groupId}/chat', [MovieController::class, 'chat'])->name('chat');
+    Route::post('/movies/groups/{groupId}/chat', [MovieController::class, 'sendMessage'])->name('sendMessage');
 });
 
 Route::middleware('auth')->group(function () {
