@@ -15,13 +15,13 @@ class MovieGroupRequest extends FormRequest
     public function rules()
     {
         return [
-            'group.name' => 'required|string',
-            'group.capacity' => 'required|integer',
-            'movie.title' => 'required|string',
-            'genre.name' => 'required|string',
-            'subscription.name' => 'required|string',
-            'movie.released_at' => 'required|integer',
-            'group.created_id' => 'required|integer',
+            'group_name' => 'required',
+            'group_capacity' => 'required|integer',
+            'movie_title' => 'required',
+            'movie_genre' => 'required',
+            'movie_subscription' => 'required',
+            'movie_released_at' => 'required|integer',
+            'group_created_id' => 'required',
         ];
     }
 }

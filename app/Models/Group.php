@@ -22,21 +22,21 @@ class Group extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'group_users', 'group_id', 'user_id');
-    }
-    
-    public function movie()
-    {
-        return $this->belongsTo(Movie::class, 'movie_id');
+        return $this->belongsToMany(User::class);
     }
 
     public function creator()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
+    }
+    
+    public function movie()
+    {
+        return $this->belongsTo(Movie::class);
     }
     
     public function messages()
     {
-        return $this->hasMany(Message::class, 'group_id');
+        return $this->hasMany(Message::class);
     }
 }
