@@ -31,36 +31,36 @@
                 @csrf
         
                 <div>
-                    <label for="name">Group Name</label>
-                    <input type="text" name="group[name]" id='name'>
+                    <label for="group-name">Group Name</label>
+                    <input type="text" name="group_name">
                 </div>
         
                 <div>
-                    <label for="capacity">Capacity</label>
-                    <input type="number" name="group[capacity]">
+                    <label for="group-capacity">Capacity</label>
+                    <input type="number" name="group_capacity">
                 </div>
         
                 <div>
-                    <label for="movie">Movie</label>
-                    <input type="text" name="movie[title]">
+                    <label for="movie-title">Movie</label>
+                    <input type="text" name="movie_title">
                 </div>
                 
                 <div>
-                    <label for="genre">Genre</label>
-                    <input type="text" name="genre[name]">
+                    <label for="movie-genre">Genre</label>
+                    <input type="text" name="movie_genre">
                 </div>
                 
                 <div>
-                    <label for="movie">Subscription</label>
-                    <input type="text" name="subscription[name]">
+                    <label for="movie-subscription">Subscription</label>
+                    <input type="text" name="movie_subscription">
                 </div>
                 
                 <div>
-                    <label for="released_at">Released_at</label>
-                    <input type="number" name="movie[released_at]">
+                    <label for="movie-released-at">Released_at</label>
+                    <input type="number" name="movie_released_at">
                 </div>
                 
-                <input type="hidden" name="group[created_id]" value="{{ Auth::user()->id }}">
+                <input type="hidden" name="group_created_id" value="{{ Auth::user()->id }}">
         
                 <button type="submit">Create</button>
             </form>

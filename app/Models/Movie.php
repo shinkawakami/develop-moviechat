@@ -11,9 +11,10 @@ class Movie extends Model
     
     protected $table = 'movies';
     protected $primaryKey = 'id';
+    public $timestamps = true;
 
     protected $fillable = [
-        'name',
+        'title',
         'genre_id',
         'subscription_id',
         'released_at',
@@ -21,16 +22,16 @@ class Movie extends Model
 
     public function groups()
     {
-        return $this->hasMany(Group::class, 'movie_id');
+        return $this->hasMany(Group::class);
     }
     
     public function genre()
     {
-        return $this->belongsTo(Genre::class, 'genre_id');
+        return $this->belongsTo(Genre::class);
     }
     
     public function subscription()
     {
-        return $this->belongsTo(Subscription::class, 'subscription_id');
+        return $this->belongsTo(Subscription::class);
     }
 }

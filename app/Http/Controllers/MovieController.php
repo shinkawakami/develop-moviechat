@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MovieGroupRequest;
+use App\Http\Requests\MessageRequest;
 use App\Models\Movie;
 use App\Models\Group;
 use App\Models\Genre;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Models\GroupUser;
+use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 
 class MovieController extends Controller
@@ -41,35 +43,36 @@ class MovieController extends Controller
         
         // Genreモデルの作成と保存
         $genre = new Genre();
-        $genre->name = $validatedData['genre']['name'];
+        $genre->name = $validatedData['movie_genre'];
         $genre->save();
     
         // Subscriptionモデルの作成と保存
         $subscription = new Subscription();
-        $subscription->name = $validatedData['subscription']['name'];
+        $subscription->name = $validatedData['movie_subscription'];
         $subscription->save();
         
         // Movieモデルの作成と保存
         $movie = new Movie();
         $movie->genre()->associate($genre);
         $movie->subscription()->associate($subscription);
-        $movie->title = $validatedData['movie']['title'];
-        $movie->released_at = $validatedData['movie']['released_at'];
+        $movie->title = $validatedData['movie_title'];
+        $movie->released_at = $validatedData['movie_released_at'];
         $movie->save();
     
         // Groupモデルの作成と保存
         $group = new Group();
-        $group->created_id = $validatedData['group']['created_id'];
+        $group->created_id = $validatedData['group_created_id'];
         $group->movie()->associate($movie);
-        $group->name = $validatedData['group']['name'];
-        $group->capacity = $validatedData['group']['capacity'];
+        $group->name = $validatedData['group_name'];
+        $group->capacity = $validatedData['group_capacity'];
         $group->save();
         
         $user = Auth::user();
         $group->users()->attach($user);
 
-        // 成功時の処理（例: 成功メッセージを表示してリダイレクト）
-        return redirect()->route('showlist');
+        // 成功時の処理
+        $groups = Group::all();
+        return view('movies.showlist', compact('groups'));
     }
     
     public function joinGroup($groupId)
@@ -84,11 +87,35 @@ class MovieController extends Controller
         $group->users()->attach($user);
         
         // 成功時の処理（例: 成功メッセージを表示してリダイレクト）
-        return view('movies.index');  
+        return redirect()->route('chat', ['groupId' => $groupId]);
     }
     
-    public function showGroup(Group $group)
+    public function showGroup($groupId)
     {
+        $group = Group::findOrFail($groupId);
         return view('groups.index', compact('group'));
+    }
+    
+    public function chat($groupId)
+    {
+        $group = Group::findOrFail($groupId);
+        return view('groups.chat', compact('group'));
+    }
+    
+    public function sendMessage(MessageRequest $request, $groupId)
+    {
+        $validatedData = $request->validated();
+
+        $user = $request->user();
+        $group = Group::findOrFail($groupId);
+        $message = $validatedData['message'];
+
+        $chatMessage = new Message();
+        $chatMessage->content = $message;
+        $chatMessage->user()->associate($user);
+        $chatMessage->group()->associate($group);
+        $chatMessage->save();
+        
+        return view('groups.chat', compact('group'));
     }
 }

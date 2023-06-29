@@ -11,6 +11,7 @@ class Genre extends Model
     
     protected $table = 'genres';
     protected $primaryKey = 'id';
+    public $timestamps = true;
     
     protected $fillable = [
         'name',
@@ -18,6 +19,6 @@ class Genre extends Model
 
     public function movies()
     {
-        return $this->hasMany(Movie::class, 'genre_id');
+        return $this->hasMany(Movie::class);
     }
 }
