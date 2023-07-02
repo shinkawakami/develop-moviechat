@@ -11,27 +11,31 @@ class Movie extends Model
     
     protected $table = 'movies';
     protected $primaryKey = 'id';
-    public $timestamps = true;
+    public $timestamps = false;
 
     protected $fillable = [
         'title',
-        'genre_id',
-        'subscription_id',
-        'released_at',
+        'era_id',
+        'year'
     ];
 
     public function groups()
     {
-        return $this->hasMany(Group::class);
+        return $this->belongsToMany(Group::class);
     }
     
-    public function genre()
+    public function genres()
     {
-        return $this->belongsTo(Genre::class);
+        return $this->belongsToMany(Genre::class, 'movie_genre');
     }
     
-    public function subscription()
+    public function platforms()
     {
-        return $this->belongsTo(Subscription::class);
+        return $this->belongsToMany(Platform::class);
+    }
+    
+    public function era()
+    {
+        return $this->belongsTo(Era::class);
     }
 }

@@ -54,6 +54,6 @@ class User extends Authenticatable
     
     public function creators()
     {
-        return $this->hasMany(Group::class);
+        return $this->hasMany(Group::class, 'created_id');
     }
 }

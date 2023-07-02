@@ -5,20 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Subscription extends Model
+class Era extends Model
 {
     use HasFactory;
     
-    protected $table = 'subscriptions';
+    protected $table = 'eras';
     protected $primaryKey = 'id';
-    public $timestamps = true;
+    public $timestamps = false;
     
     protected $fillable = [
-        'name',
+        'era',
     ];
 
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class);
+    }
+    
     public function movies()
     {
-        return $this->hasMany(Movie::class, 'subscription_id');
+        return $this->hasMany(Movie::class);
     }
 }
