@@ -15,8 +15,7 @@ class Group extends Model
     
     protected $fillable = [
         'name',
-        'created_id',
-        'movie_id',
+        'creator_id',
         'capacity',
     ];
 
@@ -24,15 +23,30 @@ class Group extends Model
     {
         return $this->belongsToMany(User::class);
     }
-
+    
+    public function movies()
+    {
+        return $this->belongsToMany(Movie::class);
+    }
+    
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class, 'group_genre');
+    }
+    
+    public function platforms()
+    {
+        return $this->belongsToMany(Platform::class);
+    }
+    
+    public function eras()
+    {
+        return $this->belongsToMany(Era::class, 'group_era');
+    }
+    
     public function creator()
     {
         return $this->belongsTo(User::class);
-    }
-    
-    public function movie()
-    {
-        return $this->belongsTo(Movie::class);
     }
     
     public function messages()

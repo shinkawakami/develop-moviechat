@@ -18,7 +18,7 @@
                     <a href="/movies/make">グループ作成</a>
                 </div>
                 <div class='group_search_page'>
-                    <a href="/movies/search">グループ検索</a>
+                    <a href="/movies/search/group">グループ検索</a>
                 </div>
                 <div class='group_showlist_page'>
                     <a href="/movies/showlist">グループ一覧</a>
