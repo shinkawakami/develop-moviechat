@@ -18,7 +18,7 @@
                     <a href="/movies/make">グループ作成</a>
                 </div>
                 <div class='group_search_page'>
-                    <a href="/movies/search">グループ検索</a>
+                    <a href="/movies/search/group">グループ検索</a>
                 </div>
                 <div class='group_showlist_page'>
                     <a href="/movies/showlist">グループ一覧</a>
@@ -31,8 +31,26 @@
                         <p>・{{ $user->name }}</p>
                     @endforeach
                 </p>
-                <p>Movie: {{ $group->movie->title }}</p>
-                
+                <p>Movie
+                    @foreach ($group->movies as $movie)
+                        <p>・{{ $movie->title }}</p>
+                    @endforeach
+                </p>
+                <p>Genre
+                    @foreach ($group->genres as $genre)
+                        <p>・{{ $genre->name }}</p>
+                    @endforeach
+                </p>
+                <p>Platform
+                    @foreach ($group->platforms as $platform)
+                        <p>・{{ $platform->name }}</p>
+                    @endforeach
+                </p>
+                <p>Genre
+                    @foreach ($group->eras as $era)
+                        <p>・{{ $era->era }}</p>
+                    @endforeach
+                </p>
                 <form action="/movies/groups/{{ $group->id }}" method="POST">
                     @csrf
                     <button type="submit">join</button>
