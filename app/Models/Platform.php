@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Genre extends Model
+class Platform extends Model
 {
     use HasFactory;
     
-    protected $table = 'genres';
+    protected $table = 'platforms';
     protected $primaryKey = 'id';
     public $timestamps = false;
     
