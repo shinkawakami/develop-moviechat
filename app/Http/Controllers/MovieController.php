@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MovieGroupRequest;
 use App\Http\Requests\MessageRequest;
+use App\Models\Era;
 use App\Models\Genre;
 use App\Models\Group;
 use App\Models\Message;
 use App\Models\Movie;
 use App\Models\Platform;
 use App\Models\User;
-use App\Models\Era;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use App\Events\MessageSent;
 
 class MovieController extends Controller
 {
@@ -184,17 +184,19 @@ class MovieController extends Controller
         $validator = Validator::make($request->all(), [
             'message' => 'required',
         ]);
-
+    
         $user = $request->user();
         $group = Group::findOrFail($groupId);
-
+    
         $chatMessage = new Message();
         $chatMessage->content = $request->input('message');
         $chatMessage->user()->associate($user);
         $chatMessage->group()->associate($group);
         $chatMessage->save();
-        
-        return view('groups.chat', compact('group'));
+    
+        event(new MessageSent($chatMessage)); // メッセージ送信イベントを発行
+    
+        return redirect()->back();
     }
     
     public function searchMovie()
