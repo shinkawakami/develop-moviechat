@@ -2,27 +2,19 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <title>Movie</title>
+        <title>MovieChat</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     </head>
     <body>
-        
-        
-            <div class='button'>
-                <div class='group_make_page'>
-                    <a href="/movies/make">グループ作成</a>
-                </div>
-                <div class='group_search_page'>
-                    <a href="/movies/search/group">グループ検索</a>
-                </div>
-                <div class='group_showlist_page'>
-                    <a href="/movies/showlist">グループ一覧</a>
-                </div>
-            </div>
-            <h1>Create Group</h1>
+        <x-app-layout>
+            <x-slot name="header">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    Create Group
+                </h2>
+            </x-slot>
     
-            <form action="/movies/make" method="post">
+            <form action="/moviechat/group/create" method="post">
                 @csrf
                 <div>
                     <label for="group-name">グループ名</label>
@@ -42,7 +34,7 @@
                     </select>
                 </div>
                 <div>
-                  <a href="/movies/add">映画を追加</a>  
+                  <a href="/moviechat/movie/create">映画を追加</a>  
                 </div>
                 <div>
                     <label for="group-movie-era">映画の年代</label>
@@ -74,7 +66,6 @@
         
                 <button type="submit">Create</button>
             </form>
-                
-        
+        </x-app-layout>        
     </body>
 </html>
