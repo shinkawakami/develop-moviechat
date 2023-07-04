@@ -16,9 +16,10 @@ use App\Events\MessageSent;
 
 class MovieController extends Controller
 {
-    public function index(Movie $movie)
+    public function index()
     {
-        return view('movies.index');  
+        $movies = Movie::all();
+        return view('movies.list', compact('movies'));  
     }
     
     public function create()
@@ -87,12 +88,12 @@ class MovieController extends Controller
         if ($request->has('movie_title')) {
             $title = $request->input('movie_title');
             $movies = Movie::where('title', 'like', '%' . $title . '%')->take(5)->get();
-            return view('movies.result', compact('movies'));
+            return view('movies.list', compact('movies'));
         }
         if ($request->has('movie_title_id')) {
             $movieId = $request->input('movie_title_id');
             $movie = Movie::findOrFail($movieId);
-            return view('movies.result', ['movies' => [$movie]]);
+            return view('movies.list', ['movies' => [$movie]]);
         }
         
         $movies = Movie::query();
@@ -135,5 +136,16 @@ class MovieController extends Controller
         $movies = $movies->get();
         
         return view('movies.result', compact('movies'));
+    }
+    
+    public function destroy($movieId)
+    {
+        $movie = Movie::findOrFail($movieId);
+
+        $movie->delete();
+
+        // グループ削除後のリダイレクト先などの処理を追加する場合はここに記述
+
+        return redirect()->route('movie.index')->with('success', 'Group deleted successfully.');
     }
 }
