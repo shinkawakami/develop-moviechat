@@ -45,7 +45,20 @@
                     @csrf
                     <button type="submit">join</button>
                 </form>
+                
+                @if (Auth::id() === $group->creator_id)
+                    <form action="/moviechat/group/{{ $group->id }}" method="POST" onsubmit="return confirmDelete();">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete Group</button>
+                    </form>
+                @endif
             </div>
+            <script>
+                function confirmDelete() {
+                    return confirm('本当に削除しますか？');
+                }
+            </script>
         </x-app-layout>
     </body>
 </html>

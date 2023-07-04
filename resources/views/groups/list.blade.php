@@ -20,7 +20,6 @@
                       <a href="/moviechat/group/{{ $group->id }}">・{{ $group->name }}</a>  
                     </div>
                 @endforeach
-                
             </div>
         </x-app-layout>
     </body>
