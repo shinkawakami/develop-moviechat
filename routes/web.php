@@ -18,6 +18,8 @@ use App\Http\Controllers\ChatController;
 */
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', [ProfileController::class, 'home'])->name('home');
+    
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -28,7 +30,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', [MovieController::class, 'index'])->name('index');
 
     // Movies Routes
     Route::prefix('moviechat')->group(function () {
@@ -43,15 +44,19 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/{groupId}', [GroupController::class, 'joinGroup'])->name('group.join');
             Route::get('/{groupId}', [GroupController::class, 'show'])->name('group.show');
             
+            Route::delete('/{groupId}', [GroupController::class, 'destroy'])->name('group.destroy');
+            
             Route::get('/{groupId}/chat', [ChatController::class, 'index'])->name('chat.index');
             Route::post('{groupId}/chat', [ChatController::class, 'sent'])->name('chat.sent');
         });
         
         Route::prefix('movie')->group(function () {
+            Route::get('/list', [MovieController::class, 'index'])->name('movie.index');
             Route::get('/search', [MovieController::class, 'search'])->name('movie.search');
             Route::get('/result', [MovieController::class, 'result'])->name('movie.result');
             Route::get('/create', [MovieController::class, 'create'])->name('movie.create');
             Route::post('/create', [MovieController::class, 'store'])->name('movie.store');
+            Route::delete('/{movieId}', [MovieController::class, 'destroy'])->name('movie.destroy');
         });
     });
 });

@@ -114,7 +114,7 @@ class GroupController extends Controller
         if ($request->has('group_name')) {
             $name = $request->input('group_name');
             $groups = Group::where('name', 'like', '%' . $name . '%')->take(5)->get();
-            return view('movies.showlist', compact('groups'));
+            return view('groups.list', compact('groups'));
         }
         
         $groups = Group::query();
@@ -161,6 +161,22 @@ class GroupController extends Controller
         $groups = $groups->get();
         
         return view('groups.list', compact('groups'));
+    }
+    
+    public function destroy(Request $request, $groupId)
+    {
+        $group = Group::findOrFail($groupId);
+
+        // グループ作成者のみが削除できることを確認
+        if ($group->creator_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $group->delete();
+
+        // グループ削除後のリダイレクト先などの処理を追加する場合はここに記述
+
+        return redirect()->route('group.index')->with('success', 'Group deleted successfully.');
     }
 }
     
