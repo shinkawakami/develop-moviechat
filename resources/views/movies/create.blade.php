@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <title>Movie</title>
+        <title>MovieChat</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     </head>
@@ -14,20 +14,9 @@
                 </h2>
             </x-slot>
         
-            <div class='button'>
-                <div class='group_make_page'>
-                    <a href="/movies/make">グループ作成</a>
-                </div>
-                <div class='group_search_page'>
-                    <a href="/movies/search/group">グループ検索</a>
-                </div>
-                <div class='group_showlist_page'>
-                    <a href="/movies/showlist">グループ一覧</a>
-                </div>
-            </div>
             <h1>Add Movie</h1>
     
-            <form action="/movies/add" method="post">
+            <form action="/moviechat/movie/create" method="post">
                 @csrf
                 <div>
                     <label for="movie-title">映画タイトル</label>
