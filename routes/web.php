@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\ChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,26 +31,27 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [MovieController::class, 'index'])->name('index');
 
     // Movies Routes
-    Route::prefix('movies')->group(function () {
-        Route::get('/make', [MovieController::class, 'make'])->name('make');
-        Route::post('/make', [MovieController::class, 'store'])->name('store');
-        Route::get('/add', [MovieController::class, 'add'])->name('add');
-        Route::post('/add', [MovieController::class, 'addMovie'])->name('addMovie');
-        Route::get('/showlist', [MovieController::class, 'showlist'])->name('showlist');
-
-        Route::prefix('search')->group(function () {
-            Route::get('/group', [MovieController::class, 'searchGroup'])->name('searchGroup');
-            Route::get('/group/result', [MovieController::class, 'resultGroup'])->name('resultGroup');
-            Route::get('/movie', [MovieController::class, 'searchMovie'])->name('searchMovie');
-            Route::get('/movie/result', [MovieController::class, 'resultMovie'])->name('resultMovie');
-            Route::get('/result', [MovieController::class, 'result'])->name('result');
+    Route::prefix('moviechat')->group(function () {
+        Route::prefix('group')->group(function () {
+            Route::get('/create', [GroupController::class, 'create'])->name('group.create');
+            Route::post('/create', [GroupController::class, 'store'])->name('group.store');
+            Route::get('/list', [GroupController::class, 'index'])->name('group.index');
+            
+            Route::get('/search', [GroupController::class, 'search'])->name('group.search');
+            Route::get('/result', [GroupController::class, 'result'])->name('group.result');
+    
+            Route::post('/{groupId}', [GroupController::class, 'joinGroup'])->name('group.join');
+            Route::get('/{groupId}', [GroupController::class, 'show'])->name('group.show');
+            
+            Route::get('/{groupId}/chat', [ChatController::class, 'index'])->name('chat.index');
+            Route::post('{groupId}/chat', [ChatController::class, 'sent'])->name('chat.sent');
         });
-
-        Route::prefix('groups')->group(function () {
-            Route::post('/{groupId}', [MovieController::class, 'joinGroup'])->name('joinGroup');
-            Route::get('/{groupId}', [MovieController::class, 'showGroup'])->name('showGroup');
-            Route::get('/{groupId}/chat', [MovieController::class, 'chat'])->name('chat');
-            Route::post('/{groupId}/chat', [MovieController::class, 'sendMessage'])->name('sendMessage');
+        
+        Route::prefix('movie')->group(function () {
+            Route::get('/search', [MovieController::class, 'search'])->name('movie.search');
+            Route::get('/result', [MovieController::class, 'result'])->name('movie.result');
+            Route::get('/create', [MovieController::class, 'create'])->name('movie.create');
+            Route::post('/create', [MovieController::class, 'store'])->name('movie.store');
         });
     });
 });

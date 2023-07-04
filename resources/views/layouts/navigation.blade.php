@@ -18,6 +18,15 @@
                     <x-nav-link :href="route('index')" :active="request()->routeIs('index')">
                         {{ __('Index') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('group.create')" :active="request()->routeIs('group.create')">
+                        {{ __('グループ作成') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('group.search')" :active="request()->routeIs('group.search')">
+                        {{ __('グループ検索') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('group.index')" :active="request()->routeIs('group.index')">
+                        {{ __('グループ一覧') }}
+                    </x-nav-link>
                 </div>
             </div>
 
