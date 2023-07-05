@@ -15,42 +15,50 @@
             </x-slot>
             
             <div>
-                <p>Group Name: {{ $group->name }}</p>
-                <p>Group Member
+                <p>グループ名：{{ $group->name }}</p>
+                <p>グループ人数：({{ $group->users->count() }}/{{ $group->capacity }})</p>
+                <p>グループメンバー：
                     @foreach ($group->users as $user)
-                        <p>・{{ $user->name }}</p>
+                        {{ $user->name }}　
                     @endforeach
                 </p>
-                <p>Movie
+                <p>選択してる映画：
                     @foreach ($group->movies as $movie)
-                        <p>・{{ $movie->title }}</p>
+                        {{ $movie->title }}　
                     @endforeach
                 </p>
-                <p>Genre
+                <p>好きなジャンル：
                     @foreach ($group->genres as $genre)
-                        <p>・{{ $genre->name }}</p>
+                        {{ $genre->name }}　
                     @endforeach
                 </p>
-                <p>Platform
+                <p>使うプラットフォーム：
                     @foreach ($group->platforms as $platform)
-                        <p>・{{ $platform->name }}</p>
+                        {{ $platform->name }}　
                     @endforeach
                 </p>
-                <p>Genre
+                <p>好きな年代：
                     @foreach ($group->eras as $era)
-                        <p>・{{ $era->era }}</p>
+                        {{ $era->era }}　
                     @endforeach
                 </p>
-                <form action="/moviechat/group/{{ $group->id }}" method="POST">
-                    @csrf
-                    <button type="submit">join</button>
-                </form>
+                
+                @php
+                    $isMember = $group->users->contains(Auth::id());
+                @endphp
+                
+                @if (!$isMember && $group->users->count() < $group->capacity)
+                    <form action="/moviechat/group/{{ $group->id }}" method="POST">
+                        @csrf
+                        <button type="submit">参加</button>
+                    </form>
+                @endif
                 
                 @if (Auth::id() === $group->creator_id)
                     <form action="/moviechat/group/{{ $group->id }}" method="POST" onsubmit="return confirmDelete();">
                         @csrf
                         @method('DELETE')
-                        <button type="submit">Delete Group</button>
+                        <button type="submit">グループ削除</button>
                     </form>
                 @endif
             </div>

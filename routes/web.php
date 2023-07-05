@@ -40,6 +40,8 @@ Route::middleware(['auth'])->group(function () {
             
             Route::get('/search', [GroupController::class, 'search'])->name('group.search');
             Route::get('/result', [GroupController::class, 'result'])->name('group.result');
+            
+            Route::get('/myList', [GroupController::class, 'myList'])->name('group.myList');
     
             Route::post('/{groupId}', [GroupController::class, 'joinGroup'])->name('group.join');
             Route::get('/{groupId}', [GroupController::class, 'show'])->name('group.show');

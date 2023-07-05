@@ -18,7 +18,7 @@
                 <div>
                     <form action="/moviechat/group/result" method="GET">
                         <label for="group-name">グループ名で検索</label>
-                        <input type="text" name="group_name">
+                        <input type="text" name="group_name" required maxlength="20">
                         <input type="submit" value="グループ検索">
                     </form>
                 </div>
@@ -36,7 +36,7 @@
                             <select name="group_movie_era_id[]" multiple>
                                 <option value="">年代を選択してください</option>
                                 @foreach ($eras as $era)
-                                    <option value="{{ $era->id }}" selected>{{ $era->era }}</option>
+                                    <option value="{{ $era->id }}">{{ $era->era }}</option>
                                 @endforeach
                             </select> 
                         </div>
