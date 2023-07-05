@@ -18,11 +18,11 @@
                 @csrf
                 <div>
                     <label for="group-name">グループ名</label>
-                    <input type="text" name="group_name">
+                    <input type="text" name="group_name" required maxlength="20">
                 </div>
                 <div>
                     <label for="group-capacity">定員</label>
-                    <input type="number" name="group_capacity">
+                    <input type="number" name="group_capacity" required min="2" max="10">
                 </div>
                 <div>
                     <label for="group-movie-title">映画タイトル</label>
@@ -41,7 +41,7 @@
                     <select name="group_movie_era_id[]" multiple>
                         <option value="">年代を選択してください</option>
                         @foreach ($eras as $era)
-                            <option value="{{ $era->id }}" selected>{{ $era->era }}</option>
+                            <option value="{{ $era->id }}">{{ $era->era }}</option>
                         @endforeach
                     </select>
                 </div>
