@@ -18,17 +18,17 @@
                 <div>
                     <form action="/moviechat/movie/result" method="GET">
                         <label for="movie-title">映画のタイトル</label>
-                        <input type="text" name="movie_title">
+                        <input type="text" name="movie_title" required maxlength="20">
                         <input type="submit" value="映画検索">
                     </form>
                 </div>
                 <div>
                     <form action="/moviechat/movie/result" method="GET">
                         <label for="movie-title_id">映画のタイトル</label>
-                            <select name="movie_title_id">
+                            <select name="movie_title_id" required>
                                 <option value="">映画を選択してください</option>
                                 @foreach ($movies as $movie)
-                                    <option value="{{ $movie->id }}" selected>{{ $movie->title }}</option>
+                                    <option value="{{ $movie->id }}">{{ $movie->title }}</option>
                                 @endforeach
                             </select>
                         <input type="submit" value="映画検索">
@@ -42,7 +42,7 @@
                             <select name="movie_era_id">
                                 <option value="">年代を選択してください</option>
                                 @foreach ($eras as $era)
-                                    <option value="{{ $era->id }}" selected>{{ $era->era }}</option>
+                                    <option value="{{ $era->id }}">{{ $era->era }}</option>
                                 @endforeach
                             </select> 
                         </div>

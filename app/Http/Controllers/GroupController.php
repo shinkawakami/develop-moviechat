@@ -16,6 +16,15 @@ use App\Events\MessageSent;
 
 class GroupController extends Controller
 {
+    private function getGroupWithMember($groups = null)
+    {
+        $groups = $groups ?? Group::with('users')->get();
+        foreach ($groups as $group) {
+            $group->setAttribute('is_member', $group->users->contains(Auth::id()));
+        }
+        return $groups;
+    }
+        
     public function create()
     {
         $movies = Movie::all();
@@ -35,14 +44,15 @@ class GroupController extends Controller
     
     public function index()
     {
-        $groups = Group::all();
+        $groups = $this->getGroupWithMember();
         return view('groups.list', compact('groups'));
     }
     
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'group_name' => 'required',
+            'group_name' => 'required|max:20',
+            'group_caoacity' => "integer|min:2|max:10",
         ]);
 
         if ($validator->fails()) {
@@ -84,7 +94,7 @@ class GroupController extends Controller
         }
         
         // 成功時の処理
-        $groups = Group::all();
+        $groups = $this->getGroupWithMember();
         return view('groups.list', compact('groups'));
     }
     
@@ -111,6 +121,14 @@ class GroupController extends Controller
     
     public function result(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'group_name' => 'required|max:20',
+        ]);
+        
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+        }
+        
         if ($request->has('group_name')) {
             $name = $request->input('group_name');
             $groups = Group::where('name', 'like', '%' . $name . '%')->take(5)->get();
@@ -160,6 +178,8 @@ class GroupController extends Controller
         
         $groups = $groups->get();
         
+        $groups = $this->getGroupWithMember($groups);
+        
         return view('groups.list', compact('groups'));
     }
     
@@ -178,6 +198,18 @@ class GroupController extends Controller
 
         return redirect()->route('group.index')->with('success', 'Group deleted successfully.');
     }
+    
+    public function myList()
+    {
+        $user = Auth::user();
+        $groups = $user->groups;
+        
+        $groups = $this->getGroupWithMember($groups);
+        
+        return view('groups.list', compact('groups'));
+    }
+    
+    
 }
     
     

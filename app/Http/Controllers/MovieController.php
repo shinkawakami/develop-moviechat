@@ -31,9 +31,19 @@ class MovieController extends Controller
     
     public function store(Request $request)
     {
+        $currentYear = date('Y');
+
         $validator = Validator::make($request->all(), [
-            'movie_title' => 'required',
+            'movie_title' => 'required|max:20',
+            'movie_year' => "nullable|integer|min:1900|max:$currentYear",
         ]);
+
+        $genres = Genre::all();
+        $platforms = Platform::all();
+        
+        if ($validator->fails()) {
+            return redirect()->route('movie.create')->with('genres','platforms')->withErrors($validator)->withInput($request->except('password')); 
+        }
 
         $title = $request->input('movie_title');
         $genres = $request->input('movie_genre_id');
@@ -85,6 +95,14 @@ class MovieController extends Controller
     
     public function result(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'movie_title' => 'required|max:20',
+        ]);
+        
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+        }
+        
         if ($request->has('movie_title')) {
             $title = $request->input('movie_title');
             $movies = Movie::where('title', 'like', '%' . $title . '%')->take(5)->get();
@@ -135,7 +153,7 @@ class MovieController extends Controller
         
         $movies = $movies->get();
         
-        return view('movies.result', compact('movies'));
+        return view('movies.list', compact('movies'));
     }
     
     public function destroy($movieId)

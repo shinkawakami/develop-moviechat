@@ -16,20 +16,22 @@
             <div>
                 @foreach ($movies as $movie)
                     <div>
-                        <p>{{ $movie->title }}</p>
+                        <p>{{ $movie->title }}
+                        
+                        </p>
                         <p>
                             Genre：
                             @foreach ($movie->genres as $genre)
-                                {{ $genre->name }}
+                                {{ $genre->name }}　
                             @endforeach
-                            Platform：
+                            　Platform：
                             @foreach ($movie->platforms as $platform)
-                                {{ $platform->name }}
+                                {{ $platform->name }}　
                             @endforeach
-                            Year：{{ $movie->year }}
-                        </p>
+                            　Year：{{ $movie->year }}
+                        </p>グループ：
                         @foreach ($movie->groups as $group) 
-                            <a href="/moviechat/group/{{ $group->id }}">{{ $group->name }}</a>  
+                            <a href="/moviechat/group/{{ $group->id }}">{{ $group->name }}</a>　
                         @endforeach
                         <form action="/moviechat/movie/{{ $movie->id }}" method="POST">
                             @csrf

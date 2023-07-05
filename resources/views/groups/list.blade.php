@@ -17,7 +17,7 @@
             <div>
                 @foreach ($groups as $group)
                     <div>
-                      <a href="/moviechat/group/{{ $group->id }}">・{{ $group->name }}</a>  
+                      <a href="/moviechat/group/{{ $group->id }}{{ $group->is_member ? '/chat' : '' }}">・{{ $group->name }}</a>  
                     </div>
                 @endforeach
             </div>
