@@ -25,7 +25,7 @@ class ChatController extends Controller
     public function sent(Request $request, $groupId)
     {
         $validator = Validator::make($request->all(), [
-            'message' => 'required',
+            'message' => 'required|max:20',
         ]);
     
         $user = $request->user();

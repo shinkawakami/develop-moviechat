@@ -13,14 +13,12 @@
                     Add Movie
                 </h2>
             </x-slot>
-        
-            <h1>Add Movie</h1>
     
             <form action="/moviechat/movie/create" method="post">
                 @csrf
                 <div>
                     <label for="movie-title">映画タイトル</label>
-                    <input type="text" name="movie_title" required>
+                    <input type="text" name="movie_title" required maxlength="20">
                 </div>
                 <div>
                     <label for="movie-genre">ジャンル</label>
@@ -42,7 +40,7 @@
                 </div>
                 <div>
                     <label for="movie-year">公開年度</label>
-                    <input type="number" name="movie_year">
+                    <input type="number" name="movie_year" min="1900" max="{{ date('Y') }}">
                 </div>
     
                 <button type="submit">Create</button>

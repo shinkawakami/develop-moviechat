@@ -30,6 +30,9 @@
                     <x-nav-link :href="route('movie.index')" :active="request()->routeIs('movie.index')">
                         {{ __('映画一覧') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('group.myList')" :active="request()->routeIs('group.myList')">
+                        {{ __('自分のグループ') }}
+                    </x-nav-link>
                 </div>
             </div>
 
