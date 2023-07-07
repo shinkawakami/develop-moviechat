@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'introduction',
     ];
 
     /**
@@ -44,12 +45,32 @@ class User extends Authenticatable
     
     public function groups()
     {
-        return $this->belongsToMany(Group::class);
+        return $this->belongsToMany(Group::class, 'group_user');
     }
     
     public function viewApprovers()
     {
         return $this->belongsToMany(ViewGroup::class, 'view_approvers');
+    }
+    
+    public function favoriteMovies()
+    {
+        return $this->belongsToMany(Movie::class, 'user_movie');
+    }
+    
+    public function favoriteGenres()
+    {
+        return $this->belongsToMany(Genre::class, 'user_genre');
+    }
+    
+    public function favoritePlatforms()
+    {
+        return $this->belongsToMany(Platform::class, 'user_platform');
+    }
+    
+    public function favoriteEras()
+    {
+        return $this->belongsToMany(Era::class, 'user_era');
     }
     
     public function messages()
