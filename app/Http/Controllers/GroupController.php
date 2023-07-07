@@ -95,7 +95,7 @@ class GroupController extends Controller
         
         // 成功時の処理
         $groups = $this->getGroupWithMember();
-        return view('groups.list', compact('groups'));
+        return redirect()->route('group.myList');
     }
     
     public function joinGroup($groupId)
