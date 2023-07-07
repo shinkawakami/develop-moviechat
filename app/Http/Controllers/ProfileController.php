@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Movie;
+use App\Models\Genre;
+use App\Models\Platform;
+use App\Models\Era;
+
 
 class ProfileController extends Controller
 {
@@ -16,9 +21,18 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $user = $request->user();
+        $movies = Movie::all();
+        $genres = Genre::all();
+        $platforms = Platform::all();
+        $eras = Era::all();
+        
+        $user->favoriteMovies = $user->favoriteMovies->pluck('id')->toArray();
+        $user->favoriteGenres = $user->favoriteGenres->pluck('id')->toArray();
+        $user->favoritePlatforms = $user->favoritePlatforms->pluck('id')->toArray();
+        $user->favoriteEras = $user->favoriteEras->pluck('id')->toArray();
+        
+        return view('profile.edit', compact('user', 'movies', 'genres', 'platforms', 'eras'));
     }
 
     /**
@@ -26,11 +40,18 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $user->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
+        
+        $user->favoriteMovies()->sync($request->favorite_movies);
+        $user->favoriteGenres()->sync($request->favorite_genres);
+        $user->favoritePlatforms()->sync($request->favorite_platforms);
+        $user->favoriteEras()->sync($request->favorite_eras);
+        $user->introduction = $request->introduction;
 
         $request->user()->save();
 
