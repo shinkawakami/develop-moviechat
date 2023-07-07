@@ -53,4 +53,9 @@ class Group extends Model
     {
         return $this->hasMany(Message::class);
     }
+    
+    public function viewGroups()
+    {
+        return $this->hasMany(ViewGroup::class);
+    }
 }
