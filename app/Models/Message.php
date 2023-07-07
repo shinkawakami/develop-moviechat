@@ -16,6 +16,7 @@ class Message extends Model
     protected $fillable = [
         'group_id',
         'user_id',
+        'view_group_id',
         'content',
     ];
 
@@ -27,5 +28,10 @@ class Message extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    
+    public function viewGroup()
+    {
+        return $this->belongsTo(ViewGroup::class);
     }
 }

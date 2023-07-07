@@ -49,7 +49,14 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{groupId}', [GroupController::class, 'destroy'])->name('group.destroy');
             
             Route::get('/{groupId}/chat', [ChatController::class, 'index'])->name('chat.index');
-            Route::post('{groupId}/chat', [ChatController::class, 'sent'])->name('chat.sent');
+            Route::post('/{groupId}/chat', [ChatController::class, 'sent'])->name('chat.sent');
+            Route::get('/{groupId}/leave', [ChatController::class, 'leaveGroup'])->name('group.leave');
+            Route::post('/{groupId}/request', [ChatController::class, 'request'])->name('view.request');
+            Route::post('/{groupId}/approve/{viewGroupId}', [ChatController::class, 'approve'])->name('view.approve');
+            Route::post('/{groupId}/cancel/{viewGroupId}', [ChatController::class, 'cancel'])->name('view.cancel');
+            Route::get('/{groupId}/view/{viewGroupId}', [ChatController::class, 'view'])->name('view.index');
+            Route::post('/{groupId}/view/{viewGroupId}', [ChatController::class, 'viewChat'])->name('view.chat');
+            
         });
         
         Route::prefix('movie')->group(function () {

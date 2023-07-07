@@ -24,6 +24,11 @@ class Movie extends Model
         return $this->belongsToMany(Group::class);
     }
     
+    public function viewGroups()
+    {
+        return $this->hasMany(ViewGroup::class);
+    }
+    
     public function genres()
     {
         return $this->belongsToMany(Genre::class, 'movie_genre');

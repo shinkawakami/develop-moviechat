@@ -47,6 +47,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Group::class);
     }
     
+    public function viewApprovers()
+    {
+        return $this->belongsToMany(ViewGroup::class, 'view_approvers');
+    }
+    
     public function messages()
     {
         return $this->hasMany(Message::class);
@@ -54,6 +59,13 @@ class User extends Authenticatable
     
     public function creators()
     {
-        return $this->hasMany(Group::class, 'created_id');
+        return $this->hasMany(Group::class);
     }
+    
+    public function requesters()
+    {
+        return $this->hasMany(ViewGroup::class);
+    }
+    
+    
 }
