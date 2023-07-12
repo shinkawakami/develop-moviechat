@@ -15,18 +15,22 @@
             </x-slot>
             
             <div>
-                @foreach ($groups as $group)
-                    <div>
-                      <a href="/moviechat/groups/{{ $group->id }}{{ $group->is_member ? '/chat' : '' }}">・{{ $group->name }}</a>  
-                    </div>
-                @endforeach
                 @foreach($groups as $group)
-                    <h2>Group: {{ $group->name }}</h2>
-                    @foreach($group->movies as $movieId => $movieDetails)
-                        <h3>Movie: {{ $movieDetails['title'] }}</h3>
-                        <p>Overview: {{ $movieDetails['overview'] }}</p>
-                        <p>Release Date: {{ $movieDetails['release_date'] }}</p>
+                    <h2>{{ $group->name }}</h2>
+                    @foreach($group->movies as $movie)
+                        <h3>Movie: {{ $movie->title }}</h3>
                     @endforeach
+                    @if($group->is_member)
+                        <a href="{{ route('chat.index', $group->id) }}">
+                            <button>チャット</button>
+                        </a>
+                    @endif
+                    @if(!$group->is_member && $group->users->count() < $group->capacity)
+                    <form action="{{ route('groups.join', $group->id) }}" method="POST">
+                        @csrf
+                        <button type="submit">参加</button>
+                    </form>
+                    @endif
                 @endforeach
             </div>
         </x-app-layout>

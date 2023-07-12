@@ -28,7 +28,7 @@
                     @endforeach
                 </div>
         
-                <form action="/moviechat/group/{{ $group->id }}/request" method="POST">
+                <form action="/moviechat/groups/{{ $group->id }}/request" method="POST">
                     @csrf
                     <label for="movie-title">映画タイトル</label>
                     <select name="movie_id" required>
@@ -46,7 +46,7 @@
                     @foreach ($viewGroups as $viewGroup)
                         <p>{{ $viewGroup->requester->name }}が同時視聴を希望しています</p>
                         @if(!$viewGroup->has_approved && !$viewGroup->is_requester)
-                            <form action="/moviechat/group/{{ $group->id }}/approve/{{ $viewGroup->id }}" method="POST">
+                            <form action="/moviechat/groups/{{ $group->id }}/approve/{{ $viewGroup->id }}" method="POST">
                                 @csrf
                                 <button type="submit">同意する</button>
                             </form>
@@ -58,7 +58,7 @@
                             <p>視聴URL: <a href="{{ $viewGroup->view_link }}">同時視聴用チャット先リンク</a></p>
                         @endif
                         @if($viewGroup->is_requester)
-                            <form method="POST" action="{{ route('view.cancel', ['groupId' => $group->id, 'viewGroupId' => $viewGroup->id]) }}">
+                            <form method="POST" action="{{ route('view.cancel', ['group' => $group->id, 'viewGroup' => $viewGroup->id]) }}">
                                 @csrf
                                 <button type="submit">申請取り消し</button>
                             </form>

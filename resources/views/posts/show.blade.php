@@ -27,7 +27,7 @@
             <!-- コメント投稿フォーム -->
             <form method="POST" action="{{ route('posts.comment', $post->id) }}">
                 @csrf
-                <textarea name="content" placeholder="コメント"></textarea>
+                <textarea name="comment" placeholder="コメント"></textarea>
                 <input type="submit" value="コメント投稿">
             </form>
         </x-app-layout>

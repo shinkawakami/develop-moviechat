@@ -41,32 +41,29 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/search', [GroupController::class, 'showSearch'])->name('groups.showSearch');
             Route::get('/search-results', [GroupController::class, 'searchResults'])->name('groups.searchResults');
             
-            Route::get('/myList', [GroupController::class, 'myList'])->name('groups.myList');
+            Route::get('/my-groups', [GroupController::class, 'myGroups'])->name('groups.myGroups');
     
-            Route::post('/{groupId}', [GroupController::class, 'joinGroup'])->name('groups.join');
-            Route::get('/{groupId}', [GroupController::class, 'show'])->name('groups.show');
+            Route::post('/{group}/join', [GroupController::class, 'join'])->name('groups.join');
             
-            Route::delete('/{groupId}', [GroupController::class, 'destroy'])->name('groups.destroy');
+            Route::get('/{group}', [GroupController::class, 'show'])->name('groups.show');
             
-            Route::get('/{groupId}/chat', [ChatController::class, 'index'])->name('chat.index');
-            Route::post('/{groupId}/chat', [ChatController::class, 'sent'])->name('chat.sent');
-            Route::get('/{groupId}/leave', [ChatController::class, 'leave'])->name('groups.leave');
-            Route::post('/{groupId}/request', [ChatController::class, 'request'])->name('view.request');
-            Route::post('/{groupId}/approve/{viewGroupId}', [ChatController::class, 'approve'])->name('view.approve');
-            Route::post('/{groupId}/cancel/{viewGroupId}', [ChatController::class, 'cancel'])->name('view.cancel');
-            Route::get('/{groupId}/view/{viewGroupId}', [ChatController::class, 'view'])->name('view.index');
-            Route::post('/{groupId}/view/{viewGroupId}', [ChatController::class, 'viewChat'])->name('view.chat');
+            Route::delete('/{group}', [GroupController::class, 'destroy'])->name('groups.destroy');
+            
+            Route::get('/{group}/chat', [ChatController::class, 'index'])->name('chat.index');
+            Route::post('/{group}/chat', [ChatController::class, 'sent'])->name('chat.sent');
+            Route::get('/{group}/leave', [ChatController::class, 'leave'])->name('groups.leave');
+            Route::post('/{group}/request', [ChatController::class, 'request'])->name('view.request');
+            Route::post('/{group}/approve/{viewGroup}', [ChatController::class, 'approve'])->name('view.approve');
+            Route::post('/{group}/cancel/{viewGroup}', [ChatController::class, 'cancel'])->name('view.cancel');
+            Route::get('/{group}/view/{viewGroup}', [ChatController::class, 'view'])->name('view.index');
+            Route::post('/{group}/view/{viewGroup}', [ChatController::class, 'viewChat'])->name('view.chat');
         });
         
         Route::prefix('movies')->group(function () {
-            Route::get('/list', [MovieController::class, 'index'])->name('movies.index');
+            Route::get('/', [MovieController::class, 'index'])->name('movies.index');
             Route::get('/search', [MovieController::class, 'search'])->name('movies.search');
             Route::post('/search', [MovieController::class, 'select'])->name('movies.select');
             Route::post('/unselect', [MovieController::class, 'unselect'])->name('movies.unselect');
-            Route::get('/result', [MovieController::class, 'result'])->name('movies.result');
-            Route::get('/create', [MovieController::class, 'create'])->name('movies.create');
-            Route::post('/create', [MovieController::class, 'store'])->name('movies.store');
-            Route::delete('/{movieId}', [MovieController::class, 'destroy'])->name('movies.destroy');
         });
         
         Route::prefix('posts')->group(function () {

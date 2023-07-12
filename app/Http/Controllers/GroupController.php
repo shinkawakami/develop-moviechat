@@ -38,25 +38,13 @@ class GroupController extends Controller
     {
         $groups = $this->getGroupWithMember();
         
-        foreach ($groups as $group) {
-            $movies = $group->movies()->get(); // リレーションを使ってグループに関連する映画を取得
-            $movieDetails = [];
-    
-            foreach ($movies as $movie) {
-                $movieId = $movie->tmdb_id;
-                $movieDetails[$movieId] = $this->getMovieDetails($movieId);
-            }
-    
-            $group->movies = $movieDetails;
-        }
-        
         return view('groups.index', compact('groups'));
     }
         
     public function create(Request $request)
     {
         // セッションから選択された映画を取得
-        $selectedMovies = $request->session()->get('selected_movies', []);
+        $selectedMovies = $request->session()->get('selected_movies_for_group', []);
         $genres = Genre::all();
         $platforms = Platform::all();
         $eras = Era::all();
@@ -78,7 +66,7 @@ class GroupController extends Controller
         $group->eras()->attach($request->input('group.movie_era_ids'));
         
         // セッションに選択していた映画情報の配列を取得
-        $selectedMovies = $request->session()->get('selected_movies');
+        $selectedMovies = $request->session()->get('selected_movies_for_group');
 
         // 選択した映画がmoviesテーブルのレコードに存在しなかったらレコード作成
         foreach ($selectedMovies as $movie) {
@@ -100,7 +88,7 @@ class GroupController extends Controller
         $groups = $this->getGroupWithMember();
         
         // セッションデータを消去
-        $request->session()->forget('selected_movies');
+        $request->session()->forget('selected_movies_for_group');
     
         return redirect()->route('groups.index');
     }
@@ -159,23 +147,29 @@ class GroupController extends Controller
     
         $groups = $this->getGroupWithMember($groups);
     
-        return view('groups.search_results', compact('groups'));
+        return view('groups.index', compact('groups'));
+    }
+    
+    public function myGroups()
+    {
+        $user = Auth::user();
+        $groups = $user->groups;
+        
+        $groups = $this->getGroupWithMember($groups);
+        
+        return view('groups.index', compact('groups'));
     }
 
     
-    public function joinGroup($groupId)
+    public function join($groupId)
     {
-        // ログインしているユーザーを取得
         $user = Auth::user();
-        
-        // グループを取得
         $group = Group::findOrFail($groupId);
         
         // ユーザーをグループに参加させる
         $group->users()->attach($user);
         
-        // 成功時の処理（例: 成功メッセージを表示してリダイレクト）
-        return redirect()->route('chat.index', ['groupId' => $groupId]);
+        return redirect()->route('chat.index', $group->id);
     }
     
     public function show($groupId)
@@ -198,16 +192,6 @@ class GroupController extends Controller
         // グループ削除後のリダイレクト先などの処理を追加する場合はここに記述
 
         return redirect()->route('group.index')->with('success', 'Group deleted successfully.');
-    }
-    
-    public function myList()
-    {
-        $user = Auth::user();
-        $groups = $user->groups;
-        
-        $groups = $this->getGroupWithMember($groups);
-        
-        return view('groups.index', compact('groups'));
     }
     
     
