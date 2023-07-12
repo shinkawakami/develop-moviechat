@@ -29,7 +29,7 @@
                     @endforeach
                 </div>
                                 
-                <form action="/moviechat/group/{{ $group->id }}/view/{{ $viewGroup->id }}" method="POST">
+                <form action="/moviechat/groups/{{ $group->id }}/view/{{ $viewGroup->id }}" method="POST">
                     @csrf
                     <input type="text" name="message" placeholder="メッセージを入力" required maxlength="20">
                     <button type="submit">送信</button>

@@ -78,6 +78,7 @@ class ChatController extends Controller
         $viewGroupId = $viewGroup->id;
         $viewGroup->view_link = url("/moviechat/groups/$groupId/view/$viewGroupId");
         $viewGroup->save();
+        
 
         return redirect()->back();
     }

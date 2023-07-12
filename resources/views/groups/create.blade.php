@@ -14,10 +14,9 @@
                 </h2>
             </x-slot>
     
-            <form method="GET" action="{{ route('movies.search') }}">
-                <input type="text" name="movie_title" placeholder="映画タイトルを記入してください">
-                <input type="submit" value='検索'>
-            </form>
+            <div>
+                <a href="{{ route('movies.index') }}">映画検索</a>
+            </div>
             
             <div>
                 <label for="group-movies">選択した映画</label>
@@ -27,6 +26,7 @@
                     <form action="{{ route('movies.unselect') }}" method="POST">
                         @csrf
                         <input type="hidden" name="movie_key" value="{{ $key }}">
+                        <input type="hidden" name="actionType" value="group">
                         <button type="submit">削除</button>
                     </form>
                 </div>
