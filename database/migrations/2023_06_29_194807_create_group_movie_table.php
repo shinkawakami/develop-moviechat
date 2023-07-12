@@ -15,11 +15,8 @@ return new class extends Migration
     {
         Schema::create('group_movie', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('group_id');
-            $table->unsignedBigInteger('movie_id');
-            
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
-            $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
+            $table->foreignId('group_id')->constrained()->onDelete('cascade');
+            $table->foreignId('movie_id')->constrained()->onDelete('cascade');
         });
     }
 

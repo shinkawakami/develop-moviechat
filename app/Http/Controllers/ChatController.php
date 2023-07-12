@@ -76,7 +76,7 @@ class ChatController extends Controller
         $viewGroup->start_time = $request->input('start_time');
         $viewGroup->save();
         $viewGroupId = $viewGroup->id;
-        $viewGroup->view_link = url("/moviechat/group/$groupId/view/$viewGroupId");
+        $viewGroup->view_link = url("/moviechat/groups/$groupId/view/$viewGroupId");
         $viewGroup->save();
 
         return redirect()->back();
@@ -136,6 +136,6 @@ class ChatController extends Controller
         $group = Group::findOrFail($groupId);
         $group->users()->detach(Auth::user()->id);
     
-        return redirect()->route('group.myList');
+        return redirect()->route('groups.myList');
     }
 }

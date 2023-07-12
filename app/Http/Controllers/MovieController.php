@@ -12,14 +12,85 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\Events\MessageSent;
 
 class MovieController extends Controller
 {
+    private function getMovieDetails($movieId)
+    {
+        $apiKey = config('tmdb.api_key');
+        $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
+        return $response->json();
+    }
+    
+    private function searchMovies($query, $page = 1)
+    {
+        $apiKey = config('tmdb.api_key');
+        $response = Http::get("https://api.themoviedb.org/3/search/movie?api_key={$apiKey}&query={$query}&language=ja-JP&page={$page}");
+        $results = $response->json();
+        
+        // total_pagesとtotal_resultsを含むレスポンスを返すように変更します
+        return [
+            'results' => $results['results'] ?? [],
+            'total_results' => $results['total_results'] ?? 0,
+            'results_per_page' => 20,
+        ];
+    }
+    
+    public function search(Request $request)
+    {
+        $query = $request->get('movie_title');
+        $page = $request->get('page', 1);
+
+        // TMDB APIを使用して映画を検索します
+        $movies = $this->searchMovies($query, $page);
+        
+        // LaravelのLengthAwarePaginatorを使用して手動でページネーションを作成します
+        $results = new LengthAwarePaginator(
+            $movies['results'],
+            $movies['total_results'],
+            $movies['results_per_page'],
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
+        // 検索結果をビューに返します
+        return view('movies.search', ['movies' => $results]);
+    }
+    
+    public function select(Request $request)
+    {
+        $movieId = $request->get('movieId');
+
+        // TMDB APIを使用して映画詳細を取得します
+        $movie = $this->getMovieDetails($movieId);
+
+        // 映画の詳細を要素としてセッション内の配列に保存する
+        $request->session()->push('selected_movies', $movie);
+
+        // 検索結果画面にリダイレクト
+        return redirect()->route('groups.create');
+    }
+    
+    public function unselect(Request $request)
+    {
+        $movieKey = $request->get('movie_key');
+        
+        // セッション内から指定のキーのデータを削除する
+        $request->session()->forget("selected_movies.$movieKey");
+    
+        return back();
+    }
+
     public function index()
     {
-        $movies = Movie::all();
-        return view('movies.list', compact('movies'));  
+        $apiKey = config('tmdb.api_key');
+        $response = Http::get("https://api.themoviedb.org/3/movie/10000?api_key={$apiKey}");
+        $movie = $response->json();
+    
+        return view('movies.list', compact('movie'));
     }
     
     public function create()
@@ -82,15 +153,6 @@ class MovieController extends Controller
         $eras = Era::all();
         $movies = Movie::all();
         return view('groups.create', compact('genres', 'platforms', 'eras', 'movies'));
-    }
-    
-    public function search()
-    {
-        $movies = Movie::all();
-        $genres = Genre::all();
-        $platforms = Platform::all();
-        $eras = Era::all();
-        return view('movies.search', compact('movies', 'genres', 'platforms', 'eras'));
     }
     
     public function result(Request $request)

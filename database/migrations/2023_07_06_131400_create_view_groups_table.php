@@ -15,16 +15,12 @@ return new class extends Migration
     {
         Schema::create('view_groups', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('group_id')->nullable();
-            $table->unsignedBigInteger('requester_id')->nullable();
-            $table->unsignedBigInteger('movie_id')->nullable();
+            $table->foreignId('group_id')->nullable()->constrained();
+            $table->foreignId('requester_id')->nullable()->constrained('users');
+            $table->foreignId('movie_id')->nullable()->constrained();
             $table->string('view_link')->nullable();
             $table->timestamp('start_time');
             $table->timestamps();
-            
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('set null');
-            $table->foreign('requester_id')->references('id')->on('users')->onDelete('set null');
-            $table->foreign('movie_id')->references('id')->on('movies')->onDelete('set null');
         });
     }
 

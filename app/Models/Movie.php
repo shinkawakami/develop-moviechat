@@ -15,13 +15,12 @@ class Movie extends Model
 
     protected $fillable = [
         'title',
-        'era_id',
-        'year'
+        'tmdb_id',
     ];
 
     public function groups()
     {
-        return $this->belongsToMany(Group::class);
+        return $this->belongsToMany(Group::class, 'group_movie');
     }
     
     public function viewGroups()
@@ -29,18 +28,13 @@ class Movie extends Model
         return $this->hasMany(ViewGroup::class);
     }
     
-    public function genres()
+    public function favoriteMovies()
     {
-        return $this->belongsToMany(Genre::class, 'movie_genre');
+        return $this->belongsToMany(Movie::class, 'user_movie');
     }
     
-    public function platforms()
+    public function posts()
     {
-        return $this->belongsToMany(Platform::class);
-    }
-    
-    public function era()
-    {
-        return $this->belongsTo(Era::class);
+        return $this->hasMany(Post::class);
     }
 }
