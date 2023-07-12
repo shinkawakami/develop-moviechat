@@ -18,20 +18,26 @@
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                         {{ __('Home') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('group.create')" :active="request()->routeIs('group.create')">
+                    <x-nav-link :href="route('groups.create')" :active="request()->routeIs('groups.create')">
                         {{ __('グループ作成') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('group.search')" :active="request()->routeIs('group.search')">
+                    <x-nav-link :href="route('groups.showSearch')" :active="request()->routeIs('groups.showSearch')">
                         {{ __('グループ検索') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('group.index')" :active="request()->routeIs('group.index')">
+                    <x-nav-link :href="route('groups.index')" :active="request()->routeIs('groups.index')">
                         {{ __('グループ一覧') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('movie.index')" :active="request()->routeIs('movie.index')">
+                    <x-nav-link :href="route('movies.index')" :active="request()->routeIs('movies.index')">
                         {{ __('映画一覧') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('group.myList')" :active="request()->routeIs('group.myList')">
+                    <x-nav-link :href="route('groups.myList')" :active="request()->routeIs('groups.myList')">
                         {{ __('自分のグループ') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
+                        {{ __('掲示板') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('posts.user')" :active="request()->routeIs('posts.user')">
+                        {{ __('自分の投稿') }}
                     </x-nav-link>
                 </div>
             </div>

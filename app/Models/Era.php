@@ -19,11 +19,6 @@ class Era extends Model
 
     public function groups()
     {
-        return $this->belongsToMany(Group::class);
-    }
-    
-    public function movies()
-    {
-        return $this->hasMany(Movie::class);
+        return $this->belongsToMany(Group::class, 'group_era');
     }
 }
