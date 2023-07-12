@@ -15,15 +15,11 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('group_id')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('view_group_id')->nullable();
+            $table->foreignId('group_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('view_group_id')->nullable()->constrained()->onDelete('cascade');
             $table->text('content');
             $table->timestamps();
-        
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
-            $table->foreign('view_group_id')->references('id')->on('view_groups')->onDelete('cascade');
         });
     }
 

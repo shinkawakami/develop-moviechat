@@ -15,11 +15,8 @@ return new class extends Migration
     {
         Schema::create('view_approvers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('view_group_id');
-            $table->unsignedBigInteger('user_id');
-            
-            $table->foreign('view_group_id')->references('id')->on('view_groups')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('view_group_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
         });
     }
 

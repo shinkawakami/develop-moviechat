@@ -12,10 +12,19 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 use App\Events\MessageSent;
 
 class GroupController extends Controller
 {
+    private function getMovieDetails($movieId)
+    {
+        $apiKey = config('tmdb.api_key');
+        $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
+        return $response->json();
+    }
+    
+    // ユーザーが指定したグループのメンバーであるかを'is_member'にセットする
     private function getGroupWithMember($groups = null)
     {
         $groups = $groups ?? Group::with('users')->get();
@@ -24,17 +33,79 @@ class GroupController extends Controller
         }
         return $groups;
     }
-        
-    public function create()
+    
+    public function index()
     {
-        $movies = Movie::all();
+        $groups = $this->getGroupWithMember();
+        
+        foreach ($groups as $group) {
+            $movies = $group->movies()->get(); // リレーションを使ってグループに関連する映画を取得
+            $movieDetails = [];
+    
+            foreach ($movies as $movie) {
+                $movieId = $movie->tmdb_id;
+                $movieDetails[$movieId] = $this->getMovieDetails($movieId);
+            }
+    
+            $group->movies = $movieDetails;
+        }
+        
+        return view('groups.index', compact('groups'));
+    }
+        
+    public function create(Request $request)
+    {
+        // セッションから選択された映画を取得
+        $selectedMovies = $request->session()->get('selected_movies', []);
         $genres = Genre::all();
         $platforms = Platform::all();
         $eras = Era::all();
-        return view('groups.create', compact('movies', 'genres', 'platforms', 'eras'));
+        return view('groups.create', compact('selectedMovies', 'genres', 'platforms', 'eras'));
     }
     
-    public function search()
+    public function store(Request $request)
+    {
+        // フォームデータからGroupモデルのインスタンス作成
+        $group = new Group($request->input('group'));
+        // 作成者を関連付け
+        $group->creator()->associate(Auth::user());
+        $group->save();
+        
+        $group->users()->attach(Auth::user());
+        $group->movies()->attach($request->session()->get('selected_movie_ids'));
+        $group->genres()->attach($request->input('group.movie_genre_ids'));
+        $group->platforms()->attach($request->input('group.movie_platform_ids'));
+        $group->eras()->attach($request->input('group.movie_era_ids'));
+        
+        // セッションに選択していた映画情報の配列を取得
+        $selectedMovies = $request->session()->get('selected_movies');
+
+        // 選択した映画がmoviesテーブルのレコードに存在しなかったらレコード作成
+        foreach ($selectedMovies as $movie) {
+            $movieTitle = $movie['title'];
+            $movieId = $movie['id'];
+            
+            $existingMovie = Movie::where('tmdb_id', $movieId)->first();
+            
+            if (!$existingMovie) {
+                $movie = new Movie();
+                $movie->title = $movieTitle;
+                $movie->tmdb_id = $movieId;
+                $movie->save();
+                $group->movies()->attach($movie->id);
+            }
+        }
+        
+        // すべてのグループを取得し，ユーザーがメンバーであるかを調べる
+        $groups = $this->getGroupWithMember();
+        
+        // セッションデータを消去
+        $request->session()->forget('selected_movies');
+    
+        return redirect()->route('groups.index');
+    }
+    
+    public function showSearch()
     {
         $genres = Genre::all();
         $platforms = Platform::all();
@@ -42,61 +113,55 @@ class GroupController extends Controller
         return view('groups.search', compact('genres', 'platforms', 'eras'));
     }
     
-    public function index()
+    public function searchResults(Request $request)
     {
-        $groups = $this->getGroupWithMember();
-        return view('groups.list', compact('groups'));
-    }
+        $groups = Group::query();
     
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'group_name' => 'required|max:20',
-            'group_caoacity' => "integer|min:2|max:10",
-        ]);
-
-        if ($validator->fails()) {
-            $errors = $validator->errors();
+        if ($request->has('keyword')) {
+            $keyword = $request->input('keyword');
+    
+            $groups->whereHas('movies', function ($query) use ($keyword) {
+                $query->where('title', 'like', '%' . $keyword . '%');
+            })->orWhere('name', 'like', '%' . $keyword . '%');
+        }
+    
+        if ($request->has('group.movie_era_ids')) {
+            $eraIds = array_filter($request->input('group.movie_era_ids'));
+            
+            if (!empty($eraIds)) {
+                $groups->whereHas('eras', function ($query) use ($eraIds) {
+                $query->whereIn('era_id', $eraIds);
+                });
+            }
+        }
+    
+        if ($request->has('group.movie_genre_ids')) {
+            $genreIds = array_filter($request->input('group.movie_genre_ids'));
+        
+            if (!empty($genreIds)) {
+                $groups->whereHas('genres', function ($query) use ($genreIds) {
+                    $query->whereIn('genre_id', $genreIds);
+                });
+            }
         }
         
-        $groupName = $request->input('group_name');
-        $capacity = $request->input('group_capacity');
-        $titles = $request->input('group_movie_title_id');
-        $genres = $request->input('group_movie_genre_id');
-        $platforms = $request->input('group_movie_platform_id');
-        $eras = $request->input('group_movie_era_id');
+        if ($request->has('group.movie_platform_ids')) {
+            $platformIds = array_filter($request->input('group.movie_platform_ids'));
         
-        $user = Auth::user();
-        
-        // Groupモデルの作成と保存
-        $group = new Group();
-        $group->name = $groupName;
-        $group->creator()->associate($user);
-        $group->capacity = $capacity;
-        $group->save();
-        
-        $group->users()->attach($user);
-        $group->movies()->attach($titles);
-        
-        // ジャンルの関連付け
-        if (!empty($genres)) {
-            $group->genres()->attach($genres);
+            if (!empty($platformIds)) {
+                $groups->whereHas('platforms', function ($query) use ($platformIds) {
+                    $query->whereIn('platform_id', $platformIds);
+                });
+            }
         }
-
-        // プラットフォームの関連付け
-        if (!empty($platforms)) {
-            $group->platforms()->attach($platforms);
-        }
-        
-        // 年代の関連付け
-        if (!empty($eras)) {
-            $group->eras()->attach($eras);
-        }
-        
-        // 成功時の処理
-        $groups = $this->getGroupWithMember();
-        return redirect()->route('group.myList');
+    
+        $groups = $groups->get();
+    
+        $groups = $this->getGroupWithMember($groups);
+    
+        return view('groups.search_results', compact('groups'));
     }
+
     
     public function joinGroup($groupId)
     {
@@ -116,71 +181,7 @@ class GroupController extends Controller
     public function show($groupId)
     {
         $group = Group::findOrFail($groupId);
-        return view('groups.profile', compact('group'));
-    }
-    
-    public function result(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'group_name' => 'required|max:20',
-        ]);
-        
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-        }
-        
-        if ($request->has('group_name')) {
-            $name = $request->input('group_name');
-            $groups = Group::where('name', 'like', '%' . $name . '%')->take(5)->get();
-            return view('groups.list', compact('groups'));
-        }
-        
-        $groups = Group::query();
-
-        if ($request->has('group_movie_era_id')) {
-            $eraIds = $request->input('group_movie_era_id');
-            $groups->where(function ($query) use ($eraIds) {
-                foreach ($eraIds as $eraId) {
-                    if (!empty($eraId)) {
-                        $query->whereHas('eras', function ($subQuery) use ($eraId) {
-                            $subQuery->where('era_id', $eraId);
-                        });
-                    }
-                }
-            });
-        }
-        
-        if ($request->has('group_movie_genre_id')) {
-            $genreIds = $request->input('group_movie_genre_id');
-            $groups->where(function ($query) use ($genreIds) {
-                foreach ($genreIds as $genreId) {
-                    if (!empty($genreId)) {
-                        $query->whereHas('genres', function ($subQuery) use ($genreId) {
-                            $subQuery->where('genre_id', $genreId);
-                        });
-                    }
-                }
-            });
-        }
-        
-        if ($request->has('group_movie_platform_id')) {
-            $platformIds = $request->input('group_movie_platform_id');
-            $groups->where(function ($query) use ($platformIds) {
-                foreach ($platformIds as $platformId) {
-                    if (!empty($platformId)) {
-                        $query->whereHas('platforms', function ($subQuery) use ($platformId) {
-                            $subQuery->where('platform_id', $platformId);
-                        });
-                    }
-                }
-            });
-        }
-        
-        $groups = $groups->get();
-        
-        $groups = $this->getGroupWithMember($groups);
-        
-        return view('groups.list', compact('groups'));
+        return view('groups.show', compact('group'));
     }
     
     public function destroy(Request $request, $groupId)
@@ -206,7 +207,7 @@ class GroupController extends Controller
         
         $groups = $this->getGroupWithMember($groups);
         
-        return view('groups.list', compact('groups'));
+        return view('groups.index', compact('groups'));
     }
     
     
