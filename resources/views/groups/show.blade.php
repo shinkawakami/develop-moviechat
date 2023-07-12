@@ -43,17 +43,6 @@
                     @endforeach
                 </p>
                 
-                @php
-                    $isMember = $group->users->contains(Auth::id());
-                @endphp
-                
-                @if (!$isMember && $group->users->count() < $group->capacity)
-                    <form action="/moviechat/group/{{ $group->id }}" method="POST">
-                        @csrf
-                        <button type="submit">参加</button>
-                    </form>
-                @endif
-                
                 @if (Auth::id() === $group->creator_id)
                     <form action="/moviechat/group/{{ $group->id }}" method="POST" onsubmit="return confirmDelete();">
                         @csrf
