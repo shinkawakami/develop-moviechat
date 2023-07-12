@@ -16,11 +16,9 @@ return new class extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('creator_id')->nullable();
+            $table->foreignId('creator_id')->nullable()->constrained('users');
             $table->integer('capacity');
             $table->timestamps();
-            
-            $table->foreign('creator_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

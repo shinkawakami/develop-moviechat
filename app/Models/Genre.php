@@ -19,11 +19,6 @@ class Genre extends Model
 
     public function groups()
     {
-        return $this->belongsToMany(Group::class);
-    }
-    
-    public function movies()
-    {
-        return $this->belongsToMany(Movie::class);
+        return $this->belongsToMany(Group::class, 'group_genre');
     }
 }

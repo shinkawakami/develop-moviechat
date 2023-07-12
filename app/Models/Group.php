@@ -21,12 +21,12 @@ class Group extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'group_user');
     }
     
     public function movies()
     {
-        return $this->belongsToMany(Movie::class);
+        return $this->belongsToMany(Movie::class, 'group_movie');
     }
     
     public function genres()
@@ -36,7 +36,7 @@ class Group extends Model
     
     public function platforms()
     {
-        return $this->belongsToMany(Platform::class);
+        return $this->belongsToMany(Platform::class, 'group_platform');
     }
     
     public function eras()

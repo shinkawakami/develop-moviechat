@@ -84,13 +84,13 @@
                     });
                 </script>
         
-                <form action="/moviechat/group/{{ $group->id }}/chat" method="POST">
+                <form action="/moviechat/groups/{{ $group->id }}/chat" method="POST">
                     @csrf
                     <input type="text" name="message" placeholder="メッセージを入力">
                     <button type="submit">送信</button>
                 </form>
                 
-                <button onclick="location.href='{{ route('group.leave', $group->id) }}'">グループを退会する</button>
+                <button onclick="location.href='{{ route('groups.leave', $group->id) }}'">グループを退会する</button>
             </div>
         </x-app-layout>
     </body>
