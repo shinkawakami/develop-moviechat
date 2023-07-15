@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ViewGroup extends Model
+class Viewing extends Model
 {
     use HasFactory;
     
-    protected $table = 'view_groups';
+    protected $table = 'viewings';
     protected $primaryKey = 'id';
     public $timestamps = true;
 
@@ -17,7 +17,7 @@ class ViewGroup extends Model
         'group_id',
         'requester_id',
         'movie_id',
-        'view_link',
+        'url',
         'start_time',
     ];
 
@@ -43,6 +43,6 @@ class ViewGroup extends Model
     
     public function approvers()
     {
-        return $this->belongsToMany(User::class, 'view_approvers');
+        return $this->belongsToMany(User::class, 'approvers');
     }
 }

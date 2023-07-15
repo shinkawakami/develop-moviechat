@@ -15,13 +15,13 @@ class Group extends Model
     
     protected $fillable = [
         'name',
-        'creator_id',
+        'owner_id',
         'capacity',
     ];
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'group_user');
+        return $this->belongsToMany(User::class, 'group_user')->withTimestamps();
     }
     
     public function movies()
@@ -44,7 +44,7 @@ class Group extends Model
         return $this->belongsToMany(Era::class, 'group_era');
     }
     
-    public function creator()
+    public function owner()
     {
         return $this->belongsTo(User::class);
     }
@@ -54,8 +54,8 @@ class Group extends Model
         return $this->hasMany(Message::class);
     }
     
-    public function viewGroups()
+    public function viewings()
     {
-        return $this->hasMany(ViewGroup::class);
+        return $this->hasMany(Viewing::class);
     }
 }

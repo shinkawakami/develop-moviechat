@@ -19,7 +19,14 @@
                 <p>グループ人数：({{ $group->users->count() }}/{{ $group->capacity }})</p>
                 <p>グループメンバー：
                     @foreach ($group->users as $user)
-                        {{ $user->name }}　
+                        <p>・{{ $user->name }}
+                            @if (Auth::user()->id == $group->owner_id && Auth::user()->id != $user->id)
+                                <form action="{{ route('groups.removeUser', ['group' => $group->id, 'user' => $user->id]) }}" method="POST">
+                                    @csrf
+                                    <button type="submit">Remove</button>
+                                </form>
+                            @endif
+                        </p>
                     @endforeach
                 </p>
                 <p>選択してる映画：
@@ -43,8 +50,8 @@
                     @endforeach
                 </p>
                 
-                @if (Auth::id() === $group->creator_id)
-                    <form action="/moviechat/group/{{ $group->id }}" method="POST" onsubmit="return confirmDelete();">
+                @if (Auth::id() === $group->owner_id)
+                    <form action="/moviechat/groups/{{ $group->id }}" method="POST" onsubmit="return confirmDelete();">
                         @csrf
                         @method('DELETE')
                         <button type="submit">グループ削除</button>

@@ -20,7 +20,7 @@ class PostController extends Controller
         $search = $request->get('search');
         $posts = Post::whereHas('movie', function ($query) use ($search) {
             $query->where('title', 'like', '%' . $search . '%');
-        })->orWhere('name', 'like', '%' . $search . '%')->with(['user', 'movie'])->get();
+        })->orWhere('title', 'like', '%' . $search . '%')->with(['user', 'movie'])->get();
 
         return view('posts.index', compact('posts'));
     }
@@ -105,13 +105,13 @@ class PostController extends Controller
         $post->content = $request->content;
         $post->save();
 
-        return redirect()->route('post.show', $post);
+        return redirect()->route('posts.show', $post);
     }
 
     public function destroy(Post $post)
     {
         $post->delete();
-        return redirect()->route('post.index');
+        return redirect()->route('posts.user');
     }
 
     public function comment(Request $request, Post $post)

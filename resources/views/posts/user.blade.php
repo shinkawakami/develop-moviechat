@@ -15,7 +15,7 @@
             </x-slot>
             <div>
                 @foreach ($posts as $post)
-                    <p>{{ $post->title }}</p>
+                    <p><a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a></p>
                     <p>{{ $post->user->name }}</p>
                     <p>{{ $post->movie->title }}</p>
                     <p>{{ $post->content }}</p>
