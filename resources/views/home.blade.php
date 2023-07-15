@@ -13,7 +13,13 @@
                     
                 </h2>
             </x-slot>
-            
+            <div>
+                @foreach (Auth::user()->unreadNotifications as $notification)
+                    <div class="alert alert-info">
+                        {{ $notification->data['message'] }}
+                    </div>
+                @endforeach
+            </div>
         </x-app-layout>
     </body>
 </html>

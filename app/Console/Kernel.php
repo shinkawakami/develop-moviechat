@@ -15,7 +15,21 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            // 現在時刻から10分後のviewingを取得
+            $now = Carbon::now();
+            $target_time = $now->addMinutes(10);
+    
+            $viewings = Viewing::where('start_time', $target_time)->get();
+    
+            // 各viewingのrequesterとapproversに通知
+            foreach($viewings as $viewing) {
+                $viewing->requester->notify(new MovieStartingSoon($viewing));
+                foreach($viewing->approvers as $approver) {
+                    $approver->notify(new MovieStartingSoon($viewing));
+                }
+            }
+        })->everyMinute();
     }
 
     /**
