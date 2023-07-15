@@ -16,12 +16,14 @@
             
             <div>
                 @foreach($groups as $group)
-                    <h2>{{ $group->name }}</h2>
+                    <div>
+                        <a href="{{ route('groups.show', $group->id) }}">{{ $group->name }}</a>
+                    </div>
                     @foreach($group->movies as $movie)
                         <h3>Movie: {{ $movie->title }}</h3>
                     @endforeach
                     @if($group->is_member)
-                        <a href="{{ route('chat.index', $group->id) }}">
+                        <a href="{{ route('chats.index', $group->id) }}">
                             <button>チャット</button>
                         </a>
                     @endif

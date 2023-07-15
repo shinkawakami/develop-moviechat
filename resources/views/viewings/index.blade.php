@@ -15,21 +15,21 @@
             </x-slot>
             
             <div>
-                <p>映画：{{ $viewGroup->movie->title }}</p>
+                <p>映画：{{ $viewing->movie->title }}</p>
                 <p>視聴者：
-                    {{ $viewGroup->requester->name }}
-                    @foreach ($viewGroup->approvers as $member)
+                    {{ $viewing->requester->name }}
+                    @foreach ($viewing->approvers as $member)
                         <p>・{{ $member->name }}</p>
                     @endforeach
                 </p>
                 
                 <div id="chat-messages">
-                    @foreach ($viewGroup->messages as $message)
+                    @foreach ($viewing->messages as $message)
                         <p>{{ $message->user->name }}: {{ $message->content }}: {{ $message->created_at }}</p>
                     @endforeach
                 </div>
                                 
-                <form action="/moviechat/groups/{{ $group->id }}/view/{{ $viewGroup->id }}" method="POST">
+                <form action="/moviechat/groups/{{ $group->id }}/viewings/{{ $viewing->id }}/chats" method="POST">
                     @csrf
                     <input type="text" name="message" placeholder="メッセージを入力" required maxlength="20">
                     <button type="submit">送信</button>

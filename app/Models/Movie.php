@@ -23,9 +23,9 @@ class Movie extends Model
         return $this->belongsToMany(Group::class, 'group_movie');
     }
     
-    public function viewGroups()
+    public function viewings()
     {
-        return $this->hasMany(ViewGroup::class);
+        return $this->hasMany(Viewing::class);
     }
     
     public function favoriteMovies()

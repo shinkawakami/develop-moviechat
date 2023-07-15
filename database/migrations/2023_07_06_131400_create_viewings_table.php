@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('view_groups', function (Blueprint $table) {
+        Schema::create('viewings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('group_id')->nullable()->constrained();
+            $table->foreignId('group_id')->constrained()->onDelete('cascade');
             $table->foreignId('requester_id')->nullable()->constrained('users');
             $table->foreignId('movie_id')->nullable()->constrained();
-            $table->string('view_link')->nullable();
+            $table->string('url')->nullable();
             $table->timestamp('start_time');
             $table->timestamps();
         });
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('view_groups');
+        Schema::dropIfExists('viewings');
     }
 };

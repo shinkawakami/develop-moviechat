@@ -56,7 +56,7 @@ class GroupController extends Controller
         // フォームデータからGroupモデルのインスタンス作成
         $group = new Group($request->input('group'));
         // 作成者を関連付け
-        $group->creator()->associate(Auth::user());
+        $group->owner()->associate(Auth::user());
         $group->save();
         
         $group->users()->attach(Auth::user());
@@ -169,7 +169,7 @@ class GroupController extends Controller
         // ユーザーをグループに参加させる
         $group->users()->attach($user);
         
-        return redirect()->route('chat.index', $group->id);
+        return redirect()->route('chats.index', $group->id);
     }
     
     public function show($groupId)
@@ -183,18 +183,41 @@ class GroupController extends Controller
         $group = Group::findOrFail($groupId);
 
         // グループ作成者のみが削除できることを確認
-        if ($group->creator_id !== auth()->id()) {
+        if ($group->owner_id !== auth()->id()) {
             abort(403, 'Unauthorized');
         }
-
+        
         $group->delete();
 
         // グループ削除後のリダイレクト先などの処理を追加する場合はここに記述
 
-        return redirect()->route('group.index')->with('success', 'Group deleted successfully.');
+        return redirect()->route('groups.index')->with('success', 'Group deleted successfully.');
     }
     
+    public function removeUser(Request $request, $groupId, $userId)
+    {
+        $group = Group::findOrFail($groupId);
+
+        $user = User::findOrFail($userId);
+        
+        foreach ($group->viewings as $viewing) {
+            
+            if ($viewing->requester_id == $user->id) {
+                $viewing->delete();
+            }
+            else {
+                $viewing->approvers()->detach($user->id);
+            }
+        }
+
+        if (Auth::user()->id != $group->owner_id) {
+            return redirect()->back()->with('error', 'You are not authorized to do this action');
+        }
     
+        $group->users()->detach($userId);
+    
+        return redirect()->back()->with('message', 'User has been removed from the group');
+    }
 }
     
     

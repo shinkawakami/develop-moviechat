@@ -18,6 +18,15 @@
                 <p>{{ $post->user->name }}</p>
                 <p>{{ $post->movie->title }}</p>
                 <p>{{ $post->content }}</p>
+                <p>
+                    @if (Auth::user()->id == $post->user_id)
+                        <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">削除</button>
+                        </form>
+                    @endif
+                </p>
             </div>
             <!-- コメント表示 -->
             @foreach ($post->comments as $comment)
