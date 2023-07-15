@@ -6,6 +6,7 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ViewingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,16 +48,21 @@ Route::middleware(['auth'])->group(function () {
             
             Route::get('/{group}', [GroupController::class, 'show'])->name('groups.show');
             
+            Route::post('/{group}/users/{user}/remove', [GroupController::class, 'removeUser'])->name('groups.removeUser');
+            
             Route::delete('/{group}', [GroupController::class, 'destroy'])->name('groups.destroy');
             
-            Route::get('/{group}/chat', [ChatController::class, 'index'])->name('chat.index');
-            Route::post('/{group}/chat', [ChatController::class, 'sent'])->name('chat.sent');
-            Route::get('/{group}/leave', [ChatController::class, 'leave'])->name('groups.leave');
-            Route::post('/{group}/request', [ChatController::class, 'request'])->name('view.request');
-            Route::post('/{group}/approve/{viewGroup}', [ChatController::class, 'approve'])->name('view.approve');
-            Route::post('/{group}/cancel/{viewGroup}', [ChatController::class, 'cancel'])->name('view.cancel');
-            Route::get('/{group}/view/{viewGroup}', [ChatController::class, 'view'])->name('view.index');
-            Route::post('/{group}/view/{viewGroup}', [ChatController::class, 'viewChat'])->name('view.chat');
+            Route::get('/{group}/chats', [ChatController::class, 'index'])->name('chats.index');
+            Route::post('/{group}/chats', [ChatController::class, 'sent'])->name('chats.sent');
+            Route::delete('{group}/chats/{message}', [ChatController::class, 'destroy'])->name('chats.destroy');
+            Route::get('/{group}/chats/leave', [ChatController::class, 'leave'])->name('chats.leave');
+            
+            Route::post('/{group}/viewings/request', [ViewingController::class, 'request'])->name('viewings.request');
+            Route::post('/{group}/viewings/{viewing}/approve', [ViewingController::class, 'approve'])->name('viewings.approve');
+            Route::post('/{group}/viewings/{viewing}/cancel', [ViewingController::class, 'cancel'])->name('viewings.cancel');
+            
+            Route::get('/{group}/viewings/{viewing}', [ViewingController::class, 'index'])->name('viewings.index');
+            Route::post('/{group}/viewings/{viewing}/chats', [ViewingController::class, 'chat'])->name('viewings.chat');
         });
         
         Route::prefix('movies')->group(function () {

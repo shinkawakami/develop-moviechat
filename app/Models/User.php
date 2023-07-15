@@ -48,9 +48,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Group::class, 'group_user');
     }
     
-    public function viewApprovers()
+    public function approvers()
     {
-        return $this->belongsToMany(ViewGroup::class, 'view_approvers');
+        return $this->belongsToMany(Viewing::class, 'approvers');
     }
     
     public function favoriteMovies()
@@ -78,14 +78,14 @@ class User extends Authenticatable
         return $this->hasMany(Message::class);
     }
     
-    public function creators()
+    public function owners()
     {
         return $this->hasMany(Group::class);
     }
     
     public function requesters()
     {
-        return $this->hasMany(ViewGroup::class);
+        return $this->hasMany(Viewing::class);
     }
     
     
