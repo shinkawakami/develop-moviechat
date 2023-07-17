@@ -16,7 +16,9 @@
             <div>
                 <p>{{ $post->title }}</p>
                 <p>{{ $post->user->name }}</p>
-                <p>{{ $post->movie->title }}</p>
+                @if($post->movie)
+                    <p>{{ $post->movie->title }}</p>
+                @endif
                 <p>{{ $post->content }}</p>
                 <p>
                     @if (Auth::user()->id == $post->user_id)

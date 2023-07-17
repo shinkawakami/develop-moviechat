@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Http;
-use App\Models\Movie;
 use App\Models\Genre;
 use App\Models\Platform;
 use App\Models\Era;

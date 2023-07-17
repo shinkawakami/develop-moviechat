@@ -4,11 +4,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const movieSearchResults = document.getElementById('movie-search-results');
     const popularMoviesContainer = document.getElementById('popular-movies');
     let currentPage = 1;
+    
+    movieSearchInput.setAttribute('required', '');
+    movieSearchInput.setAttribute('maxlength', '50');
 
     movieSearchButton.addEventListener('click', (event) => {
         event.preventDefault();
 
         const query = movieSearchInput.value;
+        
+        if (query.trim() === '') {  // ユーザーが空白または空文字列を入力した場合
+            alert('検索キーワードを入力してください。');  // ユーザーに警告メッセージを表示
+            return;  // 何もせずに関数を終了
+        }
+        
         fetchMovies(query);
     });
 

@@ -6,9 +6,10 @@ use App\Models\Group;
 use App\Models\Message;
 use App\Models\Movie;
 use App\Models\Viewing;
-use Illuminate\Http\Request;
+use App\Http\Requests\Viewing\RequestRequest;
+use App\Http\Requests\Viewing\ApproveRequest;
+use App\Http\Requests\Chat\SendRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use App\Events\MessageSent;
 use App\Events\RequestSent;
 use App\Events\ApproveSent;
@@ -25,18 +26,20 @@ class ViewingController extends Controller
         return view('viewings.index', compact('group', 'viewing'));
     }
     
-    public function request(Request $request, $groupId)
+    public function request(RequestRequest $request, $groupId)
     {
+        $validatedData = $request->validated();
+        
         $user = $request->user();
         $group = Group::findOrFail($groupId);
-        $movieId = $request->input('movie_id');
+        $movieId = $validatedData['movie'];
         $movie = Movie::findOrFail($movieId);
 
         $viewing = new Viewing();
         $viewing->group()->associate($group);
         $viewing->requester()->associate($user);
         $viewing->movie()->associate($movie);
-        $viewing->start_time = $request->input('start_time');
+        $viewing->start_time = $validatedData['start_time'];
         $viewing->save();
         $viewingId = $viewing->id;
         $viewing->url = url("/moviechat/groups/$groupId/viewings/$viewingId");
@@ -46,7 +49,7 @@ class ViewingController extends Controller
         return redirect()->back();
     }
 
-    public function approve(Request $request, $groupId, $viewingId)
+    public function approve($groupId, $viewingId)
     {
         $user = $request->user();
         $viewing = Viewing::findOrFail($viewingId);
@@ -67,17 +70,15 @@ class ViewingController extends Controller
         return redirect()->back();
     }
     
-    public function chat(Request $request, $groupId, $viewingId)
+    public function chat(SendRequest $request, $groupId, $viewingId)
     {
-        $validator = Validator::make($request->all(), [
-            'message' => 'required|max:20',
-        ]);
+        $validatedData = $request->validated();
     
         $user = $request->user();
         $viewing = Viewing::findOrFail($viewingId);
     
         $chatMessage = new Message();
-        $chatMessage->content = $request->input('message');
+        $chatMessage->content = $validatedData['message'];
         $chatMessage->user()->associate($user);
         $chatMessage->viewing()->associate($viewing);
         $chatMessage->save();
