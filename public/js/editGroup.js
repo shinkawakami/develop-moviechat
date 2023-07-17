@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function fetchMovie(movieId) {
-        const url = '/moviechat/movies/' + movieId;
+        const url = '/moviechat/movies/' + movieId + '/details';
         fetch(url)
             .then(response => response.json())
             .then(movie => {
