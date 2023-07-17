@@ -13,17 +13,32 @@
                     投稿編集
                 </h2>
             </x-slot>
+        
             <!-- 投稿編集フォーム -->
             <div>
-                <form method="POST" action="{{ route('posts.update', $post->id) }}">
+                <form method="POST" action="{{ route('posts.update', $post) }}">
                     @csrf
                     @method('PUT')
-                    <input type="text" name="title" value="{{ $post->title }}">
-                    <input type="text" name="movie_title" value="{{ $post->movie->title }}">
-                    <textarea name="content">{{ $post->content }}</textarea>
+                    <label for="group-movies">選択した映画</label>
+                    <div id="selected-movie">
+                        <!-- 選択した映画はここに表示されます -->
+                        <p>{{ $post->movie->title }}</p>
+                        <button id="remove-movie-btn">取り消し</button>
+                    </div>
+                    <input type="hidden" id="movie" name="movie" value="{{ $post->movie->tmdb_id }}">
+                    <input type="text" name="title" placeholder="タイトル" value="{{ $post->title }}">
+                    <textarea name="content" placeholder="内容">{{ $post->content }}</textarea>
                     <input type="submit" value="更新">
                 </form>
             </div>
+            <div>
+                <form id="movie-search-form">
+                    <input type="text" id="movie-search" placeholder="映画検索">
+                    <button id="movie-search-btn">検索</button>
+                </form>
+                <div id="movie-search-results"></div>
+            </div>
+            <script src="{{ asset('js/editPost.js') }}"></script>
         </x-app-layout>
     </body>
 </html>

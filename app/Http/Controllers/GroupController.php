@@ -44,53 +44,51 @@ class GroupController extends Controller
     public function create(Request $request)
     {
         // セッションから選択された映画を取得
-        $selectedMovies = $request->session()->get('selected_movies_for_group', []);
         $genres = Genre::all();
         $platforms = Platform::all();
         $eras = Era::all();
-        return view('groups.create', compact('selectedMovies', 'genres', 'platforms', 'eras'));
+        return view('groups.create', compact('genres', 'platforms', 'eras'));
     }
     
     public function store(Request $request)
     {
-        // フォームデータからGroupモデルのインスタンス作成
-        $group = new Group($request->input('group'));
-        // 作成者を関連付け
+        $request->validate([
+            'group_name' => 'required|max:255',
+            'group_capacity' => 'required|integer|min:2|max:10',
+            'genres' => 'required',
+            'eras' => 'required',
+            'platforms' => 'required',
+            'movies' => 'required',
+        ]);
+
+        $group = new Group;
+        $group->name = $request->group_name;
         $group->owner()->associate(Auth::user());
+        $group->capacity = $request->group_capacity;
         $group->save();
         
         $group->users()->attach(Auth::user());
-        $group->movies()->attach($request->session()->get('selected_movie_ids'));
-        $group->genres()->attach($request->input('group.movie_genre_ids'));
-        $group->platforms()->attach($request->input('group.movie_platform_ids'));
-        $group->eras()->attach($request->input('group.movie_era_ids'));
+        $group->genres()->attach($request->genres);
+        $group->eras()->attach($request->eras);
+        $group->platforms()->attach($request->platforms);
         
-        // セッションに選択していた映画情報の配列を取得
-        $selectedMovies = $request->session()->get('selected_movies_for_group');
-
-        // 選択した映画がmoviesテーブルのレコードに存在しなかったらレコード作成
-        foreach ($selectedMovies as $movie) {
-            $movieTitle = $movie['title'];
-            $movieId = $movie['id'];
-            
-            $existingMovie = Movie::where('tmdb_id', $movieId)->first();
-            
-            if (!$existingMovie) {
-                $movie = new Movie();
-                $movie->title = $movieTitle;
-                $movie->tmdb_id = $movieId;
-                $movie->save();
+        $movieIds = explode(',', $request->movies);
+        $apiKey = config('tmdb.api_key');
+    
+        foreach ($movieIds as $movieId) {
+            if ($movieId !== '') {
+                $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
+                $movieData = $response->json();
+    
+                $movie = Movie::firstOrCreate(
+                    ['tmdb_id' => $movieData['id']],
+                    ['title' => $movieData['title']]
+                );
+    
                 $group->movies()->attach($movie->id);
             }
         }
-        
-        // すべてのグループを取得し，ユーザーがメンバーであるかを調べる
-        $groups = $this->getGroupWithMember();
-        
-        // セッションデータを消去
-        $request->session()->forget('selected_movies_for_group');
-    
-        return redirect()->route('groups.index');
+        return redirect()->route('groups.index', $group);
     }
     
     public function showSearch()
@@ -218,6 +216,57 @@ class GroupController extends Controller
     
         return redirect()->back()->with('message', 'User has been removed from the group');
     }
+    
+    public function edit(Request $request, Group $group)
+    {
+        $genres = Genre::all();
+        $platforms = Platform::all();
+        $eras = Era::all();
+        return view('groups.edit', ['genres' => $genres, 'platforms' => $platforms, 'eras' => $eras, 'group' => $group]);
+    }
+    
+    public function update(Request $request, Group $group)
+    {
+        $request->validate([
+            'group_name' => 'required|max:255',
+            'group_capacity' => 'required|integer|min:2|max:10',
+            'genres' => 'required',
+            'eras' => 'required',
+            'platforms' => 'required',
+            'movies' => 'required',
+        ]);
+    
+        $group->name = $request->group_name;
+        $group->capacity = $request->group_capacity;
+        $group->save();
+    
+        $group->genres()->sync($request->genres);
+        $group->eras()->sync($request->eras);
+        $group->platforms()->sync($request->platforms);
+    
+        $movieIds = explode(',', $request->movies);
+        $apiKey = config('tmdb.api_key');
+        $attachedMovieIds = [];
+    
+        foreach ($movieIds as $movieId) {
+            if ($movieId !== '') {
+                $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
+                $movieData = $response->json();
+    
+                $movie = Movie::firstOrCreate(
+                    ['tmdb_id' => $movieData['id']],
+                    ['title' => $movieData['title']]
+                );
+    
+                array_push($attachedMovieIds, $movie->id);
+            }
+        }
+    
+        $group->movies()->sync($attachedMovieIds);
+    
+        return redirect()->route('groups.show', $group);
+    }
+
 }
     
     
