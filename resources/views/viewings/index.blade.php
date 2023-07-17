@@ -31,7 +31,7 @@
                                 
                 <form action="/moviechat/groups/{{ $group->id }}/viewings/{{ $viewing->id }}/chats" method="POST">
                     @csrf
-                    <input type="text" name="message" placeholder="メッセージを入力" required maxlength="20">
+                    <input type="text" name="message" placeholder="メッセージを入力" required maxlength="255">
                     <button type="submit">送信</button>
                 </form>
                 

@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\Movie;
-use Illuminate\Http\Request;
+use App\Http\Requests\Post\SearchRequest;
+use App\Http\Requests\Post\CreateRequest;
+use App\Http\Requests\Post\EditRequest;
+use App\Http\Requests\Post\CommentRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
@@ -17,39 +20,37 @@ class PostController extends Controller
         return view('posts.index', compact('posts'));
     }
 
-    public function search(Request $request)
+    public function search(SearchRequest $request)
     {
-        $search = $request->get('search');
-        $posts = Post::whereHas('movie', function ($query) use ($search) {
-            $query->where('title', 'like', '%' . $search . '%');
-        })->orWhere('title', 'like', '%' . $search . '%')->with(['user', 'movie'])->get();
+        $validatedData = $request->validated();
+        
+        $keyword = $request->get('keyword');
+        $posts = Post::whereHas('movie', function ($query) use ($keyword) {
+            $query->where('title', 'like', '%' . $keyword . '%');
+        })->orWhere('title', 'like', '%' . $keyword . '%')->with(['user', 'movie'])->get();
 
         return view('posts.index', compact('posts'));
     }
 
-    public function create(Request $request)
+    public function create()
     {
         return view('posts.create');
     }
 
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $request->validate([
-            'title' => 'required|max:255',
-            'content' => 'required',
-            'movie' => 'required|integer'
-        ]);
+        $validatedData = $request->validated();
     
         // Create a new post
         $post = new Post;
         $post->user_id = Auth::id(); // Get the currently authenticated user's ID
-        $post->title = $request->title;
-        $post->content = $request->content;
+        $post->title = $validatedData['title'];
+        $post->content = $validatedData['content'];
         
-        $movieId = $request->movie;
+        $movieId = $validatedData['movie'];
         $apiKey = config('tmdb.api_key');
         
-        if ($movieId !== '') {
+        if ($movieId !== null) {
             $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
             $movieData = $response->json();
 
@@ -73,32 +74,31 @@ class PostController extends Controller
         return view('posts.user', compact('posts'));
     }
 
-    public function show(Post $post)
+    public function show($postId)
     {
+        $post = Post::findOrFail($postId);
         $comments = $post->comments()->with('user')->get();
         return view('posts.show', compact('post', 'comments'));
     }
 
-    public function edit(Post $post)
+    public function edit($postId)
     {
+        $post = Post::findOrFail($postId);
         return view('posts.edit', compact('post'));
     }
     
-    public function update(Request $request, Post $post)
+    public function update(EditRequest $request, $postId)
     {
-        $request->validate([
-            'title' => 'required|max:255',
-            'content' => 'required',
-            'movie' => 'required|integer'
-        ]);
+        $validatedData = $request->validated();
     
-        $post->title = $request->title;
-        $post->content = $request->content;
+        $post = Post::findOrFail($postId);
+        $post->title = $validatedData['title'];
+        $post->content = $validatedData['content'];
     
-        $movieId = $request->movie;
+        $movieId = $validatedData['movie'];
         $apiKey = config('tmdb.api_key');
     
-        if ($movieId !== '') {
+        if ($movieId !== null) {
             $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
             $movieData = $response->json();
     
@@ -108,6 +108,8 @@ class PostController extends Controller
             );
     
             $post->movie()->associate($movie);
+        } else {
+            $post->movie()->dissociate();
         }
     
         $post->save();
@@ -116,22 +118,23 @@ class PostController extends Controller
     }
 
 
-    public function destroy(Post $post)
+    public function destroy($postId)
     {
+        $post = Post::findOrFail($postId);
         $post->delete();
         return redirect()->route('posts.user');
     }
 
-    public function comment(Request $request, Post $post)
+    public function comment(CommentRequest $request, $postId)
     {
-        $request->validate([
-            'comment' => 'required',
-        ]);
+        $validatedData = $request->validated();
+        
+        $post = Post::findOrFail($postId);
 
         $comment = new Comment;
         $comment->user_id = auth()->id();
         $comment->post_id = $post->id;
-        $comment->content = $request->comment;
+        $comment->content = $validatedData['comment'];
         $comment->save();
 
         return back();

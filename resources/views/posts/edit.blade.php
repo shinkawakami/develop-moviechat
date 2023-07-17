@@ -22,12 +22,14 @@
                     <label for="group-movies">選択した映画</label>
                     <div id="selected-movie">
                         <!-- 選択した映画はここに表示されます -->
-                        <p>{{ $post->movie->title }}</p>
+                        @if($post->movie)
+                            <p>{{ $post->movie->title }}</p>
+                        @endif
                         <button id="remove-movie-btn">取り消し</button>
                     </div>
                     <input type="hidden" id="movie" name="movie" value="{{ $post->movie->tmdb_id }}">
-                    <input type="text" name="title" placeholder="タイトル" value="{{ $post->title }}">
-                    <textarea name="content" placeholder="内容">{{ $post->content }}</textarea>
+                    <input type="text" name="title" placeholder="タイトル" value="{{ $post->title }}" maxlength="50" required>
+                    <textarea name="content" placeholder="内容" maxlength="255" required>{{ $post->content }}</textarea>
                     <input type="submit" value="更新">
                 </form>
             </div>
