@@ -33,13 +33,16 @@
         
         <div>
             <x-input-label for="favorite_movies" :value="__('Favorite Movies')" />
+
             <select id="favorite_movies" name="favorite_movies[]" class="mt-1 block w-full" multiple>
-                @foreach ($movies as $movie)
-                    <option value="{{ $movie->id }}" {{ in_array($movie->id, $user->favoriteMovies) ? 'selected' : '' }}>{{ $movie->title }}</option>
+                @foreach ($user->favoriteMovies as $movie)
+                    <option value="{{ $movie->tmdb_id }}" selected>{{ $movie->title }}</option>
                 @endforeach
             </select>
+            
             <x-input-error class="mt-2" :messages="$errors->get('favorite_movies')" />
         </div>
+        
         
         <div>
             <x-input-label for="favorite_genres" :value="__('Favorite Genres')" />
@@ -124,4 +127,5 @@
             @endif
         </div>
     </form>
+    <script src="{{ asset('js/editProfile.js') }}"></script>
 </section>

@@ -25,6 +25,9 @@
                             @method('DELETE')
                             <button type="submit">削除</button>
                         </form>
+                        <div>
+                            <a href="{{ route('posts.edit', $post->id) }}">編集</a>
+                        </div>
                     @endif
                 </p>
             </div>
