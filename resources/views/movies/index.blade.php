@@ -16,7 +16,7 @@
 
             <div>
                 <form id="movie-search-form">
-                    <input type="text" id="movie-search" placeholder="映画検索">
+                    <input type="text" id="movie-search" placeholder="キーワード検索">
                     <button id="movie-search-btn">検索</button>
                 </form>
                 <div id="movie-search-results"></div>

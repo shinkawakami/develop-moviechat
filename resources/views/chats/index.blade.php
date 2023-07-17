@@ -42,7 +42,7 @@
                 <form action="/moviechat/groups/{{ $group->id }}/viewings/request" method="POST">
                     @csrf
                     <label for="movie-title">映画タイトル</label>
-                    <select name="movie_id" required>
+                    <select name="movie" required>
                         <option value="">映画タイトルを選択してください</option>
                         @foreach ($movies as $movie)
                             <option value="{{ $movie->id }}">{{ $movie->title }}</option>
@@ -101,7 +101,7 @@
                     <button type="submit">送信</button>
                 </form>
                 
-                <button onclick="location.href='{{ route('chats.leave', $group->id) }}'">グループを退会する</button>
+                <button onclick="location.href='{{ route('groups.leave', $group->id) }}'">グループを退会する</button>
             </div>
         </x-app-layout>
     </body>

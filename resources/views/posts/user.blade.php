@@ -17,7 +17,9 @@
                 @foreach ($posts as $post)
                     <p><a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a></p>
                     <p>{{ $post->user->name }}</p>
-                    <p>{{ $post->movie->title }}</p>
+                    @if($post->movie)
+                        <p>{{ $post->movie->title }}</p>
+                    @endif
                     <p>{{ $post->content }}</p>
                 @endforeach
             </div>

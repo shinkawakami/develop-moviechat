@@ -49,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{group}', [GroupController::class, 'show'])->name('groups.show');
             
             Route::post('/{group}/users/{user}/remove', [GroupController::class, 'removeUser'])->name('groups.removeUser');
+            Route::get('/{group}/leave', [GroupController::class, 'leave'])->name('groups.leave');
             
             Route::get('/{group}/edit', [GroupController::class, 'edit'])->name('groups.edit');
             Route::put('/{group}/update', [GroupController::class, 'update'])->name('groups.update');
@@ -56,9 +57,8 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{group}', [GroupController::class, 'destroy'])->name('groups.destroy');
             
             Route::get('/{group}/chats', [ChatController::class, 'index'])->name('chats.index');
-            Route::post('/{group}/chats', [ChatController::class, 'sent'])->name('chats.sent');
+            Route::post('/{group}/chats', [ChatController::class, 'send'])->name('chats.send');
             Route::delete('{group}/chats/{message}', [ChatController::class, 'destroy'])->name('chats.destroy');
-            Route::get('/{group}/chats/leave', [ChatController::class, 'leave'])->name('chats.leave');
             
             Route::post('/{group}/viewings/request', [ViewingController::class, 'request'])->name('viewings.request');
             Route::post('/{group}/viewings/{viewing}/approve', [ViewingController::class, 'approve'])->name('viewings.approve');

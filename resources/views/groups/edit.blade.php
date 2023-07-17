@@ -20,17 +20,17 @@
             
                 <div>
                     <label for="group_name">Group Name:</label>
-                    <input id="group_name" name="group_name" type="text" value="{{ $group->name }}" required>
+                    <input id="group_name" name="group_name" type="text" value="{{ $group->name }}" required maxlength="50">
                 </div>
                 
                 <div>
                     <label for="group_capacity">定員</label>
-                    <input type="number" name="group_capacity" min="2" max="10" value="{{ $group->capacity }}">
+                    <input type="number" name="group_capacity" min="2" max="10" value="{{ $group->capacity }}" required>
                 </div>
             
                 <div>
                     <label for="genres">Genres:</label>
-                    <select id="genres" name="genres[]" multiple required>
+                    <select id="genres" name="genres[]" multiple>
                         @foreach ($genres as $genre)
                             <option value="{{ $genre->id }}" @if(in_array($genre->id, $group->genres->pluck('id')->toArray())) selected @endif>{{ $genre->name }}</option>
                         @endforeach
@@ -39,7 +39,7 @@
                 
                 <div>
                     <label for="eras">Eras:</label>
-                    <select id="eras" name="eras[]" multiple required>
+                    <select id="eras" name="eras[]" multiple>
                         @foreach ($eras as $era)
                             <option value="{{ $era->id }}" @if(in_array($era->id, $group->eras->pluck('id')->toArray())) selected @endif>{{ $era->era }}</option>
                         @endforeach
@@ -48,7 +48,7 @@
                 
                 <div>
                     <label for="platforms">Platforms:</label>
-                    <select id="platforms" name="platforms[]" multiple required>
+                    <select id="platforms" name="platforms[]" multiple>
                         @foreach ($platforms as $platform)
                             <option value="{{ $platform->id }}" @if(in_array($platform->id, $group->platforms->pluck('id')->toArray())) selected @endif>{{ $platform->name }}</option>
                         @endforeach
