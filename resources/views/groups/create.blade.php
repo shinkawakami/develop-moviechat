@@ -10,7 +10,7 @@
         <x-app-layout>
             <x-slot name="header">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    グループ編集
+                    グループ作成
                 </h2>
             </x-slot>
         
@@ -19,17 +19,17 @@
             
                 <div>
                     <label for="group_name">Group Name:</label>
-                    <input id="group_name" name="group_name" type="text" required>
+                    <input id="group_name" name="group_name" type="text" maxlength="50" required>
                 </div>
                 
                 <div>
                     <label for="group_capacity">定員</label>
-                    <input type="number" name="group_capacity" min="2" max="10">
+                    <input type="number" name="group_capacity" min="2" max="10" required>
                 </div>
             
                 <div>
                     <label for="genres">Genres:</label>
-                    <select id="genres" name="genres[]" multiple required>
+                    <select id="genres" name="genres[]" multiple>
                         @foreach ($genres as $genre)
                             <option value="{{ $genre->id }}">{{ $genre->name }}</option>
                         @endforeach
@@ -38,7 +38,7 @@
                 
                 <div>
                     <label for="eras">Eras:</label>
-                    <select id="eras" name="eras[]" multiple required>
+                    <select id="eras" name="eras[]" multiple>
                         @foreach ($eras as $era)
                             <option value="{{ $era->id }}">{{ $era->era }}</option>
                         @endforeach
@@ -47,7 +47,7 @@
                 
                 <div>
                     <label for="platforms">Platforms:</label>
-                    <select id="platforms" name="platforms[]" multiple required>
+                    <select id="platforms" name="platforms[]" multiple>
                         @foreach ($platforms as $platform)
                             <option value="{{ $platform->id }}">{{ $platform->name }}</option>
                         @endforeach

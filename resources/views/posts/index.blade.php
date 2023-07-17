@@ -16,7 +16,7 @@
             <!-- 検索フォーム -->
             <div>
                 <form method="GET" action="{{ route('posts.search') }}">
-                    <input type="text" name="search" placeholder="映画タイトルで検索">
+                    <input type="text" name="keyword" placeholder="キーワード検索" required maxlength="50">
                     <input type="submit" value="検索">
                 </form>
             </div>
@@ -28,7 +28,9 @@
                 @foreach ($posts as $post)
                     <p><a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a></p>
                     <p>{{ $post->user->name }}</p>
-                    <p>{{ $post->movie->title }}</p>
+                    @if($post->movie)
+                        <p>{{ $post->movie->title }}</p>
+                    @endif
                     <p>{{ $post->content }}</p>
                 @endforeach
             </div>

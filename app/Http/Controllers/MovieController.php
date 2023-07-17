@@ -2,21 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Era;
-use App\Models\Genre;
-use App\Models\Group;
-use App\Models\Message;
 use App\Models\Movie;
-use App\Models\Platform;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\Movie\SearchRequest;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Pagination\LengthAwarePaginator;
-use App\Events\MessageSent;
-use GuzzleHttp\Exception\RequestException;
-use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 
 class MovieController extends Controller
@@ -30,10 +18,12 @@ class MovieController extends Controller
         return view('movies.index', ['popular_movies' => $movies]);
     }
         
-    public function search(Request $request)
+    public function search(SearchRequest $request)
     {
-        $query = $request->get('query');
-        $page = $request->get('page', 1);
+        $validatedData = $request->validated();
+        
+        $query = $validatedData['query'];
+        $page = $validatedData['page'] ?? 1;
     
         $client = new Client();
         $response = $client->get('https://api.themoviedb.org/3/search/movie', [

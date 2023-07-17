@@ -23,8 +23,8 @@
                         <!-- 選択した映画はここに表示されます -->
                     </div>
                     <input type="hidden" id="movie" name="movie">
-                    <input type="text" name="title" placeholder="タイトル">
-                    <textarea name="content" placeholder="内容"></textarea>
+                    <input type="text" name="title" placeholder="タイトル" maxlength="50" required>
+                    <textarea name="content" placeholder="内容" maxlength="255" required></textarea>
                     <input type="submit" value="投稿">
                 </form>
             </div>
