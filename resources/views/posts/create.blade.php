@@ -14,30 +14,28 @@
                 </h2>
             </x-slot>
             <!-- 投稿作成フォーム -->
-            <div>
-                <a href="{{ route('movies.index') }}">映画検索</a>
-            </div>
-            <div>
-                <label for="group-movies">選択した映画</label>
-                
-            <div class="selected-movies">
-                <p>{{ $movie['title'] ?? 'No movie selected' }}</p>
-                <form action="{{ route('movies.unselect') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="actionType" value="post">
-                    <button type="submit">削除</button>
-                </form>
-            </div>
             
-            </div>
             <div>
                 <form method="POST" action="{{ route('posts.store') }}">
                     @csrf
+                    <label for="group-movies">選択した映画</label>
+                    <div id="selected-movie">
+                        <!-- 選択した映画はここに表示されます -->
+                    </div>
+                    <input type="hidden" id="movie" name="movie">
                     <input type="text" name="title" placeholder="タイトル">
                     <textarea name="content" placeholder="内容"></textarea>
                     <input type="submit" value="投稿">
                 </form>
             </div>
+            <div>
+                <form id="movie-search-form">
+                    <input type="text" id="movie-search" placeholder="映画検索">
+                    <button id="movie-search-btn">検索</button>
+                </form>
+                <div id="movie-search-results"></div>
+            </div>
         </x-app-layout>
+        <script src="{{ asset('js/createPost.js') }}"></script>
     </body>
 </html>

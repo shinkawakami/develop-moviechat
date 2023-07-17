@@ -6,6 +6,8 @@ use App\Models\Post;
 use App\Models\Comment;
 use App\Models\Movie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class PostController extends Controller
 {
@@ -27,9 +29,7 @@ class PostController extends Controller
 
     public function create(Request $request)
     {
-        // セッションから選択された映画を取得
-        $selectedMovie = $request->session()->get('selected_movie_for_post', []);
-        return view('posts.create', ['movie' => $selectedMovie]);
+        return view('posts.create');
     }
 
     public function store(Request $request)
@@ -37,39 +37,31 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',
+            'movie' => 'required|integer'
         ]);
-        
+    
+        // Create a new post
         $post = new Post;
-        
-        // セッションに選択していた映画情報の配列を取得
-        $movie = $request->session()->get('selected_movie_for_post');
-
-        // 選択した映画がmoviesテーブルのレコードに存在しなかったらレコード作成
-        
-        $movieTitle = $movie['title'];
-        $movieId = $movie['id'];
-        
-        $existingMovie = Movie::where('tmdb_id', $movieId)->first();
-        
-        if (!$existingMovie) {
-            $movie = new Movie();
-            $movie->title = $movieTitle;
-            $movie->tmdb_id = $movieId;
-            $movie->save();
-            $post->movie_id = $movie->id;
-        }
-        else {
-            $post->movie_id = $existingMovie->id;
-        }
-        
-        // セッションデータを消去
-        $request->session()->forget('selected_movie_for_post');
-
-        $post->user_id = auth()->id();
+        $post->user_id = Auth::id(); // Get the currently authenticated user's ID
         $post->title = $request->title;
         $post->content = $request->content;
-        $post->save();
         
+        $movieId = $request->movie;
+        $apiKey = config('tmdb.api_key');
+        
+        if ($movieId !== '') {
+            $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
+            $movieData = $response->json();
+
+            $movie = Movie::firstOrCreate(
+                ['tmdb_id' => $movieData['id']],
+                ['title' => $movieData['title']]
+            );
+
+            $post->movie()->associate($movie);
+        }
+        
+        $post->save();
         
         return redirect()->route('posts.index');
     }
@@ -91,22 +83,38 @@ class PostController extends Controller
     {
         return view('posts.edit', compact('post'));
     }
-
+    
     public function update(Request $request, Post $post)
     {
         $request->validate([
             'title' => 'required|max:255',
-            'movie_id' => 'required|exists:movies,id',
             'content' => 'required',
+            'movie' => 'required|integer'
         ]);
-
+    
         $post->title = $request->title;
-        $post->movie_id = $request->movie_id;
         $post->content = $request->content;
+    
+        $movieId = $request->movie;
+        $apiKey = config('tmdb.api_key');
+    
+        if ($movieId !== '') {
+            $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
+            $movieData = $response->json();
+    
+            $movie = Movie::firstOrCreate(
+                ['tmdb_id' => $movieData['id']],
+                ['title' => $movieData['title']]
+            );
+    
+            $post->movie()->associate($movie);
+        }
+    
         $post->save();
-
+    
         return redirect()->route('posts.show', $post);
     }
+
 
     public function destroy(Post $post)
     {
