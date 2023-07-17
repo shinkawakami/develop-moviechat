@@ -50,24 +50,28 @@ class MovieController extends Controller
         return response()->json($movieData);
     }
     
+    public function details($tmdb_id)
+    {
+        // Fetch movie details
+        $apiKey = config('tmdb.api_key');
+        $response = Http::get("https://api.themoviedb.org/3/movie/{$tmdb_id}?api_key={$apiKey}&language=ja-JP");
+        $movieData = $response->json();
+    
+        return response()->json($movieData);
+    }
+        
     public function show($tmdb_id)
     {
         // Fetch movie details
         $apiKey = config('tmdb.api_key');
         $response = Http::get("https://api.themoviedb.org/3/movie/{$tmdb_id}?api_key={$apiKey}&language=ja-JP");
         $movieData = $response->json();
-        
-        return response()->json($movieData);
     
         // Get or create the movie in local database
-        /*$movie = Movie::firstOrCreate(
+        $movie = Movie::firstOrCreate(
             ['tmdb_id' => $movieData['id']],
             ['title' => $movieData['title']]
         );
-        
-        
-        
-    
     
         $posts = $movie->posts;  // Get all posts related to this movie
         $groups = $movie->groups;  // Get all groups related to this movie
@@ -76,6 +80,6 @@ class MovieController extends Controller
             'movie' => $movieData,
             'posts' => $posts,
             'groups' => $groups,
-        ]);*/
+        ]);
     }
 }
