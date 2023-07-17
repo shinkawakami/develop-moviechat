@@ -56,6 +56,9 @@
                         @method('DELETE')
                         <button type="submit">グループ削除</button>
                     </form>
+                    <div>
+                        <a href="{{ route('groups.edit', $group->id) }}">編集</a>
+                    </div>
                 @endif
             </div>
             <script>

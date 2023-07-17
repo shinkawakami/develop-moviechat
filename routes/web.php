@@ -50,6 +50,9 @@ Route::middleware(['auth'])->group(function () {
             
             Route::post('/{group}/users/{user}/remove', [GroupController::class, 'removeUser'])->name('groups.removeUser');
             
+            Route::get('/{group}/edit', [GroupController::class, 'edit'])->name('groups.edit');
+            Route::put('/{group}/update', [GroupController::class, 'update'])->name('groups.update');
+            
             Route::delete('/{group}', [GroupController::class, 'destroy'])->name('groups.destroy');
             
             Route::get('/{group}/chats', [ChatController::class, 'index'])->name('chats.index');
@@ -68,8 +71,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('movies')->group(function () {
             Route::get('/', [MovieController::class, 'index'])->name('movies.index');
             Route::get('/search', [MovieController::class, 'search'])->name('movies.search');
-            Route::post('/search', [MovieController::class, 'select'])->name('movies.select');
-            Route::post('/unselect', [MovieController::class, 'unselect'])->name('movies.unselect');
+            Route::get('/{movie}', [MovieController::class, 'show'])->name('movies.show');
         });
         
         Route::prefix('posts')->group(function () {
@@ -77,10 +79,11 @@ Route::middleware(['auth'])->group(function () {
             Route::get('search', [PostController::class, 'search'])->name('posts.search');
             Route::get('create', [PostController::class, 'create'])->name('posts.create');
             Route::post('/', [PostController::class, 'store'])->name('posts.store');
+            Route::get('/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+            Route::put('/{post}', [PostController::class, 'update'])->name('posts.update');
             Route::get('user', [PostController::class, 'user'])->name('posts.user');
             Route::get('{post}', [PostController::class, 'show'])->name('posts.show');
-            Route::get('{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
-            Route::put('{post}', [PostController::class, 'update'])->name('posts.update');
+            
             Route::delete('{post}', [PostController::class, 'destroy'])->name('posts.destroy');
             Route::post('{post}/comment', [PostController::class, 'comment'])->name('posts.comment');
         });
