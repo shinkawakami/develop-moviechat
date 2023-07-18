@@ -39,33 +39,38 @@
                     @endforeach
                 </div>
         
-                <form action="/moviechat/groups/{{ $group->id }}/viewings/request" method="POST">
+                <form action="{{ route('viewings.request', $group->id) }}" method="POST" id="viewingForm">
                     @csrf
-                    <label for="movie-title">映画タイトル</label>
-                    <select name="movie" required>
-                        <option value="">映画タイトルを選択してください</option>
-                        @foreach ($movies as $movie)
-                            <option value="{{ $movie->id }}">{{ $movie->title }}</option>
-                        @endforeach
-                    </select>
+                    <div id="selected-movie">
+                        <!-- 選択した映画はここに表示されます -->
+                    </div>
+                    <input type="hidden" id="movie" name="movie">
                     <label for="start-time">視聴開始時間</label>
                     <input type="datetime-local" id="start_time" name='start_time' required>
                     <button type="submit">同時視聴申請</button>
                 </form>
+                
+                <div>
+                    <form id="movie-search-form">
+                        <input type="text" id="movie-search" placeholder="映画検索">
+                        <button id="movie-search-btn">検索</button>
+                    </form>
+                    <div id="movie-search-results"></div>
+                </div>
 
                 <div>
                     @foreach ($viewings as $viewing)
-                        <p>{{ $viewing->requester->name }}が同時視聴を希望しています</p>
+                        <p>{{ $viewing->requester->name }}が{{ $viewing->start_time }}同時視聴を希望しています</p>
+                        @foreach ($viewing->approvers as $approver)
+                            <p>{{ $approver->name }}が承認しています</p>
+                        @endforeach
                         @if(!$viewing->has_approved && !$viewing->is_requester)
-                            <form action="/moviechat/groups/{{ $group->id }}/viewings/{{ $viewing->id }}/approve" method="POST">
+                            <form action="{{ route('viewings.approve', ['group' => $group->id, 'viewing' => $viewing->id]) }}" method="POST">
                                 @csrf
                                 <button type="submit">同意する</button>
                             </form>
                         @endif
                         @if($viewing->approvers->contains(Auth::id()))
-                            @foreach ($viewing->approvers as $approver)
-                                <p>{{ $approver->name }}が{{ $viewing->requester->name }}の同時視聴を承認しています</p>
-                            @endforeach
                             <p>視聴URL: <a href="{{ $viewing->url }}">同時視聴用チャット先リンク</a></p>
                         @endif
                         @if($viewing->is_requester || $group->is_owner)
@@ -76,6 +81,15 @@
                         @endif
                     @endforeach
                 </div>
+                <script>
+                    document.getElementById('viewingForm').addEventListener('submit', function(e) {
+                        var movie = document.getElementById('movie').value;
+                        if (!movie) {
+                            e.preventDefault(); // フォームの送信を止める
+                            alert('映画を検索して選択してください'); // アラートを表示
+                        }
+                    });
+                </script>
 
         
                 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
@@ -104,5 +118,6 @@
                 <button onclick="location.href='{{ route('groups.leave', $group->id) }}'">グループを退会する</button>
             </div>
         </x-app-layout>
+        <script src="{{ asset('js/indexChat.js') }}"></script>
     </body>
 </html>

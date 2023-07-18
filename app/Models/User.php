@@ -53,22 +53,22 @@ class User extends Authenticatable
         return $this->belongsToMany(Viewing::class, 'approvers');
     }
     
-    public function favoriteMovies()
+    public function movies()
     {
         return $this->belongsToMany(Movie::class, 'user_movie');
     }
     
-    public function favoriteGenres()
+    public function genres()
     {
         return $this->belongsToMany(Genre::class, 'user_genre');
     }
     
-    public function favoritePlatforms()
+    public function platforms()
     {
         return $this->belongsToMany(Platform::class, 'user_platform');
     }
     
-    public function favoriteEras()
+    public function eras()
     {
         return $this->belongsToMany(Era::class, 'user_era');
     }
