@@ -14,7 +14,6 @@ use App\Events\MessageSent;
 use App\Events\RequestSent;
 use App\Events\ApproveSent;
 
-
 class ViewingController extends Controller
 {
     public function index($groupId, $viewingId)
@@ -37,7 +36,9 @@ class ViewingController extends Controller
         $viewing = new Viewing();
         $viewing->group()->associate($group);
         $viewing->requester()->associate($user);
-        $viewing->start_time = $validatedData['start_time'] . ":00";
+        
+        $viewing->start_time = $validatedData['start_time'];
+        
         $movieId = $validatedData['movie'];
         $apiKey = config('tmdb.api_key');
         
@@ -52,6 +53,7 @@ class ViewingController extends Controller
 
             $viewing->movie()->associate($movie);
         }
+        
         $viewing->save();
         
         
