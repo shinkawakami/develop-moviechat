@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\Auth\UpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Genre;
 use App\Models\Platform;
 use App\Models\Era;
+use App\Models\Movie;
 
 
 class ProfileController extends Controller
@@ -26,9 +27,9 @@ class ProfileController extends Controller
         $platforms = Platform::all();
         $eras = Era::all();
         
-        $user->favoriteGenres = $user->favoriteGenres->pluck('id')->toArray();
-        $user->favoritePlatforms = $user->favoritePlatforms->pluck('id')->toArray();
-        $user->favoriteEras = $user->favoriteEras->pluck('id')->toArray();
+        $user->genres = $user->genres->pluck('id')->toArray();
+        $user->platforms = $user->platforms->pluck('id')->toArray();
+        $user->eras = $user->eras->pluck('id')->toArray();
         
         return view('profile.edit', compact('user', 'genres', 'platforms', 'eras'));
     }
@@ -36,10 +37,12 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(UpdateRequest $request): RedirectResponse
     {
+        $validatedData = $request->validated();
+        
         $user = $request->user();
-        $user->fill($request->validated());
+        $user->fill($validatedData);
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
@@ -47,25 +50,27 @@ class ProfileController extends Controller
         
         $apiKey = config('tmdb.api_key');
         $attachedMovieIds = [];
-        foreach ($request->favorite_movies as $movieId) {
-            $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
-            $movieData = $response->json();
-
-            $movie = Movie::updateOrCreate(
-                ['tmdb_id' => $movieData['id']],
-                ['title' => $movieData['title']]
-            );
-
-            array_push($attachedMovieIds, $movie->id);
+        if ($request->movies) {
+            foreach ($request->movies as $movieId) {
+                $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
+                $movieData = $response->json();
+    
+                $movie = Movie::firstOrCreate(
+                    ['tmdb_id' => $movieData['id']],
+                    ['title' => $movieData['title']]
+                );
+    
+                array_push($attachedMovieIds, $movie->id);
+            }
         }
         
-        $user->favoriteMovies()->sync($attachedMovieIds);
-        $user->favoriteGenres()->sync($request->favorite_genres);
-        $user->favoritePlatforms()->sync($request->favorite_platforms);
-        $user->favoriteEras()->sync($request->favorite_eras);
+        $user->movies()->sync($attachedMovieIds);
+        $user->genres()->sync($request->genres ?? []);
+        $user->platforms()->sync($request->platforms ?? []);
+        $user->eras()->sync($request->eras ?? []);
         $user->introduction = $request->introduction;
 
-        $request->user()->save();
+        $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
