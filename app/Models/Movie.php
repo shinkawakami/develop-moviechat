@@ -28,7 +28,7 @@ class Movie extends Model
         return $this->hasMany(Viewing::class);
     }
     
-    public function favoriteMovies()
+    public function movies()
     {
         return $this->belongsToMany(Movie::class, 'user_movie');
     }
