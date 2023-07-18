@@ -59,7 +59,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{group}/chats', [ChatController::class, 'index'])->name('chats.index');
             Route::post('/{group}/chats', [ChatController::class, 'send'])->name('chats.send');
             Route::delete('{group}/chats/{message}', [ChatController::class, 'destroy'])->name('chats.destroy');
-            
+             
             Route::post('/{group}/viewings/request', [ViewingController::class, 'request'])->name('viewings.request');
             Route::post('/{group}/viewings/{viewing}/approve', [ViewingController::class, 'approve'])->name('viewings.approve');
             Route::post('/{group}/viewings/{viewing}/cancel', [ViewingController::class, 'cancel'])->name('viewings.cancel');

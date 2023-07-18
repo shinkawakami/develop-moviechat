@@ -8,6 +8,7 @@
         
         <!-- Select2 JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+        
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Profile Information') }}
         </h2>
@@ -32,54 +33,54 @@
         </div>
         
         <div>
-            <x-input-label for="favorite_movies" :value="__('Favorite Movies')" />
+            <x-input-label for="movies" :value="__('Movies')" />
 
-            <select id="favorite_movies" name="favorite_movies[]" class="mt-1 block w-full" multiple>
-                @foreach ($user->favoriteMovies as $movie)
+            <select id="movies" name="movies[]" class="mt-1 block w-full" multiple>
+                @foreach ($user->movies as $movie)
                     <option value="{{ $movie->tmdb_id }}" selected>{{ $movie->title }}</option>
                 @endforeach
             </select>
             
-            <x-input-error class="mt-2" :messages="$errors->get('favorite_movies')" />
+            <x-input-error class="mt-2" :messages="$errors->get('movies')" />
         </div>
         
         
         <div>
-            <x-input-label for="favorite_genres" :value="__('Favorite Genres')" />
-            <select id="favorite_genres" name="favorite_genres[]" class="mt-1 block w-full" multiple>
+            <x-input-label for="genres" :value="__('Genres')" />
+            <select id="genres" name="genres[]" class="mt-1 block w-full" multiple>
                 @foreach ($genres as $genre)
-                    <option value="{{ $genre->id }}" {{ in_array($genre->id, $user->favoriteGenres) ? 'selected' : '' }}>{{ $genre->name }}</option>
+                    <option value="{{ $genre->id }}" {{ in_array($genre->id, $user->genres) ? 'selected' : '' }}>{{ $genre->name }}</option>
                 @endforeach
             </select>
-            <x-input-error class="mt-2" :messages="$errors->get('favorite_genres')" />
+            <x-input-error class="mt-2" :messages="$errors->get('genres')" />
         </div>
         
         <div>
-            <x-input-label for="favorite_platforms" :value="__('Favorite Platforms')" />
-            <select id="favorite_platforms" name="favorite_platforms[]" class="mt-1 block w-full" multiple>
+            <x-input-label for="platforms" :value="__('Platforms')" />
+            <select id="platforms" name="platforms[]" class="mt-1 block w-full" multiple>
                 @foreach ($platforms as $platform)
-                    <option value="{{ $platform->id }}" {{ in_array($platform->id, $user->favoritePlatforms) ? 'selected' : '' }}>{{ $platform->name }}</option>
+                    <option value="{{ $platform->id }}" {{ in_array($platform->id, $user->platforms) ? 'selected' : '' }}>{{ $platform->name }}</option>
                 @endforeach
             </select>
-            <x-input-error class="mt-2" :messages="$errors->get('favorite_platforms')" />
+            <x-input-error class="mt-2" :messages="$errors->get('platforms')" />
         </div>
         
         <div>
-            <x-input-label for="favorite_eras" :value="__('Favorite Eras')" />
-            <select id="favorite_eras" name="favorite_eras[]" class="mt-1 block w-full" multiple>
+            <x-input-label for="eras" :value="__('Eras')" />
+            <select id="eras" name="eras[]" class="mt-1 block w-full" multiple>
                 @foreach ($eras as $era)
-                    <option value="{{ $era->id }}" {{ in_array($era->id, $user->favoriteEras) ? 'selected' : '' }}>{{ $era->era }}</option>
+                    <option value="{{ $era->id }}" {{ in_array($era->id, $user->eras) ? 'selected' : '' }}>{{ $era->era }}</option>
                 @endforeach
             </select>
-            <x-input-error class="mt-2" :messages="$errors->get('favorite_eras')" />
+            <x-input-error class="mt-2" :messages="$errors->get('eras')" />
         </div>
         
         <script>
         $(document).ready(function() {
-            $('#favorite_movies').select2();
-            $('#favorite_genres').select2();
-            $('#favorite_platforms').select2();
-            $('#favorite_eras').select2();
+            $('#movies').select2();
+            $('#genres').select2();
+            $('#platforms').select2();
+            $('#eras').select2();
         });
         </script>
         
