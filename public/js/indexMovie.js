@@ -1,17 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const movieSearchButton = document.getElementById('movie-search-btn');
-    const movieSearchInput = document.getElementById('movie-search');
-    const movieSearchResults = document.getElementById('movie-search-results');
+    const searchButton = document.getElementById('search-btn');
+    const searchInput = document.getElementById('movie-search');
+    const searchResults = document.getElementById('search-results');
     const popularMoviesContainer = document.getElementById('popular-movies');
     let currentPage = 1;
     
-    movieSearchInput.setAttribute('required', '');
-    movieSearchInput.setAttribute('maxlength', '50');
+    searchInput.setAttribute('required', '');
+    searchInput.setAttribute('maxlength', '50');
 
-    movieSearchButton.addEventListener('click', (event) => {
+    searchButton.addEventListener('click', (event) => {
         event.preventDefault();
 
-        const query = movieSearchInput.value;
+        const query = searchInput.value;
         
         if (query.trim() === '') {  // ユーザーが空白または空文字列を入力した場合
             alert('検索キーワードを入力してください。');  // ユーザーに警告メッセージを表示
@@ -29,13 +29,14 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 const movies = data.results;
                 const totalPages = data.total_pages;
-                movieSearchResults.innerHTML = '';  // Clear the search results
+                searchResults.innerHTML = '';  // Clear the search results
 
                 popularMoviesContainer.style.display = 'none';  // Hide the popular movies container
     
                 movies.forEach(movie => {
                     const movieContainer = document.createElement('div');
-    
+                    movieContainer.className = "movie-container";
+            
                     const movieTitle = document.createElement('a');
                     movieTitle.href = '/moviechat/movies/' + movie.id;  // Set the link to the movie detail page
                     movieTitle.textContent = movie.title;
@@ -49,20 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     movieOverview.textContent = movie.overview;
                     movieContainer.appendChild(movieOverview);
     
-                    movieSearchResults.appendChild(movieContainer);
+                    searchResults.appendChild(movieContainer);
                 });
 
-                if (currentPage < totalPages) {
-                    const nextPageButton = document.createElement('button');
-                    nextPageButton.textContent = '次へ';
-                    nextPageButton.addEventListener('click', (event) => {
-                        event.preventDefault();
-                        currentPage++;
-                        fetchMovies(query, currentPage);
-                    });
-                    movieSearchResults.appendChild(nextPageButton);
-                }
-
+                const paginationDiv = document.createElement('div');
+                paginationDiv.classList.add('pagination');
+                
                 if (currentPage > 1) {
                     const prevPageButton = document.createElement('button');
                     prevPageButton.textContent = '前へ';
@@ -71,8 +64,27 @@ document.addEventListener('DOMContentLoaded', () => {
                         currentPage--;
                         fetchMovies(query, currentPage);
                     });
-                    movieSearchResults.appendChild(prevPageButton);
+                    paginationDiv.appendChild(prevPageButton);
+                } else {
+                    // これが空の要素で、左側のボタンがない場合にスペースを埋める役割を果たします。
+                    paginationDiv.appendChild(document.createElement('div'));
                 }
+                
+                if (currentPage < totalPages) {
+                    const nextPageButton = document.createElement('button');
+                    nextPageButton.textContent = '次へ';
+                    nextPageButton.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        currentPage++;
+                        fetchMovies(query, currentPage);
+                    });
+                    paginationDiv.appendChild(nextPageButton);
+                } else {
+                    // これが空の要素で、右側のボタンがない場合にスペースを埋める役割を果たします。
+                    paginationDiv.appendChild(document.createElement('div'));
+                }
+
+                searchResults.appendChild(paginationDiv);
             });
     }
 });

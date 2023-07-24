@@ -66,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
             
             Route::get('/{group}/viewings/{viewing}', [ViewingController::class, 'index'])->name('viewings.index');
             Route::post('/{group}/viewings/{viewing}/chats', [ViewingController::class, 'chat'])->name('viewings.chat');
+            Route::delete('/{group}/viewings/{viewing}/chats/{message}', [ViewingController::class, 'destroy'])->name('viewings.destroy');
         });
         
         Route::prefix('movies')->group(function () {

@@ -19,7 +19,7 @@ class CreateRequest extends FormRequest
             'genres' => 'nullable|array|exists:genres,id', 
             'eras' => 'nullable|array|exists:eras,id', 
             'platforms' => 'nullable|array|exists:platforms,id',
-            'movies' => 'nullable',
+            'movies' => 'nullable|array',
         ];
     }
 }
