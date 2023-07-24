@@ -2,40 +2,53 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <title>MovieChat - Create Post</title>
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <title>MovieChat - CreatePost</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <link href="{{ asset('css/posts/create.css') }}" rel="stylesheet">
     </head>
     <body>
         <x-app-layout>
-            <x-slot name="header">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    投稿作成
-                </h2>
-            </x-slot>
-            <!-- 投稿作成フォーム -->
-            
-            <div>
-                <form method="POST" action="{{ route('posts.store') }}">
-                    @csrf
-                    <label for="group-movies">選択した映画</label>
-                    <div id="selected-movie">
-                        <!-- 選択した映画はここに表示されます -->
-                    </div>
-                    <input type="hidden" id="movie" name="movie">
-                    <input type="text" name="title" placeholder="タイトル" maxlength="50" required>
-                    <textarea name="content" placeholder="内容" maxlength="255" required></textarea>
-                    <input type="submit" value="投稿">
-                </form>
-            </div>
-            <div>
-                <form id="movie-search-form">
-                    <input type="text" id="movie-search" placeholder="映画検索">
-                    <button id="movie-search-btn">検索</button>
-                </form>
-                <div id="movie-search-results"></div>
-            </div>
+            <section class="section">
+                <div class="container">
+                    <h1 class="title">投稿作成</h1>
+        
+                    <form method="POST" action="{{ route('posts.store') }}" class="box">
+                        @csrf
+                        
+                        <div class="field">
+                            <input class="input" type="text" name="title" placeholder="タイトル" maxlength="50" required>
+                        </div>
+        
+                        <label class="label">映画<span class="faint-note">(検索して選択)</span></label>
+                        <div id="selected-movie" class="field"></div>
+        
+                        <input type="hidden" name="movie" id="movie">
+        
+                        <div class="field">
+                            <textarea class="textarea" name="content" placeholder="内容" maxlength="255" required></textarea>
+                        </div>
+        
+                        <div class="field">
+                            <input class="button is-primary" type="submit" value="投稿">
+                        </div>
+                    </form>
+        
+                    <form class="box">
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                <input class="input" type="text" placeholder="映画検索" id="movie-search">
+                            </div>
+                            <div class="control">
+                                <button id="search-btn" class="button is-info">検索</button>
+                            </div>
+                        </div>
+                    </form>
+        
+                    <div id="search-results"></div>
+                </div>
+            </section>
         </x-app-layout>
+        
         <script src="{{ asset('js/createPost.js') }}"></script>
     </body>
 </html>

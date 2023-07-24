@@ -3,39 +3,49 @@
     <head>
         <meta charset="utf-8">
         <title>MovieChat</title>
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <link href="{{ asset('css/viewings/index.css') }}" rel="stylesheet">
     </head>
     <body>
         <x-app-layout>
-            <x-slot name="header">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Chat
-                </h2>
-            </x-slot>
-            
-            <div>
-                <p>映画：{{ $viewing->movie->title }}</p>
-                <p>視聴者：
-                    {{ $viewing->requester->name }}
-                    @foreach ($viewing->approvers as $member)
-                        <p>・{{ $member->name }}</p>
-                    @endforeach
-                </p>
-                
-                <div id="chat-messages">
-                    @foreach ($viewing->messages as $message)
-                        <p>{{ $message->user->name }}: {{ $message->content }}: {{ $message->created_at }}</p>
-                    @endforeach
+        <section class="section">
+            <div class="container">
+                <h1 class="title">同時視聴用チャット</h1>
+                <div class="box">
+                    <a class="title" href="{{ route('groups.show', $group->id) }}">{{ $group->name }}</a>
+    
+                    <div class="content">
+                        @foreach ($viewing->messages as $message)
+                        <div class="message-item">
+                            <span class="message-content">
+                                {{ $message->user->name }}: {{ $message->content }}
+                            </span>
+                            <span class="message-time">{{ $message->created_at }}</span>
+                            @if($message->user_id == Auth::id())
+                            <form action={{ route('viewings.destroy', ['group' => $group->id, 'viewing' => $viewing->id, 'message' => $message->id]) }} method="POST" class="delete-form">
+                                @csrf
+                                @method('DELETE')
+                                <button class="delete-message" type="submit">削除</button>
+                            </form>
+                            @endif
+                        </div>
+                        @endforeach
+                    </div>
+    
+                    <form action={{ route('viewings.chat', ['group' => $group->id, 'viewing' => $viewing->id]) }} method="POST" class="message-send-form">
+                        @csrf
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                <input class="input" type="text" name="message" placeholder="メッセージを入力">
+                            </div>
+                            <div class="control">
+                                <button class="button is-info" type="submit">送信</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                                
-                <form action="/moviechat/groups/{{ $group->id }}/viewings/{{ $viewing->id }}/chats" method="POST">
-                    @csrf
-                    <input type="text" name="message" placeholder="メッセージを入力" required maxlength="255">
-                    <button type="submit">送信</button>
-                </form>
-                
             </div>
-        </x-app-layout>
+        </section>
+    </x-app-layout>
     </body>
 </html>

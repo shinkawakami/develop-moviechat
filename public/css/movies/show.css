@@ -1,0 +1,30 @@
+/* カード全体のリンクスタイル */
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* カードのホバーエフェクト */
+.card-link:hover .card {
+    transform: scale(1.05);
+    transition: transform 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* カードヘッダーのスタイル調整 */
+.card-header {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #e2e2e2;
+}
+
+.card-header-title {
+    font-size: 1em;
+    text-align: center;
+    font-weight: bold;
+}
+
+.subtitle {
+    font-size: 16px;
+    font-weight: bold;
+}

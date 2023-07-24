@@ -100,4 +100,13 @@ class ViewingController extends Controller
     
         return redirect()->back();
     }
+    
+    public function destroy($groupId, $viewingId, $messageId)
+    {
+        $viewing = Viewing::findOrFail($viewingId);
+        $message = Message::findOrFail($messageId);
+        
+        $message->delete();
+        return redirect()->back();
+    }
 }

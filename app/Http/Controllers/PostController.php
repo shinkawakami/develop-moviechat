@@ -50,17 +50,15 @@ class PostController extends Controller
         $movieId = $validatedData['movie'];
         $apiKey = config('tmdb.api_key');
         
-        if ($movieId !== null) {
-            $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
-            $movieData = $response->json();
+        $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
+        $movieData = $response->json();
 
-            $movie = Movie::firstOrCreate(
-                ['tmdb_id' => $movieData['id']],
-                ['title' => $movieData['title']]
-            );
+        $movie = Movie::firstOrCreate(
+            ['tmdb_id' => $movieData['id']],
+            ['title' => $movieData['title']]
+        );
 
-            $post->movie()->associate($movie);
-        }
+        $post->movie()->associate($movie);
         
         $post->save();
         
@@ -98,19 +96,15 @@ class PostController extends Controller
         $movieId = $validatedData['movie'];
         $apiKey = config('tmdb.api_key');
     
-        if ($movieId !== null) {
-            $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
-            $movieData = $response->json();
-    
-            $movie = Movie::firstOrCreate(
-                ['tmdb_id' => $movieData['id']],
-                ['title' => $movieData['title']]
-            );
-    
-            $post->movie()->associate($movie);
-        } else {
-            $post->movie()->dissociate();
-        }
+        $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
+        $movieData = $response->json();
+
+        $movie = Movie::firstOrCreate(
+            ['tmdb_id' => $movieData['id']],
+            ['title' => $movieData['title']]
+        );
+
+        $post->movie()->associate($movie);
     
         $post->save();
     
