@@ -1,0 +1,16 @@
+.buttons {
+    margin-top: 14px;
+}
+
+.group-link {
+    display: block;  /* ブロック要素として表示することで縦方向のマージンが適用可能になります */
+    margin-bottom: 10px;  /* 下部に15pxのマージンを追加 */
+    font-size: 20px;
+    color: #007BFF;
+    font-weight: bold; /* 太字にする */
+}
+
+.group-link:hover {
+    color: #0056b3; /* より濃いブルーに変更してホバーエフェクトを追加 */
+    text-decoration: underline; /* 下線を追加 */
+}

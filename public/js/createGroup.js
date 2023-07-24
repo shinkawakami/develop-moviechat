@@ -1,16 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const movieSearchButton = document.getElementById('movie-search-btn');
-    const movieSearchInput = document.getElementById('movie-search');
-    const movieSearchResults = document.getElementById('movie-search-results');
-    const selectedMovies = document.getElementById('movies');
+    const searchButton = document.getElementById('search-btn');
+    const searchInput = document.getElementById('movie-search');
+    const searchResults = document.getElementById('search-results');
     const selectedMoviesContainer = document.getElementById('selected-movies');
     let selectedMovieIds = [];  // To keep track of selected movie ids
     let currentPage = 1;
-
-    movieSearchButton.addEventListener('click', (event) => {
+ 
+    searchButton.addEventListener('click', (event) => {
         event.preventDefault();
 
-        const query = movieSearchInput.value;
+        const query = searchInput.value;
         fetchMovies(query);
     });
 
@@ -22,13 +21,15 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 const movies = data.results;
                 const totalPages = data.total_pages;
-                movieSearchResults.innerHTML = '';
+                searchResults.innerHTML = '';
     
                 movies.forEach(movie => {
                     const movieContainer = document.createElement('div');
+                    movieContainer.className = "movie-container";
     
                     const movieTitle = document.createElement('p');
                     movieTitle.textContent = movie.title;
+                    movieTitle.className = "movie-title";
                     movieContainer.appendChild(movieTitle);
     
                     const movieImage = document.createElement('img');
@@ -37,54 +38,66 @@ document.addEventListener('DOMContentLoaded', () => {
     
                     const movieOverview = document.createElement('p');
                     movieOverview.textContent = movie.overview;
+                    movieOverview.className ="movie-overview";
                     movieContainer.appendChild(movieOverview);
     
                     const selectButton = document.createElement('button');
                     selectButton.textContent = selectedMovieIds.includes(movie.id) ? '選択済み' : '選択';
                     selectButton.disabled = selectedMovieIds.includes(movie.id);
+
                     selectButton.addEventListener('click', (event) => {
                         event.preventDefault();
-    
-                        selectedMovieIds.push(movie.id);
-                        selectedMovies.value += ',' + movie.id;
-    
-                        const selectedMovieTitle = document.createElement('p');
-                        selectedMovieTitle.textContent = movie.title;
-                        selectedMoviesContainer.appendChild(selectedMovieTitle);
 
-                        const removeButton = document.createElement('button');
-                        removeButton.textContent = '取り消し';
-                        removeButton.addEventListener('click', (event) => {
-                            event.preventDefault();
+                        if (!selectedMovieIds.includes(movie.id)) {
+                            selectedMovieIds.push(movie.id);
+                            
+                            const hiddenInput = document.createElement('input');
+                            hiddenInput.type = 'hidden';
+                            hiddenInput.name = 'movies[]';
+                            hiddenInput.value = movie.id;
+                            document.getElementById('movies').appendChild(hiddenInput);
+                            
+                            const selectedMovieTitle = document.createElement('p');
+                            selectedMovieTitle.textContent = movie.title;
+                            selectedMoviesContainer.appendChild(selectedMovieTitle);
+                            selectedMovieTitle.classList.add('tag', 'is-danger');
+                            
+                            const removeButton = document.createElement('button');
+                            removeButton.textContent = '取り消し';
+                            removeButton.className ="remove-button"
+                            removeButton.addEventListener('click', (event) => {
+                                event.preventDefault();
 
-                            const index = selectedMovieIds.indexOf(movie.id);
-                            selectedMovieIds.splice(index, 1);
-                            selectedMovies.value = selectedMovieIds.join(',');
-                            selectedMovieTitle.remove();
-                            removeButton.remove();
+                                const index = selectedMovieIds.indexOf(movie.id);
+                                selectedMovieIds.splice(index, 1);
+                                selectedMovieTitle.remove();
+                                removeButton.remove();
+                                
+                                // 選択された映画の隠しinput要素を削除する
+                                document.querySelector(`input[name="movies[]"][value="${movie.id}"]`).remove();
 
-                            selectButton.textContent = '選択';
-                            selectButton.disabled = false;
-                        });
-                        selectedMoviesContainer.appendChild(removeButton);
-                        selectButton.textContent = '選択済み';
-                        selectButton.disabled = true;
+                                selectButton.textContent = '選択';
+                                selectButton.disabled = false;
+                                
+                                if (selectedMoviesContainer.childElementCount === 0) {  // すべての映画が取り消された場合
+                                    selectedMoviesContainer.classList.remove('tag', 'is-danger');  // ← この行を追加
+                                }
+                            });
+                            selectedMoviesContainer.appendChild(removeButton);
+                            selectButton.textContent = '選択済み';
+                            selectButton.disabled = true;
+                        }
                     });
+
                     movieContainer.appendChild(selectButton);
     
-                    movieSearchResults.appendChild(movieContainer);
+                    searchResults.appendChild(movieContainer);
+    
                 });
-                if (currentPage < totalPages) {
-                    const nextPageButton = document.createElement('button');
-                    nextPageButton.textContent = '次へ';
-                    nextPageButton.addEventListener('click', (event) => {
-                        event.preventDefault();
-                        currentPage++;
-                        fetchMovies(query, currentPage);
-                    });
-                    movieSearchResults.appendChild(nextPageButton);
-                }
 
+                const paginationDiv = document.createElement('div');
+                paginationDiv.classList.add('pagination');
+                
                 if (currentPage > 1) {
                     const prevPageButton = document.createElement('button');
                     prevPageButton.textContent = '前へ';
@@ -93,8 +106,28 @@ document.addEventListener('DOMContentLoaded', () => {
                         currentPage--;
                         fetchMovies(query, currentPage);
                     });
-                    movieSearchResults.appendChild(prevPageButton);
+                    paginationDiv.appendChild(prevPageButton);
+                } else {
+                    // これが空の要素で、左側のボタンがない場合にスペースを埋める役割を果たします。
+                    paginationDiv.appendChild(document.createElement('div'));
                 }
+                
+                if (currentPage < totalPages) {
+                    const nextPageButton = document.createElement('button');
+                    nextPageButton.textContent = '次へ';
+                    nextPageButton.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        currentPage++;
+                        fetchMovies(query, currentPage);
+                    });
+                    paginationDiv.appendChild(nextPageButton);
+                } else {
+                    // これが空の要素で、右側のボタンがない場合にスペースを埋める役割を果たします。
+                    paginationDiv.appendChild(document.createElement('div'));
+                }
+
+                searchResults.appendChild(paginationDiv);
+
             });
     }
 });

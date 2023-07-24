@@ -16,7 +16,7 @@ class CreateRequest extends FormRequest
         return [
             'title' => 'required|string|max:50',
             'content' => 'required|string|max:255',
-            'movie' => 'nullable|integer'
+            'movie' => 'required|integer'
         ];
     }
 }

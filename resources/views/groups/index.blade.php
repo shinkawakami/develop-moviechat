@@ -1,40 +1,67 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <title>MovieChat - index</title>
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-    </head>
-    <body>
-        <x-app-layout>
-            <x-slot name="header">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    グループ一覧
-                </h2>
-            </x-slot>
-            
-            <div>
+
+<head>
+    <meta charset="utf-8">
+    <title>MovieChat - IndexGroup</title>
+    <!-- BulmaのCSSを追加 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link href="{{ asset('css/groups/index.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    <x-app-layout>
+        <section class="section">
+            <div class="container">
+                <h1 class="title">グループ一覧</h1>
+                
                 @foreach($groups as $group)
-                    <div>
-                        <a href="{{ route('groups.show', $group->id) }}">{{ $group->name }}</a>
+                <div class="box">
+                    <a href="{{ route('groups.show', $group->id) }}" class="group-link">{{ $group->name }}</a>
+                    <p>
+                        好きな映画：
+                        @foreach ($group->movies as $movie)
+                        <span class="tag is-danger">{{ $movie->title }}</span>
+                        @endforeach
+                    </p>
+                    <p>
+                        好きなジャンル：
+                        @foreach ($group->genres as $genre)
+                        <span class="tag is-primary">{{ $genre->name }}</span>
+                        @endforeach
+                    </p>
+                    <p>
+                        好きな年代：
+                        @foreach ($group->eras as $era)
+                        <span class="tag is-info">{{ $era->era }}</span>
+                        @endforeach
+                    </p>
+                    <p>
+                        使うプラットフォーム：
+                        @foreach ($group->platforms as $platform)
+                        <span class="tag is-warning">{{ $platform->name }}</span>
+                        @endforeach
+                    </p>
+                    
+                    @if($group->users->count() == $group->capacity)
+                    <div class="tag is-danger">満員</div>
+                    @endif
+                    
+                    <div class="buttons">
+                        @if($group->is_member)
+                        <a href="{{ route('chats.index', $group->id) }}" class="button is-link">チャット</a>
+                        @elseif(!$group->is_member && $group->users->count() < $group->capacity)
+                        <form action="{{ route('groups.join', $group->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="button is-success">参加</button>
+                        </form>
+                        @endif
                     </div>
-                    @foreach($group->movies as $movie)
-                        <h3>Movie: {{ $movie->title }}</h3>
-                    @endforeach
-                    @if($group->is_member)
-                        <a href="{{ route('chats.index', $group->id) }}">
-                            <button>チャット</button>
-                        </a>
-                    @endif
-                    @if(!$group->is_member && $group->users->count() < $group->capacity)
-                    <form action="{{ route('groups.join', $group->id) }}" method="POST">
-                        @csrf
-                        <button type="submit">参加</button>
-                    </form>
-                    @endif
+                </div>
                 @endforeach
             </div>
-        </x-app-layout>
-    </body>
+        </section>
+    </x-app-layout>
+</body>
+
 </html>

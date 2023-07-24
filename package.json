@@ -16,6 +16,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "bulma": "^0.9.4",
         "laravel-echo": "^1.15.1",
         "pusher-js": "^8.2.0"
     }
