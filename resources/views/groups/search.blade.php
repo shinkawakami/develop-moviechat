@@ -1,60 +1,95 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <title>MovieChat - Search</title>
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-    </head>
-    <body>
-        <x-app-layout>
-            <x-slot name="header">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    グループ検索
-                </h2>
-            </x-slot>
-            <div>
-                <div>
-                    <form method="GET" action="{{ route('groups.searchResults') }}">
-                        <label for="keyword">キーワード検索</label>
-                        <input type="text" name="keyword" required maxlength="50">
-                        <input type="submit" value="検索">
+
+<head>
+    <meta charset="utf-8">
+    <title>MovieChat - SearchGroup</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link href="{{ asset('css/groups/search.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    <x-app-layout>
+        <section class="section">
+            <div class="container">
+                <h1 class="title">グループ検索</h1>
+                
+                <!-- Keyword Search -->
+                <div class="box">
+                    <h2 class="subtitle">キーワード検索</h2>
+                    <form method="GET" action="{{ route('groups.searchResults') }}" class="field has-addons">
+                        <div class="control is-expanded">
+                            <input type="text" name="keyword" required maxlength="50" class="input" placeholder="キーワードを入力">
+                        </div>
+                        <div class="control">
+                            <input type="submit" value="検索" class="button is-info">
+                        </div>
                     </form>
                 </div>
-                <div>
-                    <h3>条件検索</h3>
+
+                <!-- Conditional Search -->
+                <div class="box">
+                    <h2 class="subtitle">条件検索</h2>
                     <form method="GET" action="{{ route('groups.searchResults') }}">
-                        <div>
-                            <label for="group-movie-era">映画の年代</label>
-                            <select name="eras[]" multiple>
-                                <option value="">年代を選択してください</option>
-                                @foreach ($eras as $era)
-                                    <option value="{{ $era->id }}">{{ $era->era }}</option>
-                                @endforeach
-                            </select> 
+                        <div class="columns">
+
+                            <!-- Genre Column -->
+                            <div class="column">
+                                <div class="field">
+                                    <label class="label">ジャンル</label>
+                                    <div class="control">
+                                        @foreach ($genres as $genre)
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="genres[]" value="{{ $genre->id }}">
+                                                {{ $genre->name }}
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Era Column -->
+                            <div class="column">
+                                <div class="field">
+                                    <label class="label">年代</label>
+                                    <div class="control">
+                                        @foreach ($eras as $era)
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="eras[]" value="{{ $era->id }}">
+                                                {{ $era->era }}
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Platform Column -->
+                            <div class="column">
+                                <div class="field">
+                                    <label class="label">プラットフォーム</label>
+                                    <div class="control">
+                                        @foreach ($platforms as $platform)
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="platforms[]" value="{{ $platform->id }}">
+                                                {{ $platform->name }}
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div> <!-- end columns -->
+
+                        <div class="field">
+                            <div class="control">
+                                <input type="submit" value="検索" class="button is-primary">
+                            </div>
                         </div>
-                        <div>
-                            <label for="group-movie-genre">ジャンル</label>
-                            <select name="genres[]" multiple>
-                                <option value="">ジャンルを選択してください</option>
-                                @foreach ($genres as $genre)
-                                    <option value="{{ $genre->id }}">{{ $genre->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div>
-                            <label for="group-movie-platform">視聴方法</label>
-                            <select name="platforms[]" multiple>
-                                <option value="">視聴方法を選択してください</option>
-                                @foreach ($platforms as $platform)
-                                    <option value="{{ $platform->id }}">{{ $platform->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <input type="submit" value="検索">
                     </form>
                 </div>
             </div>
-        </x-app-layout>
-    </body>
+        </section>
+    </x-app-layout>
+</body>
+
 </html>

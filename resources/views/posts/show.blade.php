@@ -3,47 +3,61 @@
     <head>
         <meta charset="utf-8">
         <title>MovieChat - Post Detail</title>
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <link href="{{ asset('css/posts/show.css') }}" rel="stylesheet"> 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     </head>
     <body>
         <x-app-layout>
-            <x-slot name="header">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    投稿詳細
-                </h2>
-            </x-slot>
-            <div>
-                <p>{{ $post->title }}</p>
-                <p>{{ $post->user->name }}</p>
-                @if($post->movie)
-                    <p>{{ $post->movie->title }}</p>
-                @endif
-                <p>{{ $post->content }}</p>
-                <p>
-                    @if (Auth::user()->id == $post->user_id)
-                        <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit">削除</button>
-                        </form>
-                        <div>
-                            <a href="{{ route('posts.edit', $post->id) }}">編集</a>
+            <section class="section">
+                <div class="container">
+
+                    <h1 class="title">投稿詳細</h1>
+
+                    <div class="post-card box">
+                        <div class="post-title"><strong>{{ $post->title }}</strong></div>
+                        <div class="user-info">
+                            <span class="icon"><i class="fa fa-user"></i></span>
+                            <span class="username">{{ $post->user->name }}</span>
                         </div>
-                    @endif
-                </p>
-            </div>
-            <!-- コメント表示 -->
-            @foreach ($post->comments as $comment)
-                <p>{{ $comment->user->name }}</p>
-                <p>{{ $comment->content }}</p>
-            @endforeach
-            <!-- コメント投稿フォーム -->
-            <form method="POST" action="{{ route('posts.comment', $post->id) }}">
-                @csrf
-                <textarea name="comment" placeholder="コメント" maxlength="255" required></textarea>
-                <input type="submit" value="コメント投稿">
-            </form>
+                        @if($post->movie)
+                            <div class="movie-info">
+                                <span class="icon"><i class="fa fa-film"></i></span>
+                                <span class="movie-title">{{ $post->movie->title }}</span>
+                            </div>
+                        @endif
+                        <p class="post-text">{{ $post->content }}</p>
+
+                        @if (Auth::user()->id == $post->user_id)
+                            <div class="control-buttons">
+                                <a href="{{ route('posts.edit', $post->id) }}" class="button is-warning">編集</a>
+                                <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="button is-dark" type="submit">投稿削除</button>
+                                </form>
+                            </div>
+                        @endif
+                    
+
+                        <form method="POST" action="{{ route('posts.comment', $post->id) }}" class="comment-form">
+                            @csrf
+                            <textarea class="textarea" name="comment" placeholder="コメント" maxlength="255" required></textarea>
+                            <input class="button is-primary" type="submit" value="コメント投稿">
+                        </form>
+                        
+                        @foreach ($post->comments as $comment)
+                            <div class="comment-card">
+                                <div class="user-info">
+                                    <span class="icon"><i class="fa fa-user"></i></span>
+                                    <span class="username">{{ $comment->user->name }}</span>
+                                </div>
+                                <p>{{ $comment->content }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </section>
         </x-app-layout>
     </body>
 </html>

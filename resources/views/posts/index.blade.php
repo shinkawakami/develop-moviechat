@@ -2,38 +2,55 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <title>MovieChat - Posts</title>
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <title>MovieChat - IndexPosts</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <link href="{{ asset('css/posts/index.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     </head>
     <body>
         <x-app-layout>
-            <x-slot name="header">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    掲示板
-                </h2>
-            </x-slot>
-            <!-- 検索フォーム -->
-            <div>
-                <form method="GET" action="{{ route('posts.search') }}">
-                    <input type="text" name="keyword" placeholder="キーワード検索" required maxlength="50">
-                    <input type="submit" value="検索">
-                </form>
-            </div>
-            <div>
-                <a href="{{ route('posts.create') }}">投稿する</a>  
-            </div>
-            <!-- 投稿一覧 -->
-            <div>
-                @foreach ($posts as $post)
-                    <p><a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a></p>
-                    <p>{{ $post->user->name }}</p>
-                    @if($post->movie)
-                        <p>{{ $post->movie->title }}</p>
-                    @endif
-                    <p>{{ $post->content }}</p>
-                @endforeach
-            </div>
+            <section class="section">
+                <div class="container">
+                    <h1 class="title">掲示板</h1>
+                    
+                    <a href="{{ route('posts.create') }}" class="button is-primary is-pulled-right">投稿する</a>
+                    
+                    <form method="GET" action="{{ route('posts.search') }}" class="field has-addons">
+                        <div class="control">
+                            <input class="input" type="text" name="keyword" placeholder="キーワード検索" required maxlength="50">
+                        </div>
+                        <div class="control">
+                            <input class="button is-info" type="submit" value="検索">
+                        </div>
+                    </form>
+
+                    @foreach ($posts as $post)
+                        <a href="{{ route('posts.show', $post->id) }}">
+                            <div class="post-card">
+                                <div>
+                                    <strong class="post-title">
+                                        {{ $post->title }}
+                                    </strong>
+                                </div>
+                                <div class="card-content">
+                                    <div class="user-info">
+                                        <span class="icon"><i class="fa fa-user"></i></span>
+                                        <span class="username">{{ $post->user->name }}</span>
+                                    </div>
+                                    @if($post->movie)
+                                        <div class="movie-info">
+                                            <span class="icon"><i class="fa fa-film"></i></span>
+                                            <span class="movie-title">{{ $post->movie->title }}</span>
+                                        </div>
+                                    @endif
+                                    <p class="post-text">{{ $post->content }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+
+                </div>
+            </section>
         </x-app-layout>
     </body>
 </html>

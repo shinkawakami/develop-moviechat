@@ -1,0 +1,36 @@
+.subtitle {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.message-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #f7fafc;
+}
+
+.message-content {
+    flex: 1; /* これによりメッセージ内容が最大幅を取るようになります */
+    margin-right: 10px;
+}
+
+.message-time {
+    margin-right: 10px;
+}
+
+.delete-form {
+    display: inline; /* formのblockスタイリングを削除 */
+}
+
+.content {
+    margin-top: 10px;
+}
+
+.field.has-addons {
+    margin-top: 10px;
+}

@@ -1,0 +1,120 @@
+.field > .control {
+    margin-bottom: 30px; /* コントロールの下のマージンを調整 */
+}
+
+.faint-note {
+    font-size: 80%;  /* 必要に応じてサイズを調整 */
+    color: #888;    /* 薄い色で表示 */
+    margin-left: 5px;
+}
+
+.subtitle {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.movie-container {
+    display: inline-block;
+    width: 30%; /* 3つのコンテナが横に並ぶ */
+    box-sizing: border-box;
+    padding: 1%;
+    vertical-align: top; /* インラインブロック要素の揃えを調整 */
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin: 1%;
+}
+
+.movie-title {
+    font-size: 20px;
+    text-align: center;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.movie-overview {
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+}
+
+.movie-container img {
+    width: 100%;
+    height: auto;
+}
+
+.remove-button {
+    font-size: 10px;
+    margin-right: 10px;
+}
+
+.movie-container button {
+    display: block;
+    margin: 10px auto;
+    padding: 5px 15px;
+    background-color: #2d3748;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.movie-container button:hover {
+    background-color: #4a5568;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.pagination > button:first-child {
+    margin-right: auto;
+}
+
+.pagination > button:last-child {
+    margin-left: auto;
+}
+
+.cancel-button {
+    width: 100%;
+}
+
+#buttons-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.message-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #f7fafc;
+}
+
+.message-content {
+    flex: 1; /* これによりメッセージ内容が最大幅を取るようになります */
+    margin-right: 10px;
+}
+
+.message-time {
+    margin-right: 10px;
+}
+
+.delete-form {
+    display: inline; /* formのblockスタイリングを削除 */
+}
+
+.content {
+    margin-top: 10px;
+}
+
+.field.has-addons {
+    margin-top: 10px;
+}

@@ -64,12 +64,12 @@ class GroupController extends Controller
         if (isset($validatedData['platforms'])) {
             $group->platforms()->attach($validatedData['platforms']);
         }
-        
-        $movieIds = explode(',', $validatedData['movies']);
-        $apiKey = config('tmdb.api_key');
-        
-        foreach ($movieIds as $movieId) {
-            if ($movieId !== '') {
+         
+        if (isset($validatedData['movies'])) {
+            $movieIds = $validatedData['movies'];
+            $apiKey = config('tmdb.api_key');
+           
+            foreach ($movieIds as $movieId) {
                 $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
                 $movieData = $response->json();
         
@@ -79,6 +79,7 @@ class GroupController extends Controller
                 );
         
                 $group->movies()->attach($movie->id);
+                
             }
         }
         return redirect()->route('groups.index', $group);
@@ -105,35 +106,59 @@ class GroupController extends Controller
                 $query->where('title', 'like', '%' . $keyword . '%');
             })->orWhere('name', 'like', '%' . $keyword . '%');
         }
-    
-        if (isset($validatedData['eras'])) {
-            $eraIds = array_filter($validatedData['eras']);
-            
-            if (!empty($eraIds)) {
-                $groups->whereHas('eras', function ($query) use ($eraIds) {
-                $query->whereIn('era_id', $eraIds);
-                });
-            }
+        
+        if (isset($validatedData['genres'])) {
+            $genreIds = $validatedData['genres'];
+            $countGenreIds = count($genreIds);
+        
+            $groups->where(function ($query) use ($genreIds, $countGenreIds) {
+                foreach ($genreIds as $id) {
+                    $query->whereHas('genres', function ($subQuery) use ($id) {
+                        $subQuery->where('genre_id', $id);
+                    });
+                }
+        
+                // 以下のコードは、指定されたグループの年代がユーザーが選択した年代より多い場合もOKであることを確認します。
+                $query->whereHas('genres', function ($subQuery) use ($genreIds) {
+                    $subQuery->whereIn('genre_id', $genreIds);
+                }, '>=', $countGenreIds);
+            });
         }
     
-        if (isset($validatedData['genres'])) {
-            $genreIds = array_filter($validatedData['genres']);
+        if (isset($validatedData['eras'])) {
+            $eraIds = $validatedData['eras'];
+            $countEraIds = count($eraIds);
         
-            if (!empty($genreIds)) {
-                $groups->whereHas('genres', function ($query) use ($genreIds) {
-                    $query->whereIn('genre_id', $genreIds);
-                });
-            }
+            $groups->where(function ($query) use ($eraIds, $countEraIds) {
+                foreach ($eraIds as $id) {
+                    $query->whereHas('eras', function ($subQuery) use ($id) {
+                        $subQuery->where('era_id', $id);
+                    });
+                }
+        
+                // 以下のコードは、指定されたグループの年代がユーザーが選択した年代より多い場合もOKであることを確認します。
+                $query->whereHas('eras', function ($subQuery) use ($eraIds) {
+                    $subQuery->whereIn('era_id', $eraIds);
+                }, '>=', $countEraIds);
+            });
         }
         
         if (isset($validatedData['platforms'])) {
-            $platformIds = array_filter($validatedData['platforms']);
+            $platformIds = $validatedData['platforms'];
+            $countPlatformIds = count($platformIds);
         
-            if (!empty($platformIds)) {
-                $groups->whereHas('platforms', function ($query) use ($platformIds) {
-                    $query->whereIn('platform_id', $platformIds);
-                });
-            }
+            $groups->where(function ($query) use ($platformIds, $countPlatformIds) {
+                foreach ($platformIds as $id) {
+                    $query->whereHas('platforms', function ($subQuery) use ($id) {
+                        $subQuery->where('platform_id', $id);
+                    });
+                }
+        
+                // 以下のコードは、指定されたグループの年代がユーザーが選択した年代より多い場合もOKであることを確認します。
+                $query->whereHas('platforms', function ($subQuery) use ($platformIds) {
+                    $subQuery->whereIn('platform_id', $platformIds);
+                }, '>=', $countPlatformIds);
+            });
         }
     
         $groups = $groups->get();
@@ -166,7 +191,9 @@ class GroupController extends Controller
     
     public function show($groupId)
     {
-        $group = Group::findOrFail($groupId);
+        $group = Group::with('users')->findOrFail($groupId);
+        $group->setAttribute('is_member', $group->users->contains(Auth::id()));
+        
         return view('groups.show', compact('group'));
     }
     
@@ -229,34 +256,52 @@ class GroupController extends Controller
         $group->capacity = $validatedData['group_capacity'];
         $group->save();
         
-        $genres = $validatedData['genres'] ?? [];
-        $eras = $validatedData['eras'] ?? [];
-        $platforms = $validatedData['platforms'] ?? [];
+        if (isset($validatedData['genres'])) {
+            $group->genres()->sync($validatedData['genres']);
+        } else {
+            $group->genres()->detach();
+        }
     
-        $group->genres()->sync($genres);
-        $group->eras()->sync($eras);
-        $group->platforms()->sync($platforms);
+        if (isset($validatedData['eras'])) {
+            $group->eras()->sync($validatedData['eras']);
+        } else {
+            $group->eras()->detach();
+        }
     
-        $movieIds = isset($validatedData['movies']) ? explode(',', $validatedData['movies']) : [];
-        $apiKey = config('tmdb.api_key');
-        $attachedMovieIds = [];
-    
-        foreach ($movieIds as $movieId) {
-            if ($movieId !== '') {
+        if (isset($validatedData['platforms'])) {
+            $group->platforms()->sync($validatedData['platforms']);
+        } else {
+            $group->platforms()->detach();
+        }
+        if (isset($validatedData['movies'])) {
+            $movieIds = $validatedData['movies'];
+            $existingMovieIds = $group->movies->pluck('tmdb_id')->toArray();
+
+            // 削除すべき映画のIDを取得
+            $moviesToDetach = array_diff($existingMovieIds, $movieIds);
+            if (!empty($moviesToDetach)) {
+                $dbIdsToDetach = Movie::whereIn('tmdb_id', $moviesToDetach)->pluck('id')->toArray();
+                $group->movies()->detach($dbIdsToDetach);
+            }
+        
+            $newMovieIds = array_diff($movieIds, $existingMovieIds);
+            $apiKey = config('tmdb.api_key');
+        
+            foreach ($newMovieIds as $movieId) {
                 $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
                 $movieData = $response->json();
-    
+        
                 $movie = Movie::firstOrCreate(
                     ['tmdb_id' => $movieData['id']],
                     ['title' => $movieData['title']]
                 );
-    
-                array_push($attachedMovieIds, $movie->id);
+                
+                $group->movies()->attach($movie->id);
             }
+        } else {
+            $group->movies()->detach();
         }
-    
-        $group->movies()->sync($attachedMovieIds);
-    
+
         return redirect()->route('groups.show', $group);
     }
     
