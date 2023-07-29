@@ -86,7 +86,7 @@
     
                         <div class="field is-grouped is-grouped-right">
                             <div class="control">
-                                <button type="submit" class="button is-primary">作成</button>
+                                <button type="submit" class="button is-primary">更新</button>
                             </div>
                         </div>
                     </form>

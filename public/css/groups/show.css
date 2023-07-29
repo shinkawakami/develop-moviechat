@@ -16,4 +16,18 @@
     margin-top: 10px; /* 上に余白を追加 */
 }
 
+.flex-container {
+    display: flex;
+    align-items: center; /* 縦方向中央に配置 */
+}
 
+.rounded-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px; /* 画像と名前の間に少し間隔を開けます */
+}
+
+.user-name {
+    margin-right: 10px; /* 名前とボタンの間に少し間隔を開けます */
+}

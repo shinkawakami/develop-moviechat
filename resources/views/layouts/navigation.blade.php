@@ -12,23 +12,17 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="route('movies.index')" :active="request()->routeIs('movies.index')">
+                        {{ __('映画一覧') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
-                        {{ __('Home') }}
+                    <x-nav-link :href="route('groups.index')" :active="request()->routeIs('groups.index')">
+                        {{ __('グループ一覧') }}
                     </x-nav-link>
                     <x-nav-link :href="route('groups.create')" :active="request()->routeIs('groups.create')">
                         {{ __('グループ作成') }}
                     </x-nav-link>
                     <x-nav-link :href="route('groups.showSearch')" :active="request()->routeIs('groups.showSearch')">
                         {{ __('グループ検索') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('groups.index')" :active="request()->routeIs('groups.index')">
-                        {{ __('グループ一覧') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('movies.index')" :active="request()->routeIs('movies.index')">
-                        {{ __('映画一覧') }}
                     </x-nav-link>
                     <x-nav-link :href="route('groups.myGroups')" :active="request()->routeIs('groups.myGroups')">
                         {{ __('自分のグループ') }}

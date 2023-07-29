@@ -23,6 +23,7 @@ class UpdateRequest extends FormRequest
             'platforms' => ['nullable', 'array', 'exists:platforms,id'],  
             'eras' => ['nullable', 'array', 'exists:eras,id'], 
             'introduction' => ['nullable', 'string'],
+            'image' => ['nullable'],
         ];
     }
 }
