@@ -17,7 +17,7 @@
                     <div class="post-card box">
                         <div class="post-title"><strong>{{ $post->title }}</strong></div>
                         <div class="user-info">
-                            <span class="icon"><i class="fa fa-user"></i></span>
+                            <span><img src="{{ $post->user->image_url }}" alt="Profile Image" class="rounded-icon"></span>
                             <span class="username">{{ $post->user->name }}</span>
                         </div>
                         @if($post->movie)
@@ -49,7 +49,7 @@
                         @foreach ($post->comments as $comment)
                             <div class="comment-card">
                                 <div class="user-info">
-                                    <span class="icon"><i class="fa fa-user"></i></span>
+                                    <span><img src="{{ $comment->user->image_url }}" alt="Profile Image" class="rounded-icon"></span>
                                     <span class="username">{{ $comment->user->name }}</span>
                                 </div>
                                 <p>{{ $comment->content }}</p>

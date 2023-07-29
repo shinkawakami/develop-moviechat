@@ -153,13 +153,24 @@ document.addEventListener('DOMContentLoaded', () => {
         removeButton.className = "remove-button";
         removeButton.addEventListener('click', (event) => {
             event.preventDefault();
-    
+            
             const index = selectedMovieIds.indexOf(movie.tmdb_id);
             selectedMovieIds.splice(index, 1);
             selectedMovieTitle.remove();
             removeButton.remove();
     
             document.querySelector(`input[name="movies[]"][value="${movie.tmdb_id}"]`).remove();
+            
+            const movieInSearchResults = [...document.querySelectorAll('.movie-container .movie-title')].find(el => el.textContent === movie.title);
+                if (movieInSearchResults) {
+                    const correspondingSelectButton = movieInSearchResults.parentElement.querySelector('button');
+                    correspondingSelectButton.textContent = '選択';
+                    correspondingSelectButton.disabled = false;
+                }
+            
+                if (selectedMoviesContainer.childElementCount === 0) {  
+                    selectedMoviesContainer.classList.remove('tag', 'is-danger');  
+                }
         });
         selectedMoviesContainer.appendChild(removeButton);
     }

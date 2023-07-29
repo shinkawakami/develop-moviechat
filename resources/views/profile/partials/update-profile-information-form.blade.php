@@ -6,6 +6,8 @@
         <!-- Select2 CSS -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
         
+        <link href="{{ asset('css/auth/edit.css') }}" rel="stylesheet">
+        
         <!-- Select2 JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
         
@@ -22,7 +24,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
@@ -30,6 +32,14 @@
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        </div>
+        
+        <img src="{{ $user->image_url }}" alt="Profile Image" class="rounded-icon">
+        
+        <div>
+            <x-input-label for="profile_image" :value="__('Profile Image')" />
+            <input type="file" id="profile_image" name="image" class="mt-1 block w-full">
+            <x-input-error class="mt-2" :messages="$errors->get('profile_image')" />
         </div>
         
         <div>

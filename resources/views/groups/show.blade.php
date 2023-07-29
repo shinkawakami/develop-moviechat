@@ -26,13 +26,14 @@
                         <p><strong>グループメンバー</strong></p>
                         <ul>
                             @foreach ($group->users as $user)
-                            <li>
-                                {{ $user->name }}
+                            <li class="flex-container">
+                                <img src="{{ $user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                <span class="user-name">{{ $user->name }}</span>
                                 @if (Auth::user()->id == $group->owner_id && Auth::user()->id != $user->id)
-                                    <form action="{{ route('groups.removeUser', ['group' => $group->id, 'user' => $user->id]) }}" method="POST" class="is-inline">
-                                        @csrf
-                                        <button class="button is-small" type="submit">退会させる</button>
-                                    </form>
+                                <form action="{{ route('groups.removeUser', ['group' => $group->id, 'user' => $user->id]) }}" method="POST" class="remove-user-form">
+                                    @csrf
+                                    <button class="button is-small" type="submit">退会させる</button>
+                                </form>
                                 @endif
                             </li>
                             @endforeach
