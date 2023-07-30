@@ -10,8 +10,6 @@ use App\Http\Requests\Chat\SendRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\MessageSent;
-use App\Events\RequestSent;
-use App\Events\ApproveSent;
 
 
 class ChatController extends Controller
@@ -51,8 +49,8 @@ class ChatController extends Controller
         $chatMessage->user()->associate($user);
         $chatMessage->group()->associate($group);
         $chatMessage->save();
-    
-        event(new MessageSent($chatMessage)); // メッセージ送信イベントを発行
+        
+        event(new MessageSent($chatMessage));
     
         return redirect()->back();
     }

@@ -99,16 +99,13 @@
 }
 
 .message-content {
-    flex: 1; /* これによりメッセージ内容が最大幅を取るようになります */
-    margin-right: 10px;
-}
-
-.message-time {
-    margin-right: 10px;
+    display: flex;          /* Flexboxを適用 */
+    align-items: center; 
 }
 
 .delete-form {
     display: inline; /* formのblockスタイリングを削除 */
+    margin-left: 5px;
 }
 
 .content {
@@ -117,4 +114,11 @@
 
 .field.has-addons {
     margin-top: 10px;
+}
+
+.rounded-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
 }
