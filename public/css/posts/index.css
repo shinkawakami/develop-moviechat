@@ -39,3 +39,9 @@
 .post-text {
     margin-top: 10px;
 }
+
+.rounded-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}

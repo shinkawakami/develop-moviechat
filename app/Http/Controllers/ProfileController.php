@@ -13,6 +13,7 @@ use App\Models\Genre;
 use App\Models\Platform;
 use App\Models\Era;
 use App\Models\Movie;
+use Cloudinary;
 
 
 class ProfileController extends Controller
@@ -31,6 +32,8 @@ class ProfileController extends Controller
         $user->platforms = $user->platforms->pluck('id')->toArray();
         $user->eras = $user->eras->pluck('id')->toArray();
         
+        
+        
         return view('profile.edit', compact('user', 'genres', 'platforms', 'eras'));
     }
 
@@ -46,6 +49,10 @@ class ProfileController extends Controller
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
+        }
+        
+        if ($request->image) {
+            $user->image_url = Cloudinary::upload($request->image->getRealPath())->getSecurePath();
         }
         
         $apiKey = config('tmdb.api_key');
@@ -98,6 +105,6 @@ class ProfileController extends Controller
     
     public function home()
     {
-        return view('home');
+        return Redirect::route('movies.index');
     }
 }

@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="card-content">
                                     <div class="user-info">
-                                        <span class="icon"><i class="fa fa-user"></i></span>
+                                        <span><img src="{{ $post->user->image_url }}" alt="Profile Image" class="rounded-icon"></span>
                                         <span class="username">{{ $post->user->name }}</span>
                                     </div>
                                     @if($post->movie)

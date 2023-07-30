@@ -41,9 +41,8 @@ class PostController extends Controller
     {
         $validatedData = $request->validated();
     
-        // Create a new post
         $post = new Post;
-        $post->user_id = Auth::id(); // Get the currently authenticated user's ID
+        $post->user_id = Auth::id();
         $post->title = $validatedData['title'];
         $post->content = $validatedData['content'];
         

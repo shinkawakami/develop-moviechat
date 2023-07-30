@@ -21,8 +21,8 @@
         
                         <label class="label">映画<span class="faint-note">(検索して選択)</span></label>
                         <div id="selected-movie" class="field"></div>
-        
-                        <input type="hidden" name="movie" id="movie">
+         
+                        <input type="hidden" name="movie" id="movie"> 
         
                         <div class="field">
                             <textarea class="textarea" name="content" placeholder="内容" maxlength="255" required></textarea>

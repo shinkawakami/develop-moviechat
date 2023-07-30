@@ -19,17 +19,20 @@
                     <div class="content">
                         @foreach ($group->messages as $message)
                         <div class="message-item">
-                            <span class="message-content">
-                                {{ $message->user->name }}: {{ $message->content }}
-                            </span>
-                            <span class="message-time">{{ $message->created_at }}</span>
-                            @if($message->user_id == Auth::id())
-                            <form action={{ route('chats.destroy', ['group' => $group->id, 'message' => $message->id]) }} method="POST" class="delete-form">
-                                @csrf
-                                @method('DELETE')
-                                <button class="delete-message" type="submit">削除</button>
-                            </form>
+                            <div class="message-content">
+                                <img src="{{ $message->user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                <span>{{ $message->user->name }}: {{ $message->content }}</span>
+                            </div>
+                            <div class="message-time">
+                                {{ $message->created_at }}
+                                @if($message->user_id == Auth::id())
+                                <form action={{ route('chats.destroy', ['group' => $group->id, 'message' => $message->id]) }} method="POST" class="delete-form">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="delete-message" type="submit">削除</button>
+                                </form>
                             @endif
+                            </div>
                         </div>
                         @endforeach
                     </div>
@@ -71,7 +74,7 @@
                     </form>
                     
                     <button id="viewing-toggle-btn" class="button is-primary">同時視聴</button>
-    
+                        
                     <div id="viewing-section" style="display: none;" class="box">
                         <form action="{{ route('viewings.request', $group->id) }}" method="POST">
                             @csrf
@@ -107,6 +110,13 @@
                 </div>
             </div>
         </section>
+        <script>
+            window.CURRENT_GROUP_ID = {{ $group->id }};
+            window.PUSHER_APP_KEY = "{{ env('PUSHER_APP_KEY') }}";
+            window.PUSHER_APP_CLUSTER = "{{ env('PUSHER_APP_CLUSTER') }}";
+        </script>
+        <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+        <script src="{{ asset('js/chat.js') }}"></script>
         <script src="{{ asset('js/indexChat.js') }}"></script>
     </x-app-layout>
 </body>
