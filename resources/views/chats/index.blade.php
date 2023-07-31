@@ -112,6 +112,8 @@
         </section>
         <script>
             window.CURRENT_GROUP_ID = {{ $group->id }};
+            window.AUTH_ID = {{ Auth::id() }};
+            window.CSRF_TOKEN = "{{ csrf_token() }}";
             window.PUSHER_APP_KEY = "{{ env('PUSHER_APP_KEY') }}";
             window.PUSHER_APP_CLUSTER = "{{ env('PUSHER_APP_CLUSTER') }}";
         </script>
