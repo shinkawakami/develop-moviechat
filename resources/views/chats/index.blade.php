@@ -4,19 +4,12 @@
 <head>
     <meta charset="utf-8">
     <title>MovieChat - Chat</title>
-    
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link href="{{ asset('css/chats/index.css') }}" rel="stylesheet">
 </head>
 
 <body>
     <x-app-layout>
-        <x-slot name="header">
-        <meta charset="utf-8">
-        <title>Blog</title>
-        <!-- Fonts -->
-        <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-        Blog
-        </x-slot>
         <section class="section">
             <div class="container">
                 <h1 class="title">チャット</h1>
