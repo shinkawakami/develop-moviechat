@@ -49,7 +49,7 @@
                             <button class="button is-success" type="submit">承諾する</button>
                         </form>
                         @endif
-                        @if($viewing->approvers->contains(Auth::id()))
+                        @if($viewing->is_requester || $viewing->approvers->contains(Auth::id()))
                         <a href="{{ $viewing->url }}">視聴先</a>
                         @endif
                         @if($viewing->is_requester || $group->is_owner)
