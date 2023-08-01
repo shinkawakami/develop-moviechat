@@ -1,28 +1,28 @@
+// データの取得
+fetch('/moviechat/groups/receive')
+    .then(response => response.json())
+    .then(data => {
+        window.authId = data.auth_id;
+        window.csrfToken = data.csrf_token;
+        window.pusherAppKey = data.pusher_app_key;
+        window.pusherAppCluster = data.pusher_app_cluster;
+    })
+
 // Pusherの初期化
-const pusher = new Pusher(pusherAppKey, {
-    cluster: pusherAppCluster,
+const pusher = new Pusher(window.pusherAppKey, {
+    cluster: window.pusherAppCluster,
     encrypted: true
 });
 
 // このユーザーが現在のグループに参加しているチャンネルを購読
 const channel = pusher.subscribe('group.' + window.groupId);
 
-// データの取得
-fetch('/moviechat/groups/receive')
-    .then(response => response.json())
-    .then(data => {
-        authId = data.auth_id;
-        csrfToken = data.csrf_token;
-        pusherAppKey = data.pusher_app_key;
-        pusherAppCluster = data.pusher_app_cluster;
-    })
-
 channel.bind('App\\Events\\MessageSent', function(data) {
     let deleteButton = '';
-    if (data.message.user_id == authId) {
+    if (data.message.user_id == window.authId) {
         deleteButton = `
             <form action="/moviechat/groups/${window.groupId}/chats/${data.message.id}" method="POST" class="delete-form">
-                <input type="hidden" name="_token" value="${csrfToken}">  
+                <input type="hidden" name="_token" value="${window.csrfToken}">  
                 <input type="hidden" name="_method" value="DELETE">
                 <button class="delete-message" type="submit">削除</button>
             </form>
