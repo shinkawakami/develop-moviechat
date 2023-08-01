@@ -55,7 +55,8 @@ class ChatController extends Controller
         return redirect()->back();
     }
     
-    public function receive() {
+    public function receive() 
+    {
         return response()->json([
             'auth_id' => Auth::id(),
             'csrf_token' => csrf_token(),
