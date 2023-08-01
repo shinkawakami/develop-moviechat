@@ -1,5 +1,5 @@
 // Pusherの初期化
-const pusher = new Pusher(pusherAppKe, {
+const pusher = new Pusher(pusherAppKey, {
     cluster: pusherAppCluster,
     encrypted: true
 });
