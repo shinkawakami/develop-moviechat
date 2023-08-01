@@ -58,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
             
             Route::get('/{group}/chats', [ChatController::class, 'index'])->name('chats.index');
             Route::post('/{group}/chats', [ChatController::class, 'send'])->name('chats.send');
+            Route::get('/receive',  [ChatController::class, 'receve'])->name('chats.receve');
             Route::delete('{group}/chats/{message}', [ChatController::class, 'destroy'])->name('chats.destroy');
              
             Route::post('/{group}/viewings/request', [ViewingController::class, 'request'])->name('viewings.request');

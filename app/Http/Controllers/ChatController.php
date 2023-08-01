@@ -55,6 +55,16 @@ class ChatController extends Controller
         return redirect()->back();
     }
     
+    public function receive() {
+        return response()->json([
+            'auth_id' => Auth::id(),
+            'csrf_token' => csrf_token(),
+            'pusher_app_key' => config('broadcasting.connections.pusher.key'),
+            'pusher_app_cluster' => config('broadcasting.connections.pusher.options.cluster')
+        ]);
+    }
+
+    
     public function destroy($groupId, $messageId)
     {
         $group = Group::findOrFail($groupId);
