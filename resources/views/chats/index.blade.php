@@ -110,6 +110,9 @@
                 </div>
             </div>
         </section>
+        <script>
+            window.groupId = @json($group->id);
+        </script>
         <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
         <script src="{{ asset('js/chat.js') }}"></script>
         <script src="{{ asset('js/indexChat.js') }}"></script>
