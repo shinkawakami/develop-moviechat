@@ -1,9 +1,3 @@
-// グループIDの取得
-const routeValue = "{{ route('groups.show') }}";
-const linkElement = document.querySelector(`a[href*='${routeValue}']`);
-
-const groupId = linkElement.href.split('/').pop();
-
 // Pusherの初期化
 const pusher = new Pusher(pusherAppKe, {
     cluster: pusherAppCluster,
@@ -11,7 +5,7 @@ const pusher = new Pusher(pusherAppKe, {
 });
 
 // このユーザーが現在のグループに参加しているチャンネルを購読
-const channel = pusher.subscribe('group.' + groupId);
+const channel = pusher.subscribe('group.' + window.groupId);
 
 // データの取得
 fetch('/moviechat/groups/receive')
@@ -27,7 +21,7 @@ channel.bind('App\\Events\\MessageSent', function(data) {
     let deleteButton = '';
     if (data.message.user_id == authId) {
         deleteButton = `
-            <form action="/moviechat/groups/${groupId}/chats/${data.message.id}" method="POST" class="delete-form">
+            <form action="/moviechat/groups/${window.groupId}/chats/${data.message.id}" method="POST" class="delete-form">
                 <input type="hidden" name="_token" value="${csrfToken}">  
                 <input type="hidden" name="_method" value="DELETE">
                 <button class="delete-message" type="submit">削除</button>
