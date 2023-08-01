@@ -110,13 +110,6 @@
                 </div>
             </div>
         </section>
-        <script>
-            window.CURRENT_GROUP_ID = {{ $group->id }};
-            window.AUTH_ID = {{ Auth::id() }};
-            window.CSRF_TOKEN = "{{ csrf_token() }}";
-            window.PUSHER_APP_KEY = "{{ env('PUSHER_APP_KEY') }}";
-            window.PUSHER_APP_CLUSTER = "{{ env('PUSHER_APP_CLUSTER') }}";
-        </script>
         <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
         <script src="{{ asset('js/chat.js') }}"></script>
         <script src="{{ asset('js/indexChat.js') }}"></script>
