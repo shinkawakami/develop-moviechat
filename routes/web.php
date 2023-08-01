@@ -19,6 +19,9 @@ use App\Http\Controllers\ViewingController;
 |
 */
 
+Route::get('/moviechat/groups/receive', [ChatController::class, 'receive']);
+
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [ProfileController::class, 'home'])->name('home');
     
@@ -36,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('moviechat')->group(function () {
         Route::prefix('groups')->group(function () {
             Route::get('/', [GroupController::class, 'index'])->name('groups.index');
+            
             Route::get('/create', [GroupController::class, 'create'])->name('groups.create');
             Route::post('/create', [GroupController::class, 'store'])->name('groups.store');
             
@@ -56,9 +60,11 @@ Route::middleware(['auth'])->group(function () {
             
             Route::delete('/{group}', [GroupController::class, 'destroy'])->name('groups.destroy');
             
+            //Route::get('/receive', [ChatController::class, 'receive'])->name('chats.receive');
+            
             Route::get('/{group}/chats', [ChatController::class, 'index'])->name('chats.index');
             Route::post('/{group}/chats', [ChatController::class, 'send'])->name('chats.send');
-            Route::get('/receive',  [ChatController::class, 'receve'])->name('chats.receve');
+
             Route::delete('{group}/chats/{message}', [ChatController::class, 'destroy'])->name('chats.destroy');
              
             Route::post('/{group}/viewings/request', [ViewingController::class, 'request'])->name('viewings.request');
