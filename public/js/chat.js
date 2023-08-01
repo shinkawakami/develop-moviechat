@@ -1,5 +1,6 @@
 // グループIDの取得
-const linkElement = document.querySelector("a[href^='{{ route('groups.show') }}']");
+const routeValue = "{{ route('groups.show') }}";
+const linkElement = document.querySelector(`a[href*='${routeValue}']`);
 
 const groupId = linkElement.href.split('/').pop();
 
