@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>MovieChat - {{ $movie['title'] }}</title>
+    <title>MovieChat - DetailMovie</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link href="{{ asset('css/movies/show.css') }}" rel="stylesheet">
 </head>
