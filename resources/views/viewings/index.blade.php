@@ -11,7 +11,10 @@
         <x-app-layout>
         <section class="section">
             <div class="container">
-                <h1 class="title">同時視聴用チャット</h1>
+                <div class="header-flex">
+                    <h1 class="title">同時視聴用チャット</h1>
+                    <a class="return-button" href="{{ route('chats.index', $group->id) }}">戻る</a>
+                </div>
                 <div class="box">
                     <a class="title" href="{{ route('groups.show', $group->id) }}">{{ $group->name }}</a>
     
