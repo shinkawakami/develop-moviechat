@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>MovieChat - ShowGroup</title>
     <!-- Bulma CSS Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link href="{{ asset('css/groups/show.css') }}" rel="stylesheet">
 </head>
@@ -27,7 +28,11 @@
                         <ul>
                             @foreach ($group->users as $user)
                             <li class="flex-container">
-                                <img src="{{ $user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                @if(empty($user->image_url))
+                                    <i class="fas fa-user rounded-icon"></i>
+                                @else
+                                    <img src="{{ $user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                @endif
                                 <span class="user-name">{{ $user->name }}</span>
                                 @if (Auth::user()->id == $group->owner_id && Auth::user()->id != $user->id)
                                 <form action="{{ route('groups.removeUser', ['group' => $group->id, 'user' => $user->id]) }}" method="POST" class="remove-user-form">
