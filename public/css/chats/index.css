@@ -121,4 +121,23 @@
     height: 50px;
     border-radius: 50%;
     margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black; /* これが背景を黒にする */
+    color: white; /* アイコンの色を白に設定 */
+    overflow: hidden; /* もしアイコンが円形の外側にはみ出る場合のため */
+}
+
+.group-link {
+    display: block;  /* ブロック要素として表示することで縦方向のマージンが適用可能になります */
+    margin-bottom: 15px;  /* 下部に15pxのマージンを追加 */
+    font-size: 30px;
+    color: #007BFF;
+    font-weight: bold; /* 太字にする */
+}
+
+.group-link:hover {
+    color: #0056b3; /* より濃いブルーに変更してホバーエフェクトを追加 */
+    text-decoration: underline; /* 下線を追加 */
 }

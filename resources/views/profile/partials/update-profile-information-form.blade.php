@@ -4,6 +4,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         
         <!-- Select2 CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
         
         <link href="{{ asset('css/auth/edit.css') }}" rel="stylesheet">
@@ -34,7 +35,11 @@
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
         
-        <img src="{{ $user->image_url }}" alt="Profile Image" class="rounded-icon">
+        @if(empty($user->image_url))
+            <i class="fas fa-user rounded-icon"></i>
+        @else
+            <img src="{{ $user->image_url }}" alt="Profile Image" class="rounded-icon">
+        @endif
         
         <div>
             <x-input-label for="profile_image" :value="__('Profile Image')" />
