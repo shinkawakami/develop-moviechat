@@ -96,7 +96,7 @@
                             </div>
                             <div class="field has-addons">
                                 <div class="control">
-                                    <input class="input" type="text" id="movie-search" placeholder="映画検索">
+                                    <input class="input" type="text" id="movie-search" placeholder="キーワードを入力">
                                 </div>
                                 <div class="control">
                                     <button class="button is-info" id="search-btn">検索</button>

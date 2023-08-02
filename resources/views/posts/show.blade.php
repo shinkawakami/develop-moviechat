@@ -48,7 +48,7 @@
 
                         <form method="POST" action="{{ route('posts.comment', $post->id) }}" class="comment-form">
                             @csrf
-                            <textarea class="textarea" name="comment" placeholder="コメント" maxlength="255" required></textarea>
+                            <textarea class="textarea" name="comment" placeholder="コメントを入力" maxlength="255" required></textarea>
                             <input class="button is-primary" type="submit" value="コメント投稿">
                         </form>
                         
