@@ -29,10 +29,15 @@ fetch(url)
                 `;
             }
 
+            // 画像URLが存在しない場合はアイコンを表示、存在する場合は<img>タグを使用
+            const profileImageOrIcon = data.message.user.image_url ? 
+                `<img src="${data.message.user.image_url}" alt="Profile Image" class="rounded-icon">` : 
+                '<i class="fas fa-user rounded-icon"></i>';
+
             const messageElement = `
                 <div class="message-item">
                     <div class="message-content">
-                        <img src="${data.message.user.image_url}" alt="Profile Image" class="rounded-icon">
+                        ${profileImageOrIcon}
                         <span>${data.message.user.name}: ${data.message.content}</span>
                     </div>
                     <div class="message-time">
@@ -44,6 +49,4 @@ fetch(url)
 
             document.querySelector(".content").innerHTML += messageElement;
         });
-
     })
-    
