@@ -1,9 +1,21 @@
 .post-card {
-    background-color: #ffffff;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
-    margin-bottom: 20px;
+    display: block;  /* ブロック要素として表示 */
+    padding: 10px 15px;  /* パディングを付けて内容をちょっと浮かせる */
+    margin-bottom: 20px;  /* 各post-cardの間に余白を作る */
+    border: 1px solid #e0e0e0;  /* 薄いボーダーを付ける */
+    border-radius: 5px;  /* 角を少し丸める */
+    background-color: #ffffff;  /* 基本の背景色 */
+    transition: background-color 0.3s, transform 0.2s;  /* ホバーエフェクトのアニメーション設定 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 影を付けて浮き上がった印象にする */
+    text-decoration: none;  /* 下線を消す */
+    color: inherit;  /* リンクの色を元の色に保持する */
+}
+
+/* post-cardをホバーした時のスタイル */
+.post-card:hover {
+    background-color: #f5f5f5;  /* 背景色を変更 */
+    transform: translateY(-5px);  /* 少し上に浮かせる */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* 影のサイズを大きくしてさらに浮き上がった印象にする */
 }
 
 .post-title {
@@ -44,4 +56,11 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black; /* これが背景を黒にする */
+    color: white; /* アイコンの色を白に設定 */
+    overflow: hidden; /* もしアイコンが円形の外側にはみ出る場合のため */
 }

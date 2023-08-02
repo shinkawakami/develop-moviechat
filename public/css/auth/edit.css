@@ -2,6 +2,11 @@
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    object-fit: cover;
-    overflow: hidden;
+    margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black; /* これが背景を黒にする */
+    color: white; /* アイコンの色を白に設定 */
+    overflow: hidden; /* もしアイコンが円形の外側にはみ出る場合のため */
 }

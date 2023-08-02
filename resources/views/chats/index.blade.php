@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>MovieChat - Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link href="{{ asset('css/chats/index.css') }}" rel="stylesheet">
 </head>
@@ -14,13 +15,17 @@
             <div class="container">
                 <h1 class="title">チャット</h1>
                 <div class="box">
-                    <a class="title" href="{{ route('groups.show', $group->id) }}">{{ $group->name }}</a>
+                    <a href="{{ route('groups.show', $group->id) }}" class="group-link">{{ $group->name }}</a>
     
                     <div class="content">
                         @foreach ($group->messages as $message)
                         <div class="message-item">
                             <div class="message-content">
-                                <img src="{{ $message->user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                @if(empty($message->user->image_url))
+                                    <i class="fas fa-user rounded-icon"></i>
+                                @else
+                                    <img src="{{ $message->user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                @endif
                                 <span>{{ $message->user->name }}: {{ $message->content }}</span>
                             </div>
                             <div class="message-time">
