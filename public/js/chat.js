@@ -3,7 +3,7 @@ function formatDateTime(dateTimeStr) {
 }
 
 // データの取得
-const url = '/moviechat/groups/receive';
+const url = '/moviechat/groups/${window.groupId}/chats/receive';
 fetch(url)
     .then(response => response.json())
     .then(data => {
