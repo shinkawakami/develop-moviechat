@@ -18,7 +18,7 @@
                     <h2 class="subtitle">映画検索</h2>
                     <div class="field has-addons">
                         <div class="control is-expanded">
-                            <input type="text" id="movie-search" class="input">
+                            <input type="text" id="movie-search" class="input" placeholder="キーワードを入力">
                         </div>
                         <div class="control">
                             <button id="search-btn" class="button is-info">検索</button>

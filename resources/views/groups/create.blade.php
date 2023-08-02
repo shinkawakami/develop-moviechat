@@ -19,14 +19,14 @@
                     <div class="field">
                         <label class="label">グループ名</label>
                         <div class="control">
-                            <input name="group_name" type="text" maxlength="50" required class="input">
+                            <input name="group_name" type="text" maxlength="50" required class="input" placeholder="グループ名を入力">
                         </div>
                     </div>
 
                     <div class="field">
                         <label class="label">定員</label>
                         <div class="control">
-                            <input name="group_capacity" type="number" min="2" max="10" required class="input">
+                            <input name="group_capacity" type="number" min="2" max="10" required class="input" placeholder="人数を入力">
                         </div>
                     </div>
 
@@ -94,7 +94,7 @@
                     <h2 class="subtitle movie-search-title">映画検索</h2>
                     <div class="field has-addons">
                         <div class="control is-expanded">
-                            <input type="text" id="movie-search" class="input">
+                            <input type="text" id="movie-search" class="input" placeholder="キーワードを入力">
                         </div>
                         <div class="control">
                             <button id="search-btn" class="button is-info">検索</button>

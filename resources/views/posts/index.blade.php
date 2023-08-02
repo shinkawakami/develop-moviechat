@@ -17,7 +17,7 @@
                     
                     <form method="GET" action="{{ route('posts.search') }}" class="field has-addons">
                         <div class="control">
-                            <input class="input" type="text" name="keyword" placeholder="キーワード検索" required maxlength="50">
+                            <input class="input" type="text" name="keyword" placeholder="キーワードを入力" required maxlength="50">
                         </div>
                         <div class="control">
                             <input class="button is-info" type="submit" value="検索">
