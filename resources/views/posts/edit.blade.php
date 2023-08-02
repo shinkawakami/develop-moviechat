@@ -35,17 +35,20 @@
                     </form>
         
                     <form class="box">
+                        <h2 class="subtitle movie-search-title">映画検索</h2>
                         <div class="field has-addons">
                             <div class="control is-expanded">
-                                <input class="input" type="text" placeholder="映画検索" id="movie-search">
+                                <input type="text" id="movie-search" class="input" placeholder="キーワードを入力">
                             </div>
                             <div class="control">
                                 <button id="search-btn" class="button is-info">検索</button>
                             </div>
                         </div>
+                    
+                        <div id="search-results">
+                            <!-- 映画の検索結果はここに表示されます -->
+                        </div>
                     </form>
-        
-                    <div id="search-results"></div>
                 </div>
             </section>
         </x-app-layout>
