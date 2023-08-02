@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewingSection = document.getElementById('viewing-section');
     const viewingRequestBtn = document.getElementById('viewing-request-btn');
     const viewingCancelButton = document.getElementById('viewing-cancel-btn');
+    const startTime = document.querySelector('input[name="start_time"]');
     let selectedMovieId = null;  // To keep track of selected movie id
     let selectButtons = [];  // To keep track of select buttons
     let currentPage = 1;
@@ -26,10 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
      // 「同時視聴申請」ボタンのクリックイベント
     viewingRequestBtn.addEventListener('click', (event) => {
-        // 注意: フォームのバリデーションや送信を中止する場合は、以下の行をコメントアウトまたは削除する
-        // event.preventDefault();
-        
-        viewingSection.style.display = 'none';  // 申請部分を非表示にする
+        if (!startTime.value || !selectedMovieId) { 
+            event.preventDefault();
+            alert('視聴開始時間と映画を選択してください。');  // ユーザーに警告メッセージを表示
+            return;  // 何もせずに関数を終了
+        } else {
+            // 申請部分を非表示にする
+            viewingSection.style.display = 'none';
+        }
     });
 
 

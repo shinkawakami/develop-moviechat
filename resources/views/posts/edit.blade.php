@@ -12,7 +12,7 @@
                 <div class="container">
                     <h1 class="title">投稿編集</h1>
         
-                    <form method="POST" action="{{ route('posts.update', $post) }}" class="box">
+                    <form method="POST" action="{{ route('posts.update', $post) }}" class="box" data-post-form>
                         @csrf
                         @method('PUT')
                         

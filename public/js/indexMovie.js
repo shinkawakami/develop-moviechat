@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.setAttribute('maxlength', '50');
 
     searchButton.addEventListener('click', (event) => {
-        event.preventDefault();
 
         const query = searchInput.value;
         
@@ -66,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     paginationDiv.appendChild(prevPageButton);
                 } else {
-                    // これが空の要素で、左側のボタンがない場合にスペースを埋める役割を果たします。
+                    // これが空の要素で、左側のボタン��ない場合にスペースを埋める役割を果たします。
                     paginationDiv.appendChild(document.createElement('div'));
                 }
                 

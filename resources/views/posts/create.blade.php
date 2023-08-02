@@ -12,7 +12,7 @@
                 <div class="container">
                     <h1 class="title">投稿作成</h1>
         
-                    <form method="POST" action="{{ route('posts.store') }}" class="box">
+                    <form method="POST" action="{{ route('posts.store') }}" class="box" data-post-form>
                         @csrf
                         
                         <div class="field">
