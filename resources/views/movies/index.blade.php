@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>MovieChat - IndexMovie</title>
+    <title>MovieChat - IndexMovies</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link href="{{ asset('css/movies/index.css') }}" rel="stylesheet">
 </head>

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>MovieChat - IndexGroup</title>
+    <title>MovieChat - IndexGroups</title>
     <!-- BulmaのCSSを追加 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link href="{{ asset('css/groups/index.css') }}" rel="stylesheet">

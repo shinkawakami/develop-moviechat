@@ -20,11 +20,13 @@ use App\Http\Controllers\ViewingController;
 */
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', [ProfileController::class, 'home'])->name('home');
+    //Route::get('/', [ProfileController::class, 'home'])->name('home');
+    Route::get('/', [MovieController::class, 'index'])->name('home');
     
-    Route::get('/dashboard', function () {
+    /*Route::get('/dashboard', function () {
         return view('dashboard');
-    })->name('dashboard');
+    })->name('dashboard');*/
+    Route::get('/dashboard', [MovieController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
