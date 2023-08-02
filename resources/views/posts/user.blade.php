@@ -3,9 +3,9 @@
     <head>
         <meta charset="utf-8">
         <title>MovieChat - MyPosts</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
         <link href="{{ asset('css/posts/user.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     </head>
     <body>
         <x-app-layout>
@@ -13,9 +13,7 @@
                 <div class="container">
                     <h1 class="title">自分の投稿</h1>
                     
-                    <div class="button is-primary is-pulled-right">
-                        <a href="{{ route('posts.create') }}">投稿する</a>
-                    </div>
+                    <a href="{{ route('posts.create') }}" class="button is-primary is-pulled-right">投稿する</a>
                     
                     <div class="is-clearfix"></div>
 
