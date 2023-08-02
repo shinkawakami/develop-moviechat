@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>MovieChat</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
         <link href="{{ asset('css/viewings/index.css') }}" rel="stylesheet">
     </head>
@@ -18,7 +19,11 @@
                         @foreach ($viewing->messages as $message)
                         <div class="message-item">
                             <div class="message-content">
-                                <img src="{{ $message->user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                @if(empty($message->user->image_url))
+                                    <i class="fas fa-user rounded-icon"></i>
+                                @else
+                                    <img src="{{ $message->user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                @endif
                                 <span>{{ $message->user->name }}: {{ $message->content }}</span>
                             </div>
                             <div class="message-time">
