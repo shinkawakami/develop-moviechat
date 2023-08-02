@@ -19,9 +19,6 @@ use App\Http\Controllers\ViewingController;
 |
 */
 
-Route::get('/moviechat/groups/receive', [ChatController::class, 'receive']);
-
-
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [ProfileController::class, 'home'])->name('home');
     
@@ -60,10 +57,10 @@ Route::middleware(['auth'])->group(function () {
             
             Route::delete('/{group}', [GroupController::class, 'destroy'])->name('groups.destroy');
             
-            //Route::get('/receive', [ChatController::class, 'receive'])->name('chats.receive');
-            
             Route::get('/{group}/chats', [ChatController::class, 'index'])->name('chats.index');
             Route::post('/{group}/chats', [ChatController::class, 'send'])->name('chats.send');
+
+            Route::get('/{group}/chats/receive', [ChatController::class, 'receive'])->name('chats.receive');
 
             Route::delete('{group}/chats/{message}', [ChatController::class, 'destroy'])->name('chats.destroy');
              
