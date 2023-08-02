@@ -44,7 +44,7 @@
                         @csrf
                         <div class="field has-addons">
                             <div class="control is-expanded">
-                                <input class="input" type="text" name="message" placeholder="メッセージを入力">
+                                <input class="input" type="text" name="message" placeholder="メッセージを入力" required>
                             </div>
                             <div class="control">
                                 <button class="button is-info" type="submit">送信</button>

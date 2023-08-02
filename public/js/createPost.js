@@ -4,9 +4,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchResults = document.getElementById('search-results');
     const selectedMovie = document.getElementById('movie');
     const selectedMovieContainer = document.getElementById('selected-movie');
+    const postForm = document.querySelector('form[data-post-form]');
     let selectedMovieId = null;  // To keep track of selected movie id
     let selectButtons = [];  // To keep track of select buttons
     let currentPage = 1;
+    
+    // 投稿フォームのsubmitイベントをリッスン
+    postForm.addEventListener('submit', (event) => {
+        if (!selectedMovieId) {
+            console.log('selectedMovieId:', selectedMovieId);
+            event.preventDefault();  // フォームの送信を止める
+            alert('映画を選択してください。');  // エラーメッセージを表示
+        }
+    });
 
     searchButton.addEventListener('click', (event) => {
         event.preventDefault();

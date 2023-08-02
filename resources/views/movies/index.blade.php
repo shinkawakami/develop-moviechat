@@ -24,7 +24,6 @@
                             <button id="search-btn" class="button is-info">検索</button>
                         </div>
                     </div>
-                
                     
                     <div id="search-results">
                     <!-- 映画の検索結果はここに表示されます -->

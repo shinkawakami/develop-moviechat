@@ -70,7 +70,7 @@
                         @csrf
                         <div class="field has-addons">
                             <div class="control is-expanded">
-                                <input class="input" type="text" name="message" placeholder="メッセージを入力">
+                                <input class="input" type="text" name="message" placeholder="メッセージを入力" required>
                             </div>
                             <div class="control">
                                 <button class="button is-info" type="submit">送信</button>
@@ -86,7 +86,7 @@
                             <div class="field">
                                 <label class="label">視聴開始時間</label>
                                 <div class="control">
-                                    <input class="input" type="datetime-local" name='start_time' required>
+                                    <input class="input" type="datetime-local" name='start_time'>
                                 </div>
                             </div>
                             <label class="label">映画<span class="faint-note">(検索して選択 - 複数選択可能)</span></label>
