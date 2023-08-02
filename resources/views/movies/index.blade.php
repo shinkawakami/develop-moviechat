@@ -14,7 +14,7 @@
             <div class="container">
                 <h1 class="title">映画一覧</h1>
                 
-                <div class="box">
+                <form class="box">
                     <h2 class="subtitle">映画検索</h2>
                     <div class="field has-addons">
                         <div class="control is-expanded">
@@ -37,7 +37,7 @@
                             </div>
                         @endforeach
                     </div>
-                </div>
+                </form>
             </div>
         </section>
         <script src="{{ asset('js/indexMovie.js') }}"></script>

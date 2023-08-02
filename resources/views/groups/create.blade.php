@@ -90,7 +90,7 @@
                     </div>
                 </form>
                 
-                <div class="box">
+                <form class="box">
                     <h2 class="subtitle movie-search-title">映画検索</h2>
                     <div class="field has-addons">
                         <div class="control is-expanded">
@@ -104,7 +104,7 @@
                     <div id="search-results">
                         <!-- 映画の検索結果はここに表示されます -->
                     </div>
-                </div>
+                </form>
             </div>
         </section>
 

@@ -1,3 +1,8 @@
+.subtitle {
+    font-size: 20px;
+    font-weight: bold;
+}
+
 .movie-container {
     display: inline-block;
     width: 30%; /* 3つのコンテナが横に並ぶ */
