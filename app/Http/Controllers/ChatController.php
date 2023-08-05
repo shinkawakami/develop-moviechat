@@ -19,21 +19,15 @@ class ChatController extends Controller
         $group = Group::findOrFail($groupId);
         $movies = Movie::all();
         $viewings = Viewing::where('group_id', $groupId)->get();
+        $user = Auth::user();
         
         foreach ($viewings as $viewing) {
-            // ユーザーが申請者であるかどうかをチェック
-            $isRequester = Auth::user()->id == $viewing->requester_id;
-        
-            // ユーザーがすでに承認者であるかどうかをチェック
-            $hasApproved = $viewing->approvers()->where('user_id', Auth::user()->id)->exists();
-            
-            $isOwner = Auth::user()->id == $group->owner_id;
-            // チェック結果を各viewGroupオブジェクトに追加
-            $viewing->is_requester = $isRequester;
-            $viewing->has_approved = $hasApproved;
-            $group->is_owner = $isOwner;
+            $viewing->is_requester = $viewing->isRequester($user);
+            $viewing->has_approved = $viewing->isApprover($user);
         }
-
+        
+        $group->is_owner = $group->isOwner($user);
+        
         return view('chats.index', compact('group', 'viewings', 'movies'));
     }
     
@@ -41,7 +35,7 @@ class ChatController extends Controller
     {
         $validatedData = $request->validated();
     
-        $user = $request->user();
+        $user = Auth::user();
         $group = Group::findOrFail($groupId);
     
         $chatMessage = new Message();
@@ -64,7 +58,6 @@ class ChatController extends Controller
             'pusher_app_cluster' => config('broadcasting.connections.pusher.options.cluster')
         ]);
     }
-
     
     public function destroy($groupId, $messageId)
     {
