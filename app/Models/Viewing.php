@@ -45,4 +45,16 @@ class Viewing extends Model
     {
         return $this->belongsToMany(User::class, 'approvers');
     }
+    
+    // ユーザーが申請者であるかチェック
+    public function isRequester($user)
+    {
+        return $this->requester_id == $user->id;
+    }
+    
+    // ユーザーが承認者であるかチェック
+    public function isApprover($user)
+    {
+        return $this->approvers()->where('user_id', $user->id)->exists();
+    }
 }
