@@ -58,4 +58,10 @@ class Group extends Model
     {
         return $this->hasMany(Viewing::class);
     }
+    
+    // オーナーであるかチェック
+    public function isOwner($user)
+    {
+        return $this->owner_id == $user->id;
+    }
 }
