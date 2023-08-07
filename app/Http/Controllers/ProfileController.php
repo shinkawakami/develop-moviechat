@@ -32,8 +32,6 @@ class ProfileController extends Controller
         $user->platforms = $user->platforms->pluck('id')->toArray();
         $user->eras = $user->eras->pluck('id')->toArray();
         
-        
-        
         return view('profile.edit', compact('user', 'genres', 'platforms', 'eras'));
     }
 
@@ -62,10 +60,7 @@ class ProfileController extends Controller
                 $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
                 $movieData = $response->json();
     
-                $movie = Movie::firstOrCreate(
-                    ['tmdb_id' => $movieData['id']],
-                    ['title' => $movieData['title']]
-                );
+                $movie = Movie::updateOrCreateFromTMDB($movieData);
     
                 array_push($attachedMovieIds, $movie->id);
             }

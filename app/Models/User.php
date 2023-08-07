@@ -74,6 +74,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Era::class, 'user_era');
     }
     
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+    
     public function messages()
     {
         return $this->hasMany(Message::class);

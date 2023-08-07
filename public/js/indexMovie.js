@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (query.trim() === '') {  // ユーザーが空白または空文字列を入力した場合
             alert('検索キーワードを入力してください。');  // ユーザーに警告メッセージを表示
             return;  // 何もせずに関数を終了
-        }
+        } 
         
         fetchMovies(query);
     });
