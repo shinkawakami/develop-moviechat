@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8">
     <title>MovieChat - IndexGroups</title>
-    <!-- BulmaのCSSを追加 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link href="{{ asset('css/groups/index.css') }}" rel="stylesheet">
 </head>
@@ -43,14 +42,14 @@
                         @endforeach
                     </p>
                     
-                    @if($group->users->count() == $group->capacity)
+                    @if($group->is_full)
                     <div class="tag is-danger">満員</div>
                     @endif
                     
                     <div class="buttons">
                         @if($group->is_member)
                         <a href="{{ route('chats.index', $group->id) }}" class="button is-link">チャット</a>
-                        @elseif(!$group->is_member && $group->users->count() < $group->capacity)
+                        @elseif(!$group->is_member && !$group->is_full)
                         <form action="{{ route('groups.join', $group->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="button is-success">参加</button>

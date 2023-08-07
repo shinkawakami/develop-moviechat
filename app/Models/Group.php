@@ -64,4 +64,63 @@ class Group extends Model
     {
         return $this->owner_id == $user->id;
     }
+    
+    // メンバーであるかチェック
+    public function isMember($userId)
+    {
+        return $this->users->contains($userId);
+    }
+    
+    // 満員であるかチェック
+    public function isFull()
+    {
+        return $this->users->count() == $this->capacity;
+    }
+    
+    // キーワード検索
+    public function scopeWithKeyword($query, $keyword)
+    {
+        return $query->whereHas('movies', function ($q) use ($keyword) {
+            $q->where('title', 'like', '%' . $keyword . '%');
+        })->orWhere('name', 'like', '%' . $keyword . '%');
+    }
+    
+    // ジャンル検索
+    public function scopeWithGenres($query, $genreIds)
+    {
+        return $query->whereHas('genres', function ($q) use ($genreIds) {
+            $q->whereIn('genre_id', $genreIds);
+        }, '=', count($genreIds));
+    }
+    
+    // 年代検索
+    public function scopeWithEras($query, $eraIds)
+    {
+        return $query->whereHas('eras', function ($q) use ($eraIds) {
+            $q->whereIn('era_id', $eraIds);
+        }, '=', count($eraIds));
+    }
+    
+    // プラットフォーム検索
+    public function scopeWithPlatforms($query, $platformIds)
+    {
+        return $query->whereHas('platforms', function ($q) use ($platformIds) {
+            $q->whereIn('platform_id', $platformIds);
+        }, '=', count($platformIds));
+    }
+    
+    // 次のオーナーの指定，またはグループ削除
+    public function newOwnerOrDelete($currentOwnerId)
+    {
+        $nextOwner = $this->users()->where('users.id', '!=', $currentOwnerId)->orderBy('pivot_created_at')->first();
+        
+        if ($nextOwner) {
+            $this->owner_id = $nextOwner->id;
+            $this->save();
+        } else {
+            $this->delete();
+        }
+    }
+    
+    
 }

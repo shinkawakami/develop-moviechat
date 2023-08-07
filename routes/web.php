@@ -79,7 +79,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [MovieController::class, 'index'])->name('movies.index');
             Route::get('/search', [MovieController::class, 'search'])->name('movies.search');
             Route::get('/{movie}', [MovieController::class, 'show'])->name('movies.show');
-            Route::get('/{movie}/details', [MovieController::class, 'details'])->name('movies.details');
         });
         
         Route::prefix('posts')->group(function () {

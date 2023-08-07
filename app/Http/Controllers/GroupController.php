@@ -16,30 +16,24 @@ use Illuminate\Support\Facades\Http;
 
 class GroupController extends Controller
 {
-    // ユーザーが指定したグループのメンバーであるかを'is_member'にセットする
-    private function getGroupWithMember($groups = null)
-    {
-        $groups = $groups ?? Group::with('users')->get();
-        foreach ($groups as $group) {
-            $group->setAttribute('is_member', $group->users->contains(Auth::id()));
-        }
-        return $groups;
-    }
-                    
     public function index()
     {
-        $groups = $this->getGroupWithMember();
+        $groups = Group::with(['movies', 'genres', 'eras', 'platforms'])->get();
+        
+        foreach ($groups as $group) {
+            $group->is_member = $group->isMember(Auth::id());
+            $group->is_full = $group->isFull();
+        }
         
         return view('groups.index', compact('groups'));
     }
         
     public function create()
     {
-        // セッションから選択された映画を取得
         $genres = Genre::all();
         $platforms = Platform::all();
         $eras = Era::all();
-        return view('groups.create', compact('genres', 'platforms', 'eras'));
+        return view('groups.create', compact('genres', 'eras', 'platforms'));
     }
     
     public function store(CreateRequest $request)
@@ -66,22 +60,19 @@ class GroupController extends Controller
         }
          
         if (isset($validatedData['movies'])) {
-            $movieIds = $validatedData['movies'];
+            $tmdbIds = $validatedData['movies'];
             $apiKey = config('tmdb.api_key');
            
-            foreach ($movieIds as $movieId) {
-                $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
+            foreach ($tmdbIds as $tmdbId) {
+                $response = Http::get("https://api.themoviedb.org/3/movie/{$tmdbId}?api_key={$apiKey}&language=ja-JP");
                 $movieData = $response->json();
         
-                $movie = Movie::firstOrCreate(
-                    ['tmdb_id' => $movieData['id']],
-                    ['title' => $movieData['title']]
-                );
+                $movie = Movie::updateOrCreateFromTMDB($movieData);
         
                 $group->movies()->attach($movie->id);
-                
             }
         }
+        
         return redirect()->route('groups.index', $group);
     }
     
@@ -100,70 +91,27 @@ class GroupController extends Controller
         $groups = Group::query();
         
         if (isset($validatedData['keyword'])) {
-            $keyword = $validatedData['keyword'];
-    
-            $groups->whereHas('movies', function ($query) use ($keyword) {
-                $query->where('title', 'like', '%' . $keyword . '%');
-            })->orWhere('name', 'like', '%' . $keyword . '%');
+            $groups->withKeyword($validatedData['keyword']);
         }
         
         if (isset($validatedData['genres'])) {
-            $genreIds = $validatedData['genres'];
-            $countGenreIds = count($genreIds);
-        
-            $groups->where(function ($query) use ($genreIds, $countGenreIds) {
-                foreach ($genreIds as $id) {
-                    $query->whereHas('genres', function ($subQuery) use ($id) {
-                        $subQuery->where('genre_id', $id);
-                    });
-                }
-        
-                // 以下のコードは、指定されたグループの年代がユーザーが選択した年代より多い場合もOKであることを確認します。
-                $query->whereHas('genres', function ($subQuery) use ($genreIds) {
-                    $subQuery->whereIn('genre_id', $genreIds);
-                }, '>=', $countGenreIds);
-            });
+            $groups->withGenres($validatedData['genres']);
         }
     
         if (isset($validatedData['eras'])) {
-            $eraIds = $validatedData['eras'];
-            $countEraIds = count($eraIds);
-        
-            $groups->where(function ($query) use ($eraIds, $countEraIds) {
-                foreach ($eraIds as $id) {
-                    $query->whereHas('eras', function ($subQuery) use ($id) {
-                        $subQuery->where('era_id', $id);
-                    });
-                }
-        
-                // 以下のコードは、指定されたグループの年代がユーザーが選択した年代より多い場合もOKであることを確認します。
-                $query->whereHas('eras', function ($subQuery) use ($eraIds) {
-                    $subQuery->whereIn('era_id', $eraIds);
-                }, '>=', $countEraIds);
-            });
+            $groups->withEras($validatedData['eras']);
         }
         
         if (isset($validatedData['platforms'])) {
-            $platformIds = $validatedData['platforms'];
-            $countPlatformIds = count($platformIds);
-        
-            $groups->where(function ($query) use ($platformIds, $countPlatformIds) {
-                foreach ($platformIds as $id) {
-                    $query->whereHas('platforms', function ($subQuery) use ($id) {
-                        $subQuery->where('platform_id', $id);
-                    });
-                }
-        
-                // 以下のコードは、指定されたグループの年代がユーザーが選択した年代より多い場合もOKであることを確認します。
-                $query->whereHas('platforms', function ($subQuery) use ($platformIds) {
-                    $subQuery->whereIn('platform_id', $platformIds);
-                }, '>=', $countPlatformIds);
-            });
+            $groups->withPlatforms($validatedData['platforms']);
         }
     
-        $groups = $groups->get();
+        $groups = $groups->with(['movies', 'genres', 'eras', 'platforms'])->get();
     
-        $groups = $this->getGroupWithMember($groups);
+        foreach ($groups as $group) {
+            $group->is_member = $group->isMember(Auth::id());
+            $group->is_full = $group->isFull();
+        }
     
         return view('groups.index', compact('groups'));
     }
@@ -171,9 +119,12 @@ class GroupController extends Controller
     public function myGroups()
     {
         $user = Auth::user();
-        $groups = $user->groups;
+        $groups = $user->groups()->with(['movies', 'genres', 'eras', 'platforms'])->get();
         
-        $groups = $this->getGroupWithMember($groups);
+        foreach ($groups as $group) {
+            $group->is_member = $group->isMember($user->id);
+            $group->is_full = $group->isFull();
+        }
         
         return view('groups.index', compact('groups'));
     }
@@ -182,8 +133,6 @@ class GroupController extends Controller
     {
         $user = Auth::user();
         $group = Group::findOrFail($groupId);
-        
-        // ユーザーをグループに参加させる
         $group->users()->attach($user);
         
         return redirect()->route('chats.index', $group->id);
@@ -191,8 +140,11 @@ class GroupController extends Controller
     
     public function show($groupId)
     {
+        $user = Auth::user();
         $group = Group::with('users')->findOrFail($groupId);
-        $group->setAttribute('is_member', $group->users->contains(Auth::id()));
+        $group->is_member = $group->isMember($user->id);
+        $group->is_full = $group->isFull();
+        $group->is_owner = $group->isOwner($user);
         
         return view('groups.show', compact('group'));
     }
@@ -201,26 +153,17 @@ class GroupController extends Controller
     {
         $group = Group::findOrFail($groupId);
         
-        // グループ作成者のみが削除できることを確認
-        if ($group->owner_id !== auth()->id()) {
-            abort(403, 'Unauthorized');
-        }
-        
         $group->delete();
         
-        // グループ削除後のリダイレクト先などの処理を追加する場合はここに記述
-        
-        return redirect()->route('groups.index')->with('success', 'Group deleted successfully.');
+        return redirect()->route('groups.index');
     }
     
     public function removeUser($groupId, $userId)
     {
         $group = Group::findOrFail($groupId);
-
         $user = User::findOrFail($userId);
         
         foreach ($group->viewings as $viewing) {
-            
             if ($viewing->requester_id == $user->id) {
                 $viewing->delete();
             }
@@ -228,23 +171,19 @@ class GroupController extends Controller
                 $viewing->approvers()->detach($user->id);
             }
         }
-
-        if (Auth::user()->id != $group->owner_id) {
-            return redirect()->back()->with('error', 'You are not authorized to do this action');
-        }
     
         $group->users()->detach($userId);
     
-        return redirect()->back()->with('message', 'User has been removed from the group');
+        return redirect()->back();
     }
     
     public function edit($groupId)
     {
-        $group = Group::findOrFail($groupId);
+        $group = Group::with(['movies', 'genres', 'eras', 'platforms'])->findOrFail($groupId);
         $genres = Genre::all();
         $platforms = Platform::all();
         $eras = Era::all();
-        return view('groups.edit', ['genres' => $genres, 'platforms' => $platforms, 'eras' => $eras, 'group' => $group]);
+        return view('groups.edit', compact('group', 'genres', 'eras', 'platforms'));
     }
     
     public function update(EditRequest $request, $groupId)
@@ -273,31 +212,23 @@ class GroupController extends Controller
         } else {
             $group->platforms()->detach();
         }
-        if (isset($validatedData['movies'])) {
-            $movieIds = $validatedData['movies'];
-            $existingMovieIds = $group->movies->pluck('tmdb_id')->toArray();
-
-            // 削除すべき映画のIDを取得
-            $moviesToDetach = array_diff($existingMovieIds, $movieIds);
-            if (!empty($moviesToDetach)) {
-                $dbIdsToDetach = Movie::whereIn('tmdb_id', $moviesToDetach)->pluck('id')->toArray();
-                $group->movies()->detach($dbIdsToDetach);
-            }
         
-            $newMovieIds = array_diff($movieIds, $existingMovieIds);
+        if (isset($validatedData['movies'])) {
+            $tmdbIds = $validatedData['movies'];
+            $movieIds = [];
             $apiKey = config('tmdb.api_key');
         
-            foreach ($newMovieIds as $movieId) {
-                $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
+            foreach ($tmdbIds as $tmdbId) {
+                $response = Http::get("https://api.themoviedb.org/3/movie/{$tmdbId}?api_key={$apiKey}&language=ja-JP");
                 $movieData = $response->json();
         
-                $movie = Movie::firstOrCreate(
-                    ['tmdb_id' => $movieData['id']],
-                    ['title' => $movieData['title']]
-                );
+                $movie = Movie::updateOrCreateFromTMDB($movieData);
                 
-                $group->movies()->attach($movie->id);
+                $movieIds[] = $movie->id;
             }
+            
+            $group->movies()->sync($movieIds);
+            
         } else {
             $group->movies()->detach();
         }
@@ -305,40 +236,29 @@ class GroupController extends Controller
         return redirect()->route('groups.show', $group);
     }
     
-    // ユーザーがグループから脱退するメソッド
     public function leave($groupId)
     {
+        $user = Auth::user();
         $group = Group::findOrFail($groupId);
-
-        // もし現在のユーザーがグループのオーナーである場合、次に参加したメンバーをオーナーに指定する
-        if (Auth::user()->id == $group->owner_id) {
-            // 次のメンバーを探す
-            $nextOwner = $group->users()->where('users.id', '!=', Auth::user()->id)->orderBy('pivot_created_at')->first();
-    
-            // 次のメンバーが存在する場合、そのメンバーを新たなオーナーに指定する
-            if ($nextOwner) {
-                $group->owner_id = $nextOwner->id;
-                $group->save();
-            }
-            // もし次のメンバーが存在しない場合、グループ自体を削除する
-            else {
-                $group->delete();
+        
+        if ($group->isOwner($user)) {
+            $group->newOwnerOrDelete($user->id);
+            if(!$group->exists) {
                 return redirect()->route('groups.index');
             }
         }
         
         foreach ($group->viewings as $viewing) {
-            
-            if ($viewing->requester_id == Auth::user()->id) {
+            $user = Auth::user();
+            if ($viewing->isRequester) {
                 $viewing->delete();
             }
             else {
-                $viewing->approvers()->detach(Auth::user()->id);
+                $viewing->approvers()->detach($user->id);
             }
         }
     
-        // ユーザーをグループから削除する
-        $group->users()->detach(Auth::user()->id);
+        $group->users()->detach($user->id);
         
         return redirect()->route('groups.index');
     }

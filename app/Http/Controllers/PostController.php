@@ -11,7 +11,7 @@ use App\Http\Requests\Post\EditRequest;
 use App\Http\Requests\Post\CommentRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-
+ 
 class PostController extends Controller
 {
     public function index()
@@ -25,9 +25,7 @@ class PostController extends Controller
         $validatedData = $request->validated();
         
         $keyword = $request->get('keyword');
-        $posts = Post::whereHas('movie', function ($query) use ($keyword) {
-            $query->where('title', 'like', '%' . $keyword . '%');
-        })->orWhere('title', 'like', '%' . $keyword . '%')->with(['user', 'movie'])->get();
+        $posts = Post::searchByKeyword($keyword);
 
         return view('posts.index', compact('posts'));
     }
@@ -52,10 +50,7 @@ class PostController extends Controller
         $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
         $movieData = $response->json();
 
-        $movie = Movie::firstOrCreate(
-            ['tmdb_id' => $movieData['id']],
-            ['title' => $movieData['title']]
-        );
+        $movie = Movie::updateOrCreateFromTMDB($movieData);
 
         $post->movie()->associate($movie);
         
@@ -66,16 +61,15 @@ class PostController extends Controller
 
     public function user()
     {
-        $user = auth()->user();
-        $posts = Post::where('user_id', $user->id)->with('movie')->get();
+        $user = Auth::user();
+        $posts = $user->posts()->with('movie')->get();
         return view('posts.user', compact('posts'));
     }
 
     public function show($postId)
     {
-        $post = Post::findOrFail($postId);
-        $comments = $post->comments()->with('user')->get();
-        return view('posts.show', compact('post', 'comments'));
+        $post = Post::with(['user', 'comments.user'])->findOrFail($postId);
+        return view('posts.show', compact('post'));
     }
 
     public function edit($postId)
@@ -98,10 +92,7 @@ class PostController extends Controller
         $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
         $movieData = $response->json();
 
-        $movie = Movie::firstOrCreate(
-            ['tmdb_id' => $movieData['id']],
-            ['title' => $movieData['title']]
-        );
+        $movie = Movie::updateOrCreateFromTMDB($movieData);
 
         $post->movie()->associate($movie);
     
@@ -125,7 +116,7 @@ class PostController extends Controller
         $post = Post::findOrFail($postId);
 
         $comment = new Comment;
-        $comment->user_id = auth()->id();
+        $comment->user_id = Auth::id();
         $comment->post_id = $post->id;
         $comment->content = $validatedData['comment'];
         $comment->save();
