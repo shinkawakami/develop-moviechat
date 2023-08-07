@@ -14,12 +14,14 @@ use Illuminate\Support\Facades\Http;
  
 class PostController extends Controller
 {
+    // 投稿一覧画面の表示
     public function index()
     {
         $posts = Post::with(['user', 'movie'])->get();
         return view('posts.index', compact('posts'));
     }
 
+    // 投稿検索の処理
     public function search(SearchRequest $request)
     {
         $validatedData = $request->validated();
@@ -30,11 +32,13 @@ class PostController extends Controller
         return view('posts.index', compact('posts'));
     }
 
+    // 投稿作成画面の表示
     public function create()
     {
         return view('posts.create');
     }
 
+    // 投稿保存の処理
     public function store(CreateRequest $request)
     {
         $validatedData = $request->validated();
@@ -59,6 +63,7 @@ class PostController extends Controller
         return redirect()->route('posts.index');
     }
 
+    // 自分の投稿画面の表示
     public function user()
     {
         $user = Auth::user();
@@ -66,18 +71,21 @@ class PostController extends Controller
         return view('posts.user', compact('posts'));
     }
 
+    // 投稿詳細画面の表示
     public function show($postId)
     {
         $post = Post::with(['user', 'comments.user'])->findOrFail($postId);
         return view('posts.show', compact('post'));
     }
 
+    // 投稿編集画面の表示
     public function edit($postId)
     {
         $post = Post::findOrFail($postId);
         return view('posts.edit', compact('post'));
     }
     
+    // 投稿更新の処理
     public function update(EditRequest $request, $postId)
     {
         $validatedData = $request->validated();
@@ -101,7 +109,7 @@ class PostController extends Controller
         return redirect()->route('posts.show', $post);
     }
 
-
+    // 投稿削除の処理
     public function destroy($postId)
     {
         $post = Post::findOrFail($postId);
@@ -109,6 +117,7 @@ class PostController extends Controller
         return redirect()->route('posts.user');
     }
 
+    // 投稿にコメントする処理
     public function comment(CommentRequest $request, $postId)
     {
         $validatedData = $request->validated();

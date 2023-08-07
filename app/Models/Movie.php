@@ -38,6 +38,7 @@ class Movie extends Model
         return $this->hasMany(Post::class);
     }
     
+    // 取得したTMDBの保存または更新
     public static function updateOrCreateFromTMDB($movieData)
     {
         return self::updateOrCreate(
