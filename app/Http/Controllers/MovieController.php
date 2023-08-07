@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
 
 class MovieController extends Controller
 {
+    // 映画一覧画面の表示
     public function index()
     {
         $apiKey = config('tmdb.api_key');
@@ -18,6 +19,7 @@ class MovieController extends Controller
         return view('movies.index', compact('popularMovies'));
     }
         
+    // 映画検索の処理（JSONで返す）
     public function search(SearchRequest $request)
     {
         $validatedData = $request->validated();
@@ -39,7 +41,8 @@ class MovieController extends Controller
     
         return response()->json($movieData);
     }
-        
+       
+    // 映画詳細画面の表示
     public function show($tmdb_id)
     {
         $apiKey = config('tmdb.api_key');

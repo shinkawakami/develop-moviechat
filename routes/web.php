@@ -34,45 +34,42 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-
     Route::prefix('moviechat')->group(function () {
         Route::prefix('groups')->group(function () {
             Route::get('/', [GroupController::class, 'index'])->name('groups.index');
-            
+            Route::post('/', [GroupController::class, 'store'])->name('groups.store');
             Route::get('/create', [GroupController::class, 'create'])->name('groups.create');
-            Route::post('/create', [GroupController::class, 'store'])->name('groups.store');
-            
             Route::get('/search', [GroupController::class, 'showSearch'])->name('groups.showSearch');
             Route::get('/search-results', [GroupController::class, 'searchResults'])->name('groups.searchResults');
+            Route::get('/user', [GroupController::class, 'user'])->name('groups.user');
             
-            Route::get('/my-groups', [GroupController::class, 'myGroups'])->name('groups.myGroups');
+            Route::prefix('{group}')->group(function () {
+                Route::get('/', [GroupController::class, 'show'])->name('groups.show');
+                Route::put('/', [GroupController::class, 'update'])->name('groups.update');
+                Route::delete('/', [GroupController::class, 'destroy'])->name('groups.destroy');
+                Route::post('/join', [GroupController::class, 'join'])->name('groups.join');
+                Route::get('/leave', [GroupController::class, 'leave'])->name('groups.leave');
+                Route::get('/edit', [GroupController::class, 'edit'])->name('groups.edit');
+                Route::delete('/remove/{user}', [GroupController::class, 'removeUser'])->name('groups.removeUser');
+
+                Route::prefix('chats')->group(function () {
+                    Route::get('/', [ChatController::class, 'index'])->name('chats.index');
+                    Route::post('/', [ChatController::class, 'send'])->name('chats.send');
+                    Route::get('/receive', [ChatController::class, 'receive'])->name('chats.receive');
+                    Route::delete('/{message}', [ChatController::class, 'destroy'])->name('chats.destroy');
+                });
     
-            Route::post('/{group}/join', [GroupController::class, 'join'])->name('groups.join');
-            
-            Route::get('/{group}', [GroupController::class, 'show'])->name('groups.show');
-            
-            Route::post('/{group}/users/{user}/remove', [GroupController::class, 'removeUser'])->name('groups.removeUser');
-            Route::get('/{group}/leave', [GroupController::class, 'leave'])->name('groups.leave');
-            
-            Route::get('/{group}/edit', [GroupController::class, 'edit'])->name('groups.edit');
-            Route::put('/{group}/update', [GroupController::class, 'update'])->name('groups.update');
-            
-            Route::delete('/{group}', [GroupController::class, 'destroy'])->name('groups.destroy');
-            
-            Route::get('/{group}/chats', [ChatController::class, 'index'])->name('chats.index');
-            Route::post('/{group}/chats', [ChatController::class, 'send'])->name('chats.send');
-
-            Route::get('/{group}/chats/receive', [ChatController::class, 'receive'])->name('chats.receive');
-
-            Route::delete('{group}/chats/{message}', [ChatController::class, 'destroy'])->name('chats.destroy');
-             
-            Route::post('/{group}/viewings/request', [ViewingController::class, 'request'])->name('viewings.request');
-            Route::post('/{group}/viewings/{viewing}/approve', [ViewingController::class, 'approve'])->name('viewings.approve');
-            Route::post('/{group}/viewings/{viewing}/cancel', [ViewingController::class, 'cancel'])->name('viewings.cancel');
-            
-            Route::get('/{group}/viewings/{viewing}', [ViewingController::class, 'index'])->name('viewings.index');
-            Route::post('/{group}/viewings/{viewing}/chats', [ViewingController::class, 'chat'])->name('viewings.chat');
-            Route::delete('/{group}/viewings/{viewing}/chats/{message}', [ViewingController::class, 'destroy'])->name('viewings.destroy');
+                Route::prefix('viewings')->group(function () {
+                    Route::post('/request', [ViewingController::class, 'request'])->name('viewings.request');
+                    Route::prefix('{viewing}')->group(function () {
+                        Route::get('/', [ViewingController::class, 'index'])->name('viewings.index');
+                        Route::post('/', [ViewingController::class, 'chat'])->name('viewings.chat');
+                        Route::post('/approve', [ViewingController::class, 'approve'])->name('viewings.approve');
+                        Route::post('/cancel', [ViewingController::class, 'cancel'])->name('viewings.cancel');
+                        Route::delete('/{message}', [ViewingController::class, 'destroy'])->name('viewings.destroy');
+                    });
+                });
+            });
         });
         
         Route::prefix('movies')->group(function () {
@@ -83,16 +80,18 @@ Route::middleware(['auth'])->group(function () {
         
         Route::prefix('posts')->group(function () {
             Route::get('/', [PostController::class, 'index'])->name('posts.index');
+            Route::post('/', [PostController::class, 'store'])->name('posts.store');
             Route::get('search', [PostController::class, 'search'])->name('posts.search');
             Route::get('create', [PostController::class, 'create'])->name('posts.create');
-            Route::post('/', [PostController::class, 'store'])->name('posts.store');
-            Route::get('/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
-            Route::put('/{post}', [PostController::class, 'update'])->name('posts.update');
             Route::get('user', [PostController::class, 'user'])->name('posts.user');
-            Route::get('{post}', [PostController::class, 'show'])->name('posts.show');
             
-            Route::delete('{post}', [PostController::class, 'destroy'])->name('posts.destroy');
-            Route::post('{post}/comment', [PostController::class, 'comment'])->name('posts.comment');
+            Route::prefix('{post}')->group(function () {
+                Route::put('/', [PostController::class, 'update'])->name('posts.update');
+                Route::get('/', [PostController::class, 'show'])->name('posts.show');
+                Route::delete('/', [PostController::class, 'destroy'])->name('posts.destroy');
+                Route::get('/edit', [PostController::class, 'edit'])->name('posts.edit');
+                Route::post('/comment', [PostController::class, 'comment'])->name('posts.comment');
+            });
         });
     });
 });

@@ -14,6 +14,7 @@ use App\Events\MessageSent;
 
 class ChatController extends Controller
 {
+    // チャット画面の表示
     public function index($groupId)
     {
         $group = Group::with('messages.user')->findOrFail($groupId);
@@ -31,6 +32,7 @@ class ChatController extends Controller
         return view('chats.index', compact('group', 'viewings', 'movies'));
     }
     
+    // メッセージ送信の処理
     public function send(SendRequest $request, $groupId)
     {
         $validatedData = $request->validated();
@@ -49,6 +51,7 @@ class ChatController extends Controller
         return redirect()->back();
     }
     
+    // メッセージ受信時に必要な情報（JSONで返す）
     public function receive() 
     {
         return response()->json([
@@ -59,6 +62,7 @@ class ChatController extends Controller
         ]);
     }
     
+    // メッセージ削除の処理
     public function destroy($groupId, $messageId)
     {
         $group = Group::findOrFail($groupId);
