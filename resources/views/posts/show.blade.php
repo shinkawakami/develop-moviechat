@@ -55,7 +55,13 @@
                         @foreach ($post->comments as $comment)
                             <div class="comment-card">
                                 <div class="user-info">
-                                    <span><img src="{{ $comment->user->image_url }}" alt="Profile Image" class="rounded-icon"></span>
+                                    <span>
+                                        @if(empty($post->user->image_url))
+                                            <i class="fas fa-user rounded-icon"></i>
+                                        @else
+                                            <img src="{{ $comment->user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                        @endif
+                                    </span>
                                     <span class="username">{{ $comment->user->name }}</span>
                                 </div>
                                 <p>{{ $comment->content }}</p>

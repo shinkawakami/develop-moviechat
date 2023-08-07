@@ -20,26 +20,26 @@
     
                     <div class="content">
                         @foreach ($viewing->messages as $message)
-                        <div class="message-item">
-                            <div class="message-content">
-                                @if(empty($message->user->image_url))
-                                    <i class="fas fa-user rounded-icon"></i>
-                                @else
-                                    <img src="{{ $message->user->image_url }}" alt="Profile Image" class="rounded-icon">
-                                @endif
-                                <span>{{ $message->user->name }}: {{ $message->content }}</span>
+                            <div class="message-item">
+                                <div class="message-content">
+                                    @if(empty($message->user->image_url))
+                                        <i class="fas fa-user rounded-icon"></i>
+                                    @else
+                                        <img src="{{ $message->user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                    @endif
+                                    <span>{{ $message->user->name }}: {{ $message->content }}</span>
+                                </div>
+                                <div class="message-time">
+                                    {{ $message->created_at }}
+                                    @if($message->user_id == Auth::id())
+                                    <form action={{ route('viewings.destroy', ['group' => $group->id, 'viewing' => $viewing->id, 'message' => $message->id]) }} method="POST" class="delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="delete-message" type="submit">削除</button>
+                                    </form>
+                                    @endif
+                                </div>
                             </div>
-                            <div class="message-time">
-                                {{ $message->created_at }}
-                                @if($message->user_id == Auth::id())
-                                <form action={{ route('viewings.destroy', ['group' => $group->id, 'viewing' => $viewing->id, 'message' => $message->id]) }} method="POST" class="delete-form">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="delete-message" type="submit">削除</button>
-                                </form>
-                                @endif
-                            </div>
-                        </div>
                         @endforeach
                     </div>
     

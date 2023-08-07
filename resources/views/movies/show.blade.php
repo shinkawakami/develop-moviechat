@@ -14,15 +14,15 @@
             <div class="container">
                 <h1 class="title">映画詳細</h1>
                 <div class="box">
-                    <h2 class="subtitle">{{ $movie['title'] }}</h2>
+                    <h2 class="subtitle">{{ $movie->title }}</h2>
                     <!-- 映画の詳細や画像などの情報もここに追加できます -->
                 </div>
 
                 <div class="box">
                     <h2 class="subtitle">関連するグループ</h2>
-                    @if(count($groups) > 0)
+                    @if(!$movie->groups->isEmpty())
                     <div class="columns is-multiline">
-                        @foreach($groups as $group)
+                        @foreach($movie->groups as $group)
                         <div class="column is-one-quarter">
                             <a href="{{ route('groups.show', ['group' => $group->id ]) }}" class="card-link">
                                 <div class="card">
@@ -41,9 +41,9 @@
               
                 <div class="box">
                     <h2 class="subtitle">関連する投稿</h2>
-                    @if(count($posts) > 0)
+                    @if(!$movie->posts->isEmpty())
                     <div class="columns is-multiline">
-                        @foreach($posts as $post)
+                        @foreach($movie->posts as $post)
                         <div class="column is-one-quarter">
                             <a href="{{ route('posts.show', ['post' => $post->id ]) }}" class="card-link">
                                 <div class="card">

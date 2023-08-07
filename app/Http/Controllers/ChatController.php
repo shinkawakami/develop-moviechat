@@ -16,14 +16,14 @@ class ChatController extends Controller
 {
     public function index($groupId)
     {
-        $group = Group::findOrFail($groupId);
+        $group = Group::with('messages.user')->findOrFail($groupId);
         $movies = Movie::all();
         $viewings = Viewing::where('group_id', $groupId)->get();
         $user = Auth::user();
         
         foreach ($viewings as $viewing) {
             $viewing->is_requester = $viewing->isRequester($user);
-            $viewing->has_approved = $viewing->isApprover($user);
+            $viewing->is_approver = $viewing->isApprover($user);
         }
         
         $group->is_owner = $group->isOwner($user);
@@ -65,6 +65,7 @@ class ChatController extends Controller
         $message = Message::findOrFail($messageId);
         
         $message->delete();
+        
         return redirect()->route('chats.index', compact('group'));
     }
 }

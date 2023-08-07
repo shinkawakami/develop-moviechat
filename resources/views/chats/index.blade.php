@@ -19,51 +19,51 @@
     
                     <div class="content">
                         @foreach ($group->messages as $message)
-                        <div class="message-item">
-                            <div class="message-content">
-                                @if(empty($message->user->image_url))
-                                    <i class="fas fa-user rounded-icon"></i>
-                                @else
-                                    <img src="{{ $message->user->image_url }}" alt="Profile Image" class="rounded-icon">
-                                @endif
-                                <span>{{ $message->user->name }}: {{ $message->content }}</span>
+                            <div class="message-item">
+                                <div class="message-content">
+                                    @if(empty($message->user->image_url))
+                                        <i class="fas fa-user rounded-icon"></i>
+                                    @else
+                                        <img src="{{ $message->user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                    @endif
+                                    <span>{{ $message->user->name }}: {{ $message->content }}</span>
+                                </div>
+                                <div class="message-time">
+                                    {{ $message->created_at }}
+                                    @if($message->user_id == Auth::id())
+                                        <form action={{ route('chats.destroy', ['group' => $group->id, 'message' => $message->id]) }} method="POST" class="delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="delete-message" type="submit">削除</button>
+                                        </form>
+                                    @endif
+                                </div>
                             </div>
-                            <div class="message-time">
-                                {{ $message->created_at }}
-                                @if($message->user_id == Auth::id())
-                                <form action={{ route('chats.destroy', ['group' => $group->id, 'message' => $message->id]) }} method="POST" class="delete-form">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="delete-message" type="submit">削除</button>
-                                </form>
-                            @endif
-                            </div>
-                        </div>
                         @endforeach
                     </div>
     
                     @foreach ($viewings as $viewing)
-                    <div class="notification is-primary">
-                        {{ $viewing->requester->name }}が{{ $viewing->start_time }}に{{ $viewing->movie->title }}の同時視聴を申請しています
-                        @foreach ($viewing->approvers as $approver)
-                        <p>{{ $approver->name }}が承認</p>
-                        @endforeach
-                        @if(!$viewing->has_approved && !$viewing->is_requester)
-                        <form action="{{ route('viewings.approve', ['group' => $group->id, 'viewing' => $viewing->id]) }}" method="POST">
-                            @csrf
-                            <button class="button is-success" type="submit">承諾する</button>
-                        </form>
-                        @endif
-                        @if($viewing->is_requester || $viewing->approvers->contains(Auth::id()))
-                        <a href="{{ $viewing->url }}">視聴先</a>
-                        @endif
-                        @if($viewing->is_requester || $group->is_owner)
-                        <form method="POST" action="{{ route('viewings.cancel', ['group' => $group->id, 'viewing' => $viewing->id]) }}">
-                            @csrf
-                            <button class="button is-danger" type="submit">申請取り消し</button>
-                        </form>
-                        @endif
-                    </div>
+                        <div class="notification is-primary">
+                            {{ $viewing->requester->name }}が{{ $viewing->start_time }}に{{ $viewing->movie->title }}の同時視聴を申請しています
+                            @foreach ($viewing->approvers as $approver)
+                                <p>{{ $approver->name }}が承認</p>
+                            @endforeach
+                            @if(!$viewing->is_approver && !$viewing->is_requester)
+                                <form action="{{ route('viewings.approve', ['group' => $group->id, 'viewing' => $viewing->id]) }}" method="POST">
+                                    @csrf
+                                    <button class="button is-success" type="submit">承諾する</button>
+                                </form>
+                            @endif
+                            @if($viewing->is_requester || $viewing->is_approver)
+                                <a href="{{ $viewing->url }}">視聴先</a>
+                            @endif
+                            @if($viewing->is_requester || $group->is_owner)
+                                <form method="POST" action="{{ route('viewings.cancel', ['group' => $group->id, 'viewing' => $viewing->id]) }}">
+                                    @csrf
+                                    <button class="button is-danger" type="submit">申請取り消し</button>
+                                </form>
+                            @endif
+                        </div>
                     @endforeach
     
                     <form action="/moviechat/groups/{{ $group->id }}/chats" method="POST" class="message-send-form">
