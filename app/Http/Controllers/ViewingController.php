@@ -18,7 +18,7 @@ class ViewingController extends Controller
 {
     public function index($groupId, $viewingId)
     {
-        $viewing = Viewing::findOrFail($viewingId);
+        $viewing = Viewing::with('messages.user')->findOrFail($viewingId);
         
         $group = Group::findOrFail($groupId);
 
@@ -31,31 +31,21 @@ class ViewingController extends Controller
         
         $user = $request->user();
         $group = Group::findOrFail($groupId);
-        $movieId = $validatedData['movie'];
 
         $viewing = new Viewing();
         $viewing->group()->associate($group);
         $viewing->requester()->associate($user);
-        
         $viewing->start_time = $validatedData['start_time'];
         
-        $movieId = $validatedData['movie'];
+        $tmdbId = $validatedData['movie'];
         $apiKey = config('tmdb.api_key');
         
-        if ($movieId !== null) {
-            $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}?api_key={$apiKey}&language=ja-JP");
-            $movieData = $response->json();
-
-            $movie = Movie::firstOrCreate(
-                ['tmdb_id' => $movieData['id']],
-                ['title' => $movieData['title']]
-            );
-
-            $viewing->movie()->associate($movie);
-        }
+        $response = Http::get("https://api.themoviedb.org/3/movie/{$tmdbId}?api_key={$apiKey}&language=ja-JP");
+        $movieData = $response->json();
+        $movie = Movie::updateOrCreateFromTMDB($movieData);
         
+        $viewing->movie()->associate($movie);
         $viewing->save();
-        
         
         $viewingId = $viewing->id;
         $viewing->url = url("/moviechat/groups/$groupId/viewings/$viewingId");
@@ -77,10 +67,7 @@ class ViewingController extends Controller
         $group = Group::findOrFail($groupId);
         $viewing = Viewing::findOrFail($viewingId);
     
-        // ユーザーが申請者である場合のみ申請を取り消すことができます
-        if (Auth::user()->id == $viewing->requester_id || Auth::user()->id == $group->owner_id) {
-            $viewing->delete();
-        }
+        $viewing->delete();
     
         return redirect()->back();
     }

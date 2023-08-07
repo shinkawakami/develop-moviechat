@@ -37,4 +37,12 @@ class Movie extends Model
     {
         return $this->hasMany(Post::class);
     }
+    
+    public static function updateOrCreateFromTMDB($movieData)
+    {
+        return self::updateOrCreate(
+            ['tmdb_id' => $movieData['id']],
+            ['title' => $movieData['title']]
+        );
+    }
 }

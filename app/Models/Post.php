@@ -34,4 +34,11 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class);
     }
+    
+    public static function searchByKeyword($keyword)
+    {
+        return self::whereHas('movie', function ($query) use ($keyword) {
+            $query->where('title', 'like', '%' . $keyword . '%');
+        })->orWhere('title', 'like', '%' . $keyword . '%')->with(['user', 'movie'])->get();
+    }
 }

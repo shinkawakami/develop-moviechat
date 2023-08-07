@@ -13,9 +13,9 @@ class MovieController extends Controller
     {
         $apiKey = config('tmdb.api_key');
         $response = Http::get("https://api.themoviedb.org/3/movie/popular?api_key={$apiKey}&language=ja-JP&page=1");
-        $movies = $response->json()['results'] ?? [];
+        $popularMovies = $response->json()['results'] ?? [];
 
-        return view('movies.index', ['popular_movies' => $movies]);
+        return view('movies.index', compact('popularMovies'));
     }
         
     public function search(SearchRequest $request)
@@ -39,37 +39,15 @@ class MovieController extends Controller
     
         return response()->json($movieData);
     }
-    
-    public function details($tmdb_id)
-    {
-        // Fetch movie details
-        $apiKey = config('tmdb.api_key');
-        $response = Http::get("https://api.themoviedb.org/3/movie/{$tmdb_id}?api_key={$apiKey}&language=ja-JP");
-        $movieData = $response->json();
-    
-        return response()->json($movieData);
-    }
         
     public function show($tmdb_id)
     {
-        // Fetch movie details
         $apiKey = config('tmdb.api_key');
         $response = Http::get("https://api.themoviedb.org/3/movie/{$tmdb_id}?api_key={$apiKey}&language=ja-JP");
         $movieData = $response->json();
     
-        // Get or create the movie in local database
-        $movie = Movie::firstOrCreate(
-            ['tmdb_id' => $movieData['id']],
-            ['title' => $movieData['title']]
-        );
-    
-        $posts = $movie->posts;  // Get all posts related to this movie
-        $groups = $movie->groups;  // Get all groups related to this movie
+        $movie = Movie::updateOrCreateFromTMDB($movieData)->load(['groups', 'posts']);
         
-        return view('movies.show', [
-            'movie' => $movieData,
-            'posts' => $posts,
-            'groups' => $groups,
-        ]);
+        return view('movies.show', compact('movie'));
     }
 }
