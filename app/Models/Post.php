@@ -35,6 +35,7 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
     
+    // キーワード検索
     public static function searchByKeyword($keyword)
     {
         return self::whereHas('movie', function ($query) use ($keyword) {

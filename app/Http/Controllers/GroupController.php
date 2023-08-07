@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Http;
 
 class GroupController extends Controller
 {
+    // グループ一覧画面の表示
     public function index()
     {
         $groups = Group::with(['movies', 'genres', 'eras', 'platforms'])->get();
@@ -28,6 +29,7 @@ class GroupController extends Controller
         return view('groups.index', compact('groups'));
     }
         
+    // グループ作成画面の表示
     public function create()
     {
         $genres = Genre::all();
@@ -36,6 +38,7 @@ class GroupController extends Controller
         return view('groups.create', compact('genres', 'eras', 'platforms'));
     }
     
+    // グループ保存の処理
     public function store(CreateRequest $request)
     {
         $validatedData = $request->validated();
@@ -76,6 +79,7 @@ class GroupController extends Controller
         return redirect()->route('groups.index', $group);
     }
     
+    // グループ検索画面の表示
     public function showSearch()
     {
         $genres = Genre::all();
@@ -84,6 +88,7 @@ class GroupController extends Controller
         return view('groups.search', compact('genres', 'platforms', 'eras'));
     }
     
+    // グループ検索処理とその結果の表示
     public function searchResults(SearchRequest $request)
     {
         $validatedData = $request->validated();
@@ -116,7 +121,8 @@ class GroupController extends Controller
         return view('groups.index', compact('groups'));
     }
     
-    public function myGroups()
+    // 自分のグループの表示
+    public function user()
     {
         $user = Auth::user();
         $groups = $user->groups()->with(['movies', 'genres', 'eras', 'platforms'])->get();
@@ -129,6 +135,7 @@ class GroupController extends Controller
         return view('groups.index', compact('groups'));
     }
     
+    // グループ参加の処理
     public function join($groupId)
     {
         $user = Auth::user();
@@ -138,6 +145,7 @@ class GroupController extends Controller
         return redirect()->route('chats.index', $group->id);
     }
     
+    // グループ詳細画面の表示
     public function show($groupId)
     {
         $user = Auth::user();
@@ -149,6 +157,7 @@ class GroupController extends Controller
         return view('groups.show', compact('group'));
     }
     
+    // グループ削除の処理
     public function destroy($groupId)
     {
         $group = Group::findOrFail($groupId);
@@ -158,6 +167,7 @@ class GroupController extends Controller
         return redirect()->route('groups.index');
     }
     
+    // オーナーがユーザーをグループから退会させる処理
     public function removeUser($groupId, $userId)
     {
         $group = Group::findOrFail($groupId);
@@ -177,6 +187,7 @@ class GroupController extends Controller
         return redirect()->back();
     }
     
+    // グループ編集画面の表示
     public function edit($groupId)
     {
         $group = Group::with(['movies', 'genres', 'eras', 'platforms'])->findOrFail($groupId);
@@ -186,6 +197,7 @@ class GroupController extends Controller
         return view('groups.edit', compact('group', 'genres', 'eras', 'platforms'));
     }
     
+    // グループ更新の処理
     public function update(EditRequest $request, $groupId)
     {
         $validatedData = $request->validated();
@@ -236,6 +248,7 @@ class GroupController extends Controller
         return redirect()->route('groups.show', $group);
     }
     
+    // グループ退会の処理
     public function leave($groupId)
     {
         $user = Auth::user();
