@@ -16,6 +16,7 @@ use App\Events\ApproveSent;
 
 class ViewingController extends Controller
 {
+    // 同時視聴画面の表示
     public function index($groupId, $viewingId)
     {
         $viewing = Viewing::with('messages.user')->findOrFail($viewingId);
@@ -25,6 +26,7 @@ class ViewingController extends Controller
         return view('viewings.index', compact('group', 'viewing'));
     }
     
+    // 同時視聴申請の処理
     public function request(RequestRequest $request, $groupId)
     {
         $validatedData = $request->validated();
@@ -54,6 +56,7 @@ class ViewingController extends Controller
         return redirect()->back();
     }
 
+    // 同時視聴承諾の処理
     public function approve($groupId, $viewingId)
     {
         $user = Auth::user();
@@ -62,6 +65,7 @@ class ViewingController extends Controller
         return redirect()->back();
     }
     
+    // 同時視聴取り消しの処理
     public function cancel($groupId, $viewingId)
     {
         $group = Group::findOrFail($groupId);
@@ -72,6 +76,7 @@ class ViewingController extends Controller
         return redirect()->back();
     }
     
+    // 同時視聴でのチャットの処理
     public function chat(SendRequest $request, $groupId, $viewingId)
     {
         $validatedData = $request->validated();
@@ -88,6 +93,7 @@ class ViewingController extends Controller
         return redirect()->back();
     }
     
+    // メッセージ削除の処理
     public function destroy($groupId, $viewingId, $messageId)
     {
         $viewing = Viewing::findOrFail($viewingId);

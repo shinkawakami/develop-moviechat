@@ -37,6 +37,7 @@
                                 @if ($group->is_owner && Auth::user()->id != $user->id)
                                 <form action="{{ route('groups.removeUser', ['group' => $group->id, 'user' => $user->id]) }}" method="POST" class="remove-user-form">
                                     @csrf
+                                    @method('DELETE')
                                     <button class="button is-small" type="submit">退会させる</button>
                                 </form>
                                 @endif
@@ -64,6 +65,7 @@
                                 @elseif(!$group->is_member && !$group->is_full)
                                     <form action="{{ route('groups.join', $group->id) }}" method="POST">
                                         @csrf
+                                        @method('DELETE')
                                         <button type="submit" class="button is-success">参加</button>
                                     </form>
                                 @endif

@@ -24,7 +24,7 @@
                     <x-nav-link :href="route('groups.showSearch')" :active="request()->routeIs('groups.showSearch')">
                         {{ __('グループ検索') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('groups.myGroups')" :active="request()->routeIs('groups.myGroups')">
+                    <x-nav-link :href="route('groups.user')" :active="request()->routeIs('groups.user')">
                         {{ __('自分のグループ') }}
                     </x-nav-link>
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
