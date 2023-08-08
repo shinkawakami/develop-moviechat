@@ -36,7 +36,7 @@
                     <form class="box">
                         <h2 class="subtitle movie-search-title">映画検索</h2>
                         <div class="field has-addons">
-                            <div class="control is-expanded">
+                            <div class="control">
                                 <input type="text" id="movie-search" class="input" placeholder="キーワードを入力">
                             </div>
                             <div class="control">
