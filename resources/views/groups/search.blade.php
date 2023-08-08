@@ -18,7 +18,7 @@
                 <div class="box">
                     <h2 class="subtitle">キーワード検索</h2>
                     <form method="GET" action="{{ route('groups.searchResults') }}" class="field has-addons">
-                        <div class="control is-expanded">
+                        <div class="control">
                             <input type="text" name="keyword" required maxlength="50" class="input" placeholder="キーワードを入力">
                         </div>
                         <div class="control">

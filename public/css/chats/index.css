@@ -1,24 +1,82 @@
-.field > .control {
-    margin-bottom: 30px; /* コントロールの下のマージンを調整 */
+.group-link {
+    display: block; 
+    margin-bottom: 15px;  
+    font-size: 30px;
+    color: #007BFF;
+    font-weight: bold; 
 }
 
-.faint-note {
-    font-size: 80%;  /* 必要に応じてサイズを調整 */
-    color: #888;    /* 薄い色で表示 */
+.group-link:hover {
+    color: #0056b3; 
+    text-decoration: underline;
+}
+
+.message-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #f7fafc;
+}
+
+.icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    color: white; 
+}
+
+.delete-form {
+    display: inline; 
     margin-left: 5px;
 }
 
-.subtitle {
-    font-size: 20px;
-    font-weight: bold;
+.viewing-link {
+    font-weight: bold; 
+}
+
+.field > .control {
+    margin-bottom: 30px; 
+}
+
+.faint-note {
+    font-size: 80%;  
+    color: #888;   
+}
+
+.field.has-addons {
+    margin-top: 15px;
+}
+
+.cancel-button {
+    width: 100%;
+}
+
+.remove-button {
+    font-size: 10px;
+    margin-right: 10px;
+}
+
+.buttons-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .movie-container {
     display: inline-block;
-    width: 30%; /* 3つのコンテナが横に並ぶ */
+    width: 30%; 
     box-sizing: border-box;
     padding: 1%;
-    vertical-align: top; /* インラインブロック要素の揃えを調整 */
+    vertical-align: top; 
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     margin: 1%;
@@ -40,11 +98,6 @@
 .movie-container img {
     width: 100%;
     height: auto;
-}
-
-.remove-button {
-    font-size: 10px;
-    margin-right: 10px;
 }
 
 .movie-container button {
@@ -75,69 +128,4 @@
 
 .pagination > button:last-child {
     margin-left: auto;
-}
-
-.cancel-button {
-    width: 100%;
-}
-
-#buttons-container {
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.message-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    background-color: #f7fafc;
-}
-
-.message-content {
-    display: flex;          /* Flexboxを適用 */
-    align-items: center; 
-}
-
-.delete-form {
-    display: inline; /* formのblockスタイリングを削除 */
-    margin-left: 5px;
-}
-
-.content {
-    margin-top: 10px;
-}
-
-.field.has-addons {
-    margin-top: 10px;
-}
-
-.rounded-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: black; /* これが背景を黒にする */
-    color: white; /* アイコンの色を白に設定 */
-    overflow: hidden; /* もしアイコンが円形の外側にはみ出る場合のため */
-}
-
-.group-link {
-    display: block;  /* ブロック要素として表示することで縦方向のマージンが適用可能になります */
-    margin-bottom: 15px;  /* 下部に15pxのマージンを追加 */
-    font-size: 30px;
-    color: #007BFF;
-    font-weight: bold; /* 太字にする */
-}
-
-.group-link:hover {
-    color: #0056b3; /* より濃いブルーに変更してホバーエフェクトを追加 */
-    text-decoration: underline; /* 下線を追加 */
 }

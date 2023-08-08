@@ -9,41 +9,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewingRequestBtn = document.getElementById('viewing-request-btn');
     const viewingCancelButton = document.getElementById('viewing-cancel-btn');
     const startTime = document.querySelector('input[name="start_time"]');
-    let selectedMovieId = null;  // To keep track of selected movie id
-    let selectButtons = [];  // To keep track of select buttons
+    let selectedMovieId = null;  
+    let selectButtons = []; 
     let currentPage = 1;
 
-    // トリガーボタンのクリックイベント
+    // トリガーボタンのクリック
     viewingToggleBtn.addEventListener('click', () => {
+        event.preventDefault();
         viewingSection.style.display = 'block';
     });
 
-    // キャンセルボタンを作成した部分に以下のコードを追加
+    // キャンセルボタンのクリック
     viewingCancelButton.addEventListener('click', (event) => {
         event.preventDefault();
-        searchResults.innerHTML = ''; // 検索結果を非表示にする
-        viewingSection.style.display = 'none';  // 追加: 申請部分を非表示にする
+        searchResults.innerHTML = ''; 
+        viewingSection.style.display = 'none';  
     });
     
-     // 「同時視聴申請」ボタンのクリックイベント
+    // 同時視聴申請ボタンのクリック
     viewingRequestBtn.addEventListener('click', (event) => {
         if (!startTime.value || !selectedMovieId) { 
             event.preventDefault();
-            alert('視聴開始時間と映画を選択してください。');  // ユーザーに警告メッセージを表示
-            return;  // 何もせずに関数を終了
+            alert('視聴開始時間と映画を選択してください。');  
+            return;  
         } else {
-            // 申請部分を非表示にする
             viewingSection.style.display = 'none';
         }
     });
 
-
+    // 検索ボタンのクリック
     searchButton.addEventListener('click', (event) => {
         event.preventDefault();
         const query = searchInput.value;
         fetchMovies(query);
     });
 
+    // TMDBから映画の情報を取得
     function fetchMovies(query, page = 1) {
         const url = '/moviechat/movies/search?query=' + query + '&page=' + page;
         
@@ -53,9 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cancelButton.classList.add('cancel-button', 'tag', 'is-danger');
         cancelButton.addEventListener('click', (event) => {
             event.preventDefault();
-            searchResults.innerHTML = ''; // 検索結果を非表示にする
+            searchResults.innerHTML = ''; 
         });
-        
         
         fetch(url)
             .then(response => response.json())
@@ -64,13 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const totalPages = data.total_pages;
                 searchResults.innerHTML = '';
                 searchResults.appendChild(cancelButton);
-                selectButtons = [];  // Clear the select buttons
+                selectButtons = []; 
     
+                // 検索結果の作成
                 movies.forEach(movie => {
                     const movieContainer = document.createElement('div');
                     movieContainer.className = "movie-container";
-                    
-                    
     
                     const movieTitle = document.createElement('p');
                     movieTitle.textContent = movie.title;
@@ -92,11 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     selectButton.addEventListener('click', (event) => {
                         event.preventDefault();
-
                         selectedMovieId = movie.id;
                         selectedMovie.value = movie.id;
-
-                        selectedMovieContainer.innerHTML = '';  // Clear the existing movie title
+                        selectedMovieContainer.innerHTML = ''; 
 
                         const selectedMovieTitle = document.createElement('p');
                         selectedMovieTitle.textContent = movie.title;
@@ -108,27 +105,21 @@ document.addEventListener('DOMContentLoaded', () => {
                         removeButton.className ="remove-button"
                         removeButton.addEventListener('click', (event) => {
                             event.preventDefault();
-
                             selectedMovieId = null;
                             selectedMovie.value = '';
                             selectedMovieTitle.remove();
                             removeButton.remove();
-
                             updateSelectButtons();
                         });
-                        selectedMovieContainer.appendChild(removeButton);
-
-                        updateSelectButtons();
                         
-                        searchResults.innerHTML = '';  // 検索結果を非表示にする
+                        selectedMovieContainer.appendChild(removeButton);
+                        updateSelectButtons();
+                        searchResults.innerHTML = ''; 
                     });
+                    
                     movieContainer.appendChild(selectButton);
-
-                    selectButtons.push({ id: movie.id, button: selectButton });  // Add the select button to the array
-
+                    selectButtons.push({ id: movie.id, button: selectButton }); 
                     searchResults.appendChild(movieContainer);
-                    
-                    
                 });
                 
                 const paginationDiv = document.createElement('div');
@@ -144,7 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     paginationDiv.appendChild(prevPageButton);
                 } else {
-                    // これが空の要素で、左側のボタンがない場合にスペースを埋める役割を果たします。
                     paginationDiv.appendChild(document.createElement('div'));
                 }
                 
@@ -158,14 +148,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     paginationDiv.appendChild(nextPageButton);
                 } else {
-                    // これが空の要素で、右側のボタンがない場合にスペースを埋める役割を果たします。
                     paginationDiv.appendChild(document.createElement('div'));
                 }
-
                 searchResults.appendChild(paginationDiv);
             });
     }
 
+    // 映画選択ボタンの更新
     function updateSelectButtons() {
         selectButtons.forEach(({ id, button }) => {
             button.textContent = selectedMovieId === id ? '選択済み' : '選択';

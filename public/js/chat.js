@@ -12,17 +12,16 @@ fetch(url)
         window.pusherAppKey = data.pusher_app_key;
         window.pusherAppCluster = data.pusher_app_cluster;
 
-        // Pusherの初期化をデータの取得が完了した後に行う
+        // Pusherの初期化
         const pusher = new Pusher(window.pusherAppKey, {
             cluster: window.pusherAppCluster,
             encrypted: true
         });
 
-        // このユーザーが現在のグループに参加しているチャンネルを購読
+        // Pusherを用いてメッセージの取得と表示
         const channel = pusher.subscribe('group.' + window.groupId);
 
         channel.bind('App\\Events\\MessageSent', function(data) {
-            
             let deleteButton = '';
             if (data.message.user_id == window.authId) {
                 deleteButton = `
@@ -34,21 +33,20 @@ fetch(url)
                 `;
             }
             
-            // 画像URLが存在しない場合はアイコンを表示、存在する場合は<img>タグを使用
-            const profileImageOrIcon = data.message.user.image_url ? 
-                `<img src="${data.message.user.image_url}" alt="Profile Image" class="rounded-icon">` : 
-                '<i class="fas fa-user rounded-icon"></i>';
+            const icon = data.message.user.image_url ? 
+                `<img src="${data.message.user.image_url}" alt="Profile Image" class="icon">` : 
+                '<i class="fas fa-user icon"></i>';
                 
-            const formattedDate = formatDateTime(data.message.created_at);
+            const dateTime = formatDateTime(data.message.created_at);
             
             const messageElement = `
                 <div class="message-item">
-                    <div class="message-content">
-                        ${profileImageOrIcon}
+                    <div">
+                        ${icon}
                         <span>${data.message.user.name}: ${data.message.content}</span>
                     </div>
-                    <div class="message-time">
-                        ${formattedDate}
+                    <div>
+                        ${dateTime}
                         ${deleteButton}
                     </div>
                 </div>
