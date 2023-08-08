@@ -79,7 +79,6 @@
                         <div class="control">
                             <span id="selected-movies"></span>
                             <div id="movies"></div>
-                            <!-- 選択した映画はここに表示されます -->
                         </div>
                     </div>
 
@@ -93,7 +92,7 @@
                 <form class="box">
                     <h2 class="subtitle movie-search-title">映画検索</h2>
                     <div class="field has-addons">
-                        <div class="control is-expanded">
+                        <div class="control">
                             <input type="text" id="movie-search" class="input" placeholder="キーワードを入力">
                         </div>
                         <div class="control">
@@ -101,9 +100,7 @@
                         </div>
                     </div>
                 
-                    <div id="search-results">
-                        <!-- 映画の検索結果はここに表示されます -->
-                    </div>
+                    <div id="search-results"></div>
                 </form>
             </div>
         </section>

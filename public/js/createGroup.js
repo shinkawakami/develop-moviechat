@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('movie-search');
     const searchResults = document.getElementById('search-results');
     const selectedMoviesContainer = document.getElementById('selected-movies');
-    let selectedMovieIds = [];  // To keep track of selected movie ids
+    let selectedMovieIds = [];  
     let currentPage = 1;
  
     searchButton.addEventListener('click', (event) => {
