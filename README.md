@@ -1,66 +1,93 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<h1 align="center">MovieChat</h1>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+##  制作背景
+近年，ストリーミングサービスの普及により，手軽に様々な映画を楽しむことが可能となりました．<br>
+しかし，この状況がもたらす問題の一つは，映画の視聴が分散されることです．<br><br>
+私自身も経験しているこの問題は，感動や興奮を得た映画が友人と異なることから，
+映画に関する共通の話題を持ちにくく，コミュニケーションを取ることが難しくなっています．<br>
+映画は，感じたことや考えたことを他者と共有することでその魅力が倍増すると感じています．<br><br>
+この問題を解決するために，映画愛好者たちが感想や意見を共有し，
+新しい映画を発見しながら楽しむためのプラットフォームが必要であると考えました．<br><br>
+このアプリケーションは，映画愛好者たちが気軽にコミュニケーションを取りながら，映画の魅力を深めることを目的に制作しました。<br>
 
-## About Laravel
+##  概要
+「異なる映画を楽しみたいあなたに」
+  MovieChatは以下のポイントを核心として設計されています．
+- 好きな映画を選択しやすい映画検索機能
+- 共有しやすい場になれるグループ作成機能
+- 自分の興味あるグループを探しやすい検索機能
+- 安全な映画同時視聴に向けた申請・承認システム
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+「多様性の中で映画の魅力を一緒に感じ，共有する」をコンセプトとしています．
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+##  開発環境
+<b>使用言語：</b><br>
+- PHP
+- HTML
+- CSS
+- JavaScript
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<b>フレームワーク・ライブラリ：</b><br>
+- Laravel (ver.9.52)
+- Bulma (ver.0.9.3, CSSフレームワーク)
+- Pusher (リアルタイムウェブアプリケーションツール)
+- Cloudinary (画像管理サービス)
 
-## Learning Laravel
+<b>外部API：</b><br>
+- TMDB API (映画データベース)  
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+<b>開発環境・ツール：</b><br>
+- AWS(Cloud9)
+- MySQL(MariaDB) 
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+<b>バージョン管理・ホスティング：</b><br>
+- Github
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+<b>デプロイ：</b><br>
+- Heroku
 
-## Laravel Sponsors
+##  データ構成
+<b>「テーブル構成・リレーション」と「テーブル包含関係」：</b><br>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+##  機能
+- ログイン
+- 映画検索(TMDB API)
+- グループの作成・検索・編集
+- リアルタイムチャット
+- 同時視聴の申請・承諾(視聴は外部アプリ)
+- 投稿の作成・検索・編集・コメント
+- プロフィール管理
 
-### Premium Partners
+##  こだわり
+<b>リアルタイムチャット：</b><br>
+WebSocketを活用することで，ユーザー同士がリアルタイムで意見交換や感想の共有が可能です．<br>
+これにより，映画の同時視聴中でも，その場でのコミュニケーションが実現しています．<br><br>
+<b>快適な映画の検索・選択：</b><br>
+映画の検索と選択する機会が多いため，AJAXを利用したスムーズなページ遷移や，ページネーション機能を導入しました．<br>
+また，映画やボタンの配置を工夫することで，直観的に選択することができます．<br><br>
+<b>高度な絞り込み検索：</b><br>
+グループの検索時に，ジャンル・年代・視聴プラットフォームの指定で絞り込むことが可能です．<br>
+これにより，自分の好みに合わせて迅速にグループの見つけることができます．<br><br>
+<b>同時視聴の申請・承諾：</b><br>
+映画の同時視聴をスムーズかつ安全に行うための申請・承認システムを採用しています．<br>
+これにより，目的に合わないユーザーの参加を制限し，同時視聴をより楽しむことができます．<br>
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+##  楽しみ方
+<b>映画の感想や意見を共有したいユーザー：</b><br>
+自分の好みに合うグループの作成，または，検索を行い，グループに参加します．<br>
+そのグループでリアルアイムチャットや映画の同時視聴を行うことで，映画の魅力を一緒に感じることができます．<br><br>
+<b>映画探索をしたいユーザー：</b><br>
+映画の検索やグループでのチャット，投稿を閲覧することによって，自分では気づけなったジャンルの映画や映画の魅力に触れることができます．<br>
 
-## Contributing
+##  今後の計画
+- 映画検索機能の強化（ジャンルや年代などの指定での絞り込み検索）
+- ユーザーの好みの映画推薦システム（プロフィールの好きな映画を元に基にする）
+- ページ遷移のユーザビリティ向上（ページを戻った際の前の情報の保持）
+- ユーザーフォロー機能
+- ユーザーのプロフィール閲覧
+- 投稿への「いいね」機能
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
