@@ -15,9 +15,13 @@ use App\Models\Era;
 use App\Models\Movie;
 use Cloudinary;
 
-
 class ProfileController extends Controller
 {
+    public function home()
+    {
+        return view('home');
+    }
+    
     /**
      * Display the user's profile form.
      */
@@ -96,10 +100,5 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
-    }
-    
-    public function home()
-    {
-        return Redirect::route('movies.index');
     }
 }
