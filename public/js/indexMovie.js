@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const query = searchInput.value;
         
-        if (query.trim() === '') {  // ユーザーが空白または空文字列を入力した場合
-            alert('検索キーワードを入力してください。');  // ユーザーに警告メッセージを表示
-            return;  // 何もせずに関数を終了
+        if (query.trim() === '') {  
+            alert('検索キーワードを入力してください。');  
+            return; 
         } 
         
         fetchMovies(query);
@@ -28,16 +28,16 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 const movies = data.results;
                 const totalPages = data.total_pages;
-                searchResults.innerHTML = '';  // Clear the search results
+                searchResults.innerHTML = '';  
 
-                popularMoviesContainer.style.display = 'none';  // Hide the popular movies container
+                popularMoviesContainer.style.display = 'none'; 
     
                 movies.forEach(movie => {
                     const movieContainer = document.createElement('div');
                     movieContainer.className = "movie-container";
             
                     const movieTitle = document.createElement('a');
-                    movieTitle.href = '/moviechat/movies/' + movie.id;  // Set the link to the movie detail page
+                    movieTitle.href = '/moviechat/movies/' + movie.id; 
                     movieTitle.textContent = movie.title;
                     movieContainer.appendChild(movieTitle);
     
@@ -65,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     paginationDiv.appendChild(prevPageButton);
                 } else {
-                    // これが空の要素で、左側のボタン��ない場合にスペースを埋める役割を果たします。
                     paginationDiv.appendChild(document.createElement('div'));
                 }
                 
@@ -79,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     paginationDiv.appendChild(nextPageButton);
                 } else {
-                    // これが空の要素で、右側のボタンがない場合にスペースを埋める役割を果たします。
                     paginationDiv.appendChild(document.createElement('div'));
                 }
 

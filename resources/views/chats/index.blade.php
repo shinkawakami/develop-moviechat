@@ -44,7 +44,7 @@
                     @foreach ($viewings as $viewing)
                         @if($viewing->is_requester || $viewing->is_recipient)
                             <div class="notification is-primary">
-                                {{ $viewing->requester->name }} が {{ $viewing->start_time }} に {{ $viewing->movie->title }} の同時視聴を申請しています
+                                {{ $viewing->requester->name }} が {{ $viewing->start_time }} に {{ $viewing->movie->title }} の同時視聴を申請しています。
                                 @foreach ($viewing->approvers as $approver)
                                     <p>{{ $approver->name }}が承認</p>
                                 @endforeach
@@ -54,9 +54,11 @@
                                         <button class="button is-link viewing-button" type="submit">承諾する</button>
                                     </form>
                                 @endif
-                                @if($viewing->is_requester || $viewing->is_approver)
+                                <div>
+                                    @if($viewing->is_requester || $viewing->is_approver)
                                     <a class="viewing-link" href="{{ $viewing->url }}">視聴先</a>
                                 @endif
+                                </div>
                                 @if($viewing->is_requester)
                                     <form method="POST" action="{{ route('viewings.cancel', ['group' => $group->id, 'viewing' => $viewing->id]) }}">
                                         @csrf

@@ -18,25 +18,25 @@
                     <div class="box">
                         <a href="{{ route('groups.show', $group->id) }}" class="group-link">{{ $group->name }}</a>
                         <p>
-                            好きな映画：
+                            <span class="label-text">好きな映画：</span>
                             @foreach ($group->movies as $movie)
-                            <span class="tag is-danger">{{ $movie->title }}</span>
+                            <span class="tag is-black">{{ $movie->title }}</span>
                             @endforeach
                         </p>
                         <p>
-                            好きなジャンル：
+                            <span class="label-text">好きなジャンル：</span>
                             @foreach ($group->genres as $genre)
                             <span class="tag is-primary">{{ $genre->name }}</span>
                             @endforeach
                         </p>
                         <p>
-                            好きな年代：
+                            <span class="label-text">好きな年代：</span>
                             @foreach ($group->eras as $era)
                             <span class="tag is-info">{{ $era->era }}</span>
                             @endforeach
                         </p>
                         <p>
-                            使うプラットフォーム：
+                            <span class="label-text">使うプラットフォーム：</span>
                             @foreach ($group->platforms as $platform)
                             <span class="tag is-warning">{{ $platform->name }}</span>
                             @endforeach
