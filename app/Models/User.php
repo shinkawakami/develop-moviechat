@@ -49,11 +49,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Group::class, 'group_user');
     }
     
-    public function approvers()
-    {
-        return $this->belongsToMany(Viewing::class, 'approvers');
-    }
-    
     public function movies()
     {
         return $this->belongsToMany(Movie::class, 'user_movie');
