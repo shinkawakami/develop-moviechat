@@ -17,19 +17,17 @@ class ChatController extends Controller
     // チャット画面の表示
     public function index($groupId)
     {
-        $group = Group::with('messages.user')->findOrFail($groupId);
-        $movies = Movie::all();
-        $viewings = Viewing::where('group_id', $groupId)->get();
+        $group = Group::with(['users', 'messages.user'])->findOrFail($groupId);
+        $viewings = Viewing::with(['movie', 'approvers'])->where('group_id', $groupId)->get();
         $user = Auth::user();
         
         foreach ($viewings as $viewing) {
             $viewing->is_requester = $viewing->isRequester($user);
+            $viewing->is_recipient = $viewing->isRecipient($user);
             $viewing->is_approver = $viewing->isApprover($user);
         }
         
-        $group->is_owner = $group->isOwner($user);
-        
-        return view('chats.index', compact('group', 'viewings', 'movies'));
+        return view('chats.index', compact('group', 'viewings'));
     }
     
     // メッセージ送信の処理

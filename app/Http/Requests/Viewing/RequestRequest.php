@@ -14,6 +14,7 @@ class RequestRequest extends FormRequest
     public function rules()
     {
         return [
+            'recipients' => 'required|array|exists:users,id',
             'movie' => 'required|integer',  
             'start_time' => 'required|date_format:Y-m-d\TH:i',
         ];
