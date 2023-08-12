@@ -42,27 +42,29 @@
                     </div>
                     
                     @foreach ($viewings as $viewing)
-                        <div class="notification is-primary">
-                            {{ $viewing->requester->name }} が {{ $viewing->start_time }} に {{ $viewing->movie->title }} の同時視聴を申請しています
-                            @foreach ($viewing->approvers as $approver)
-                                <p>{{ $approver->name }}が承認</p>
-                            @endforeach
-                            @if(!$viewing->is_approver && !$viewing->is_requester)
-                                <form action="{{ route('viewings.approve', ['group' => $group->id, 'viewing' => $viewing->id]) }}" method="POST">
-                                    @csrf
-                                    <button class="button is-link" type="submit">承諾する</button>
-                                </form>
-                            @endif
-                            @if($viewing->is_requester || $viewing->is_approver)
-                                <a class="viewing-link" href="{{ $viewing->url }}">視聴先</a>
-                            @endif
-                            @if($viewing->is_requester || $group->is_owner)
-                                <form method="POST" action="{{ route('viewings.cancel', ['group' => $group->id, 'viewing' => $viewing->id]) }}">
-                                    @csrf
-                                    <button class="button is-danger" type="submit">申請取り消し</button>
-                                </form>
-                            @endif
-                        </div>
+                        @if($viewing->is_requester || $viewing->is_recipient)
+                            <div class="notification is-primary">
+                                {{ $viewing->requester->name }} が {{ $viewing->start_time }} に {{ $viewing->movie->title }} の同時視聴を申請しています
+                                @foreach ($viewing->approvers as $approver)
+                                    <p>{{ $approver->name }}が承認</p>
+                                @endforeach
+                                @if(!$viewing->is_requester && !$viewing->is_approver)
+                                    <form action="{{ route('viewings.approve', ['group' => $group->id, 'viewing' => $viewing->id]) }}" method="POST">
+                                        @csrf
+                                        <button class="button is-link viewing-button" type="submit">承諾する</button>
+                                    </form>
+                                @endif
+                                @if($viewing->is_requester || $viewing->is_approver)
+                                    <a class="viewing-link" href="{{ $viewing->url }}">視聴先</a>
+                                @endif
+                                @if($viewing->is_requester)
+                                    <form method="POST" action="{{ route('viewings.cancel', ['group' => $group->id, 'viewing' => $viewing->id]) }}">
+                                        @csrf
+                                        <button class="button is-danger viewing-button" type="submit">申請取り消し</button>
+                                    </form>
+                                @endif
+                            </div>
+                        @endif
                     @endforeach
     
                     <form action="{{ route('chats.send', $group->id) }}" method="POST">
@@ -83,9 +85,24 @@
                         <form action="{{ route('viewings.request', $group->id) }}" method="POST">
                             @csrf
                             <div class="field">
+                                <label class="label">申請を送るユーザー</label>
+                                <div class="control">
+                                    @foreach($group->users as $user)
+                                        @if($user->id !== auth()->id())
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="recipients[]" value="{{ $user->id }}">
+                                                {{ $user->name }}
+                                            </label>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                           
+                            <div class="field">
                                 <label class="label">視聴開始時間</label>
                                 <input class="input" type="datetime-local" name='start_time'>
                             </div>
+                            <br>
                             <label class="label">映画<span class="faint-note">(検索して選択)</span></label>
                             <input type="hidden" id="movie" name="movie">
                             <div id="selected-movie" class="is-info"></div>

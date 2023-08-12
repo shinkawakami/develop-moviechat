@@ -41,9 +41,17 @@ class Viewing extends Model
         return $this->hasMany(Message::class);
     }
     
+    // 申請の受信者
+    public function recipients()
+    {
+        return $this->belongsToMany(User::class, 'viewing_user');
+    }
+    
+    // 承諾者
     public function approvers()
     {
-        return $this->belongsToMany(User::class, 'approvers');
+        return $this->belongsToMany(User::class, 'viewing_user')
+            ->wherePivot('approved', true);
     }
     
     // ユーザーが申請者であるかチェック
@@ -52,9 +60,15 @@ class Viewing extends Model
         return $this->requester_id == $user->id;
     }
     
-    // ユーザーが承認者であるかチェック
+    // ユーザーが申請の受信者であるかチェック
+    public function isRecipient($user)
+    {
+        return $this->recipients->contains($user->id);
+    }
+    
+    // ユーザーが承諾者であるかチェック
     public function isApprover($user)
     {
-        return $this->approvers()->where('user_id', $user->id)->exists();
+        return $this->approvers->contains($user->id);
     }
 }
