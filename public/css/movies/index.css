@@ -5,10 +5,10 @@
 
 .movie-container {
     display: inline-block;
-    width: 30%; /* 3つのコンテナが横に並ぶ */
+    width: 30%; 
     box-sizing: border-box;
     padding: 1%;
-    vertical-align: top; /* インラインブロック要素の揃えを調整 */
+    vertical-align: top;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     margin: 1%;
@@ -22,17 +22,17 @@
 .movie-container a {
     text-align: center;
     padding: 10px;
-    display: block;  // ブロックとして表示
+    display: block;  
     font-size: 18px;
-    color: #007BFF; /* リンクの色 */
-    text-decoration: none; /* 下線を削除 */
-    font-weight: bold; /* 太字にする */
-    transition: 0.3s; /* アニメーション効果の追加 */
+    color: #007BFF;
+    text-decoration: none; 
+    font-weight: bold; 
+    transition: 0.3s; 
 }
 
 .movie-container a:hover {
-    color: #0056b3; /* ホバー時の色 */
-    text-decoration: underline; /* 下線を追加 */
+    color: #0056b3; 
+    text-decoration: underline; 
 }
 
 .movie-container p {

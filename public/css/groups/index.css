@@ -1,3 +1,8 @@
+.label-text {
+    display: inline-block;
+    width: 150px; 
+}
+
 .buttons {
     margin-top: 14px;
 }
