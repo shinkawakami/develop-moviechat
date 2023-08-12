@@ -44,16 +44,16 @@
                             </li>
                             @endforeach
                         </ul>
-                        <strong>選択してる映画　</strong> 
+                        <strong class="label-text">好きな映画：</strong> 
                         @foreach ($group->movies as $movie) {{ $movie->title }}　 @endforeach
                         <br>
-                        <strong>好きなジャンル　</strong>
+                        <strong class="label-text">好きなジャンル：</strong>
                         @foreach ($group->genres as $genre) {{ $genre->name }}　 @endforeach
                         <br>
-                        <strong>好きな年代　</strong>
+                        <strong class="label-text">好きな年代：</strong>
                         @foreach ($group->eras as $era) {{ $era->era }}　 @endforeach
                         <br>
-                        <strong>使うプラットフォーム　</strong>
+                        <strong class="label-text">使うプラットフォーム：</strong>
                         @foreach ($group->platforms as $platform) {{ $platform->name }}　 @endforeach
                         <br>
                         

@@ -5,16 +5,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectedMovie = document.getElementById('movie');
     const selectedMovieContainer = document.getElementById('selected-movie');
     const postForm = document.querySelector('form[data-post-form]');
-    let selectedMovieId = null;  // To keep track of selected movie id
-    let selectButtons = [];  // To keep track of select buttons
+    let selectedMovieId = null; 
+    let selectButtons = []; 
     let currentPage = 1;
 
-   // 投稿フォームのsubmitイベントをリッスン
     postForm.addEventListener('submit', (event) => {
         if (!selectedMovieId) {
             console.log('selectedMovieId:', selectedMovieId);
-            event.preventDefault();  // フォームの送信を止める
-            alert('映画を選択してください。');  // エラーメッセージを表示
+            event.preventDefault();  
+            alert('映画を選択してください。'); 
         }
     });
    
@@ -29,11 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setExistingMovie() {
         if (window.postMovieId) {
-            selectedMovieId = window.postMovieId; // 既存の映画のIDを設定
+            selectedMovieId = window.postMovieId;
             selectedMovie.value = window.postMovieId;
 
             const selectedMovieTitle = document.createElement('p');
-            selectedMovieTitle.textContent = window.postMovieTitle; // ここで適切な映画のタイトルを設定する必要があります。
+            selectedMovieTitle.textContent = window.postMovieTitle; 
             selectedMovieContainer.appendChild(selectedMovieTitle);
             selectedMovieTitle.classList.add('tag', 'is-danger');
 
@@ -65,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const movies = data.results;
                 const totalPages = data.total_pages;
                 searchResults.innerHTML = '';
-                selectButtons = [];  // Clear the select buttons
+                selectButtons = []; 
     
                 movies.forEach(movie => {
                     const movieContainer = document.createElement('div');
@@ -95,8 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         selectedMovieId = movie.id;
                         selectedMovie.value = movie.id;
 
-                        selectedMovieContainer.innerHTML = '';  // Clear the existing movie title
-
+                        selectedMovieContainer.innerHTML = ''; 
+                        
                         const selectedMovieTitle = document.createElement('p');
                         selectedMovieTitle.textContent = movie.title;
                         selectedMovieContainer.appendChild(selectedMovieTitle);
@@ -121,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     movieContainer.appendChild(selectButton);
 
-                    selectButtons.push({ id: movie.id, button: selectButton });  // Add the select button to the array
+                    selectButtons.push({ id: movie.id, button: selectButton });
 
                     searchResults.appendChild(movieContainer);
                 });
@@ -139,7 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     paginationDiv.appendChild(prevPageButton);
                 } else {
-                    // これが空の要素で、左側のボタンがない場合にスペースを埋める役割を果たします。
                     paginationDiv.appendChild(document.createElement('div'));
                 }
                 
@@ -153,7 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     paginationDiv.appendChild(nextPageButton);
                 } else {
-                    // これが空の要素で、右側のボタンがない場合にスペースを埋める役割を果たします。
                     paginationDiv.appendChild(document.createElement('div'));
                 }
 
