@@ -41,7 +41,7 @@ fetch(url)
             
             const messageElement = `
                 <div class="message-item">
-                    <div">
+                    <div>
                         ${icon}
                         <span>${data.message.user.name}: ${data.message.content}</span>
                     </div>
