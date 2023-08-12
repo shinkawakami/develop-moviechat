@@ -39,6 +39,10 @@
     margin-left: 5px;
 }
 
+.viewing-button {
+    margin-top: 10px;
+}
+
 .viewing-link {
     font-weight: bold; 
 }
