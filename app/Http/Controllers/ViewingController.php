@@ -37,6 +37,7 @@ class ViewingController extends Controller
         $viewing = new Viewing();
         $viewing->group()->associate($group);
         $viewing->requester()->associate($user);
+        
         $viewing->start_time = $validatedData['start_time'];
         
         $tmdbId = $validatedData['movie'];
@@ -52,16 +53,18 @@ class ViewingController extends Controller
         $viewingId = $viewing->id;
         $viewing->url = url("/moviechat/groups/$groupId/viewings/$viewingId");
         $viewing->save();
-
+        
+        $viewing->recipients()->attach($validatedData['recipients']);
+        
         return redirect()->back();
     }
 
     // 同時視聴承諾の処理
     public function approve($groupId, $viewingId)
     {
-        $user = Auth::user();
+        $userId = Auth::id();
         $viewing = Viewing::findOrFail($viewingId);
-        $viewing->approvers()->attach($user);
+        $viewing->recipients()->updateExistingPivot($userId, ['approved' => true]);
         return redirect()->back();
     }
     
