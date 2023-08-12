@@ -3,11 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('movie-search');
     const searchResults = document.getElementById('search-results');
     const selectedMoviesContainer = document.getElementById('selected-movies');
-    let selectedMovieIds = [];  // To keep track of selected movie ids
+    let selectedMovieIds = [];  
     let currentPage = 1;
  
     window.groupMovies.forEach(movie => {
-        selectedMovieIds.push(movie.tmdb_id); // これがTMDBのIDであることを想定
+        selectedMovieIds.push(movie.tmdb_id); 
         addSelectedMovie(movie);
     });
  
@@ -78,14 +78,13 @@ document.addEventListener('DOMContentLoaded', () => {
                                 selectedMovieTitle.remove();
                                 removeButton.remove();
                                 
-                                // 選択された映画の隠しinput要素を削除する
                                 document.querySelector(`input[name="movies[]"][value="${movie.id}"]`).remove();
 
                                 selectButton.textContent = '選択';
                                 selectButton.disabled = false;
                                 
-                                if (selectedMoviesContainer.childElementCount === 0) {  // すべての映画が取り消された場合
-                                    selectedMoviesContainer.classList.remove('tag', 'is-danger');  // ← この行を追加
+                                if (selectedMoviesContainer.childElementCount === 0) { 
+                                    selectedMoviesContainer.classList.remove('tag', 'is-danger'); 
                                 }
                             });
                             selectedMoviesContainer.appendChild(removeButton);
@@ -113,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     paginationDiv.appendChild(prevPageButton);
                 } else {
-                    // これが空の要素で、左側のボタンがない場合にスペースを埋める役割を果たします。
                     paginationDiv.appendChild(document.createElement('div'));
                 }
                 
@@ -127,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     paginationDiv.appendChild(nextPageButton);
                 } else {
-                    // これが空の要素で、右側のボタンがない場合にスペースを埋める役割を果たします。
                     paginationDiv.appendChild(document.createElement('div'));
                 }
 
@@ -145,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const hiddenInput = document.createElement('input');
         hiddenInput.type = 'hidden';
         hiddenInput.name = 'movies[]';
-        hiddenInput.value = movie.tmdb_id; // これがTMDBのIDであることを想定
+        hiddenInput.value = movie.tmdb_id;
         document.getElementById('movies').appendChild(hiddenInput);
     
         const removeButton = document.createElement('button');

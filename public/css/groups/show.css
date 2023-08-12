@@ -1,24 +1,27 @@
-/* グループメンバーのpタグとulの間の余白を小さくする */
-.content ul {
-    margin-top: -10px; /* 調整する値はお好みに合わせて変更可能 */
+.label-text {
+    display: inline-block;
+    width: 150px; 
 }
 
-/* ボタンを小さくする */
+.content ul {
+    margin-top: -10px; 
+}
+
 .button.is-small {
-    font-size: 0.4rem; /* フォントサイズを調整 */
-    background-color: #d4d4d4; /* 薄い灰色 */
-    color: #333; /* 文字色を濃い灰色に変更 */
+    font-size: 0.4rem; 
+    background-color: #d4d4d4; 
+    color: #333;
     margin-left: 10px;
     margin-top: 4px;
 }
 
 .edit-link {
-    margin-top: 10px; /* 上に余白を追加 */
+    margin-top: 10px; 
 }
 
 .flex-container {
     display: flex;
-    align-items: center; /* 縦方向中央に配置 */
+    align-items: center;
 }
 
 .rounded-icon {
@@ -29,11 +32,11 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: black; /* これが背景を黒にする */
-    color: white; /* アイコンの色を白に設定 */
-    overflow: hidden; /* もしアイコンが円形の外側にはみ出る場合のため */
+    background-color: black;
+    color: white;
+    overflow: hidden;
 }
 
 .user-name {
-    margin-right: 10px; /* 名前とボタンの間に少し間隔を開けます */
+    margin-right: 10px; 
 }
