@@ -56,7 +56,7 @@
                             <div class="comment-card">
                                 <div class="user-info">
                                     <span>
-                                        @if(empty($post->user->image_url))
+                                        @if(empty($comment->user->image_url))
                                             <i class="fas fa-user rounded-icon"></i>
                                         @else
                                             <img src="{{ $comment->user->image_url }}" alt="Profile Image" class="rounded-icon">
