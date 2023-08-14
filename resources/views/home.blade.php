@@ -41,6 +41,13 @@
                 </div>
             </div>
         </section>
+        
+        <!-- TMDB attribution -->
+        <footer class="footer has-text-centered">
+            <div class="content">
+                <p>Powered by TMDB</p>
+            </div>
+        </footer>
     </x-app-layout>
 </body>
 </html>
