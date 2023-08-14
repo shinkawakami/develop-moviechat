@@ -69,7 +69,9 @@
 映画の検索と選択する機会が多いため，AJAXを利用したスムーズなページ遷移や，ページネーション機能を導入しました．<br>
 また，映画やボタンの配置を工夫することで，直観的に選択することができます．<br>
 
-https://github.com/shinkawakami/develop-moviechat/assets/117621598/544ced5a-8388-4306-a8bb-e34bb7859d66
+
+https://github.com/shinkawakami/develop-moviechat/assets/117621598/9b7a66f4-de89-495e-966c-9df685ccd006
+
 
 <b>リアルタイムチャット：</b><br>
 WebSocketを活用することで，ユーザー同士がリアルタイムで意見交換や感想の共有が可能です．<br>
@@ -79,7 +81,9 @@ WebSocketを活用することで，ユーザー同士がリアルタイムで�
 映画の同時視聴をスムーズかつ安全に行うための申請・承認システムを採用しています．<br>
 これにより，目的に合わないユーザーの参加を制限し，同時視聴をより楽しむことができます．<br>
 
-https://github.com/shinkawakami/develop-moviechat/assets/117621598/c35cdcd4-f99e-47f1-9ba5-6af4c8ae48ca
+
+https://github.com/shinkawakami/develop-moviechat/assets/117621598/3aadf59f-31a2-4cf5-a2c3-ba06b73f8d96
+
 
 ##  楽しみ方
 <b>映画の感想や意見を共有したいユーザー：</b><br>
