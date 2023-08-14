@@ -72,7 +72,7 @@
 
 https://github.com/shinkawakami/develop-moviechat/assets/117621598/9b7a66f4-de89-495e-966c-9df685ccd006
 
-
+ 
 <br><br>
 <b>リアルタイムチャット：</b><br>
 WebSocketを活用することで，ユーザー同士がリアルタイムで意見交換や感想の共有が可能です．<br>
