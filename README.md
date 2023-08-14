@@ -49,7 +49,7 @@
 
 ##  データ構成
 <b>テーブル構成・リレーション：</b><br>
-<img src="https://github.com/shinkawakami/develop-moviechat/issues/36#issue-1849035832" width="225"></b><br>
+![image](https://user-images.githubusercontent.com/117621598/260365909-9daf2976-252d-4ba6-8197-b74adcaae793.png)
 
 ##  機能
 - ログイン
