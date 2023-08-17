@@ -20,6 +20,9 @@
 
 「多様性の中で映画の魅力を一緒に感じ，共有する」をコンセプトとしています．<br><br>
 <a href="https://movie-chat-b904d14ac7cc.herokuapp.com" target="_blank">アプリへGO</a>
+テストアカウント
+Email：test@test
+Password:test1234
 
 ##  開発環境
 <b>使用言語：</b><br>
