@@ -1,3 +1,9 @@
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .field > .control {
     margin-bottom: 30px; 
 }

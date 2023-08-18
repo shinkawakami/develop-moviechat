@@ -18,7 +18,7 @@
                 <a class="return-button" href="{{ route('chats.index', $group->id) }}">戻る</a>
             </div>
             <div class="box">
-                <a class="title" href="{{ route('groups.show', $group->id) }}">{{ $group->name }}</a>
+                <div class="title">{{ $group->name }}</div>
 
                 <div class="content">
                     @foreach ($viewing->messages as $message)
