@@ -14,7 +14,6 @@
             <div class="container">
                 <h1 class="title">グループ検索</h1>
                 
-                <!-- Keyword Search -->
                 <div class="box">
                     <h2 class="subtitle">キーワード検索</h2>
                     <form method="GET" action="{{ route('groups.searchResults') }}" class="field has-addons">
@@ -27,13 +26,10 @@
                     </form>
                 </div>
 
-                <!-- Conditional Search -->
                 <div class="box">
                     <h2 class="subtitle">条件検索</h2>
                     <form method="GET" action="{{ route('groups.searchResults') }}">
                         <div class="columns">
-
-                            <!-- Genre Column -->
                             <div class="column">
                                 <div class="field">
                                     <label class="label">ジャンル</label>
@@ -47,8 +43,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Era Column -->
                             <div class="column">
                                 <div class="field">
                                     <label class="label">年代</label>
@@ -62,8 +56,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Platform Column -->
                             <div class="column">
                                 <div class="field">
                                     <label class="label">プラットフォーム</label>
@@ -77,8 +69,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                        </div> <!-- end columns -->
+                        </div> 
 
                         <div class="field">
                             <div class="control">

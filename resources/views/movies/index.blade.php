@@ -25,9 +25,7 @@
                         </div>
                     </div>
                     
-                    <div id="search-results">
-                    <!-- 映画の検索結果はここに表示されます -->
-                    </div>
+                    <div id="search-results"></div>
                     <div id="popular-movies">
                         @foreach($popularMovies as $movie)
                             <div class="movie-container">

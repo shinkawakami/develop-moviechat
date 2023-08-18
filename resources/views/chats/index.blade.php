@@ -13,7 +13,11 @@
     <x-app-layout>
         <section class="section">
             <div class="container">
-                <h1 class="title">チャット</h1>
+                <div class="header-flex">
+                    <h1 class="title">チャット</h1>
+                    <a href="{{ url()->previous() }}">戻る</a>
+                </div>
+                
                 <div class="box">
                     <a href="{{ route('groups.show', $group->id) }}" class="group-link">{{ $group->name }}</a>
                     <div class="content">

@@ -10,7 +10,10 @@
         <x-app-layout>
              <section class="section">
                 <div class="container">
-                    <h1 class="title">投稿編集</h1>
+                    <div class="header-flex">
+                        <h1 class="title">投稿編集</h1>
+                        <a href="{{ route('posts.show', $post) }}">戻る</a>
+                    </div>
         
                     <form method="POST" action="{{ route('posts.update', $post) }}" class="box" data-post-form>
                         @csrf

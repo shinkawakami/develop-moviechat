@@ -12,8 +12,11 @@
         <x-app-layout>
             <section class="section">
                 <div class="container">
-                    <h1 class="title">グループ編集</h1>
-        
+                    <div class="header-flex">
+                        <h1 class="title">グループ編集</h1>
+                        <a href="{{ route('groups.show', $group->id) }}">戻る</a>
+                    </div>
+                    
                     <form action="{{ route('groups.update', $group->id) }}" method="post" class="box">
                         @csrf
                         @method('PUT')

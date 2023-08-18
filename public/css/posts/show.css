@@ -1,3 +1,9 @@
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .control-buttons {
     display: flex;
     justify-content: flex-end;
