@@ -11,9 +11,11 @@
         <x-app-layout>
             <section class="section">
                 <div class="container">
-
-                    <h1 class="title">投稿詳細</h1>
-
+                    <div class="header-flex">
+                        <h1 class="title">投稿詳細</h1>
+                        <a href="{{ route('posts.index') }}">戻る</a>
+                    </div>
+                    
                     <div class="post-card box">
                         <div class="post-title"><strong>{{ $post->title }}</strong></div>
                         <div class="user-info">

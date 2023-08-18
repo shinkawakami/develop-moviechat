@@ -10,8 +10,11 @@
         <x-app-layout>
             <section class="section">
                 <div class="container">
-                    <h1 class="title">投稿作成</h1>
-        
+                    <div class="header-flex">
+                        <h1 class="title">投稿作成</h1>
+                        <a href="{{ url()->previous() }}">戻る</a>
+                    </div>
+                    
                     <form method="POST" action="{{ route('posts.store') }}" class="box" data-post-form>
                         @csrf
                         
@@ -44,9 +47,7 @@
                             </div>
                         </div>
                     
-                        <div id="search-results">
-                            <!-- 映画の検索結果はここに表示されます -->
-                        </div>
+                        <div id="search-results"></div>
                     </form>
                 </div>
             </section>
