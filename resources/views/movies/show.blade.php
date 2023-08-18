@@ -12,10 +12,13 @@
     <x-app-layout>
         <section class="section">
             <div class="container">
-                <h1 class="title">映画詳細</h1>
+                <div class="header-flex">
+                    <h1 class="title">映画詳細</h1>
+                    <a class="return-button" href="{{ route('movies.index') }}">戻る</a>
+                </div>
+                
                 <div class="box">
                     <h2 class="subtitle">{{ $movie->title }}</h2>
-                    <!-- 映画の詳細や画像などの情報もここに追加できます -->
                 </div>
 
                 <div class="box">

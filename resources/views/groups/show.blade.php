@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8">
     <title>MovieChat - DetailGroup</title>
-    <!-- Bulma CSS Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link href="{{ asset('css/groups/show.css') }}" rel="stylesheet">
@@ -14,8 +13,12 @@
     <x-app-layout>
         <section class="section">
             <div class="container">
-                <div class="box">
+                <div class="header-flex">
                     <h1 class="title">グループ詳細</h1>
+                    <a href="{{ route('groups.index') }}">戻る</a>
+                </div>
+                
+                <div class="box">
                     <div class="content">
                         <p><strong>グループ名　</strong> {{ $group->name }}</p>
                         <p>
