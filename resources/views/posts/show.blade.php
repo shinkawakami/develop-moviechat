@@ -20,11 +20,13 @@
                         <div class="post-title"><strong>{{ $post->title }}</strong></div>
                         <div class="user-info">
                             <span>
-                                @if(empty($post->user->image_url))
-                                    <i class="fas fa-user rounded-icon"></i>
-                                @else
-                                    <img src="{{ $post->user->image_url }}" alt="Profile Image" class="rounded-icon">
-                                @endif
+                                <a href="{{ route('profile.show', $post->user) }}">
+                                    @if(empty($post->user->image_url))
+                                        <i class="fas fa-user rounded-icon"></i>
+                                    @else
+                                        <img src="{{ $post->user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                    @endif
+                                </a>
                             </span>
                             <span class="username">{{ $post->user->name }}</span>
                         </div>
@@ -58,11 +60,13 @@
                             <div class="comment-card">
                                 <div class="user-info">
                                     <span>
-                                        @if(empty($comment->user->image_url))
-                                            <i class="fas fa-user rounded-icon"></i>
-                                        @else
-                                            <img src="{{ $comment->user->image_url }}" alt="Profile Image" class="rounded-icon">
-                                        @endif
+                                        <a href="{{ route('profile.show', $comment->user) }}">
+                                            @if(empty($comment->user->image_url))
+                                                <i class="fas fa-user rounded-icon"></i>
+                                            @else
+                                                <img src="{{ $comment->user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                            @endif
+                                        </a>
                                     </span>
                                     <span class="username">{{ $comment->user->name }}</span>
                                 </div>
