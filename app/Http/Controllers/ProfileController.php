@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Http;
+use App\Models\User;
 use App\Models\Genre;
 use App\Models\Platform;
 use App\Models\Era;
@@ -20,6 +21,12 @@ class ProfileController extends Controller
     public function home()
     {
         return view('home');
+    }
+    
+    public function show($userId)
+    {
+        $user = User::with(['movies', 'genres', 'eras', 'platforms', 'groups', 'posts'])->findOrFail($userId);
+        return view('profile.show', compact('user'));
     }
     
     /**
