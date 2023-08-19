@@ -23,10 +23,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [ProfileController::class, 'home'])->name('home');
     Route::get('/dashboard', [ProfileController::class, 'home'])->name('dashboard');
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::get('/{user}', [ProfileController::class, 'show'])->name('profile.show');
+        Route::post('/follow/{user}', [ProfileController::class, 'follow'])->name('profile.follow');
+        Route::post('/unfollow/{user}', [ProfileController::class, 'unfollow'])->name('profile.unfollow');
+    });
 });
 
 Route::middleware(['auth'])->group(function () {

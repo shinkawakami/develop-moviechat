@@ -70,7 +70,6 @@
                                 @elseif(!$group->is_member && !$group->is_full)
                                     <form action="{{ route('groups.join', $group->id) }}" method="POST">
                                         @csrf
-                                        @method('DELETE')
                                         <button type="submit" class="button is-success">参加</button>
                                     </form>
                                 @endif
