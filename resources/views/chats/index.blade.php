@@ -24,11 +24,13 @@
                         @foreach ($group->messages as $message)
                             <div class="message-item">
                                 <div>
-                                    @if(empty($message->user->image_url))
-                                        <i class="fas fa-user icon"></i>
-                                    @else
-                                        <img src="{{ $message->user->image_url }}" alt="Profile Image" class="icon">
-                                    @endif
+                                    <a href="{{ route('profile.show', $message->user) }}">
+                                        @if(empty($message->user->image_url))
+                                            <i class="fas fa-user icon"></i>
+                                        @else
+                                            <img src="{{ $message->user->image_url }}" alt="Profile Image" class="icon">
+                                        @endif
+                                    </a>
                                     <span>{{ $message->user->name }}: {{ $message->content }}</span>
                                 </div>
                                 <div>

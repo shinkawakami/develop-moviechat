@@ -31,11 +31,13 @@
                         <ul>
                             @foreach ($group->users as $user)
                             <li class="flex-container">
-                                @if(empty($user->image_url))
-                                    <i class="fas fa-user rounded-icon"></i>
-                                @else
-                                    <img src="{{ $user->image_url }}" alt="Profile Image" class="rounded-icon">
-                                @endif
+                                <a href="{{ route('profile.show', $user) }}">
+                                    @if(empty($user->image_url))
+                                        <i class="fas fa-user rounded-icon"></i>
+                                    @else
+                                        <img src="{{ $user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                    @endif
+                                </a>
                                 <span class="user-name">{{ $user->name }}</span>
                                 @if ($group->is_owner && Auth::user()->id != $user->id)
                                 <form action="{{ route('groups.removeUser', ['group' => $group->id, 'user' => $user->id]) }}" method="POST" class="remove-user-form">
