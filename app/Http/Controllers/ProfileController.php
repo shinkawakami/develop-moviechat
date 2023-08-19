@@ -26,7 +26,21 @@ class ProfileController extends Controller
     public function show($userId)
     {
         $user = User::with(['movies', 'genres', 'eras', 'platforms', 'groups', 'posts'])->findOrFail($userId);
-        return view('profile.show', compact('user'));
+        $isSelfProfile = Auth::id() == $user->id;
+        $isFollowing = Auth::user()->isFollowing($user);
+        return view('profile.show', compact('user', 'isSelfProfile', 'isFollowing'));
+    }
+    
+    public function follow(User $user)
+    {
+        Auth::user()->followings()->attach($user->id);
+        return back();
+    }
+    
+    public function unfollow(User $user)
+    {
+        Auth::user()->followings()->detach($user->id);
+        return back();
     }
     
     /**
