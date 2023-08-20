@@ -52,7 +52,7 @@ Password ： test1234
 
 ##  データ構成
 <b>テーブル構成・リレーション：</b><br>
-![image](https://github.com/shinkawakami/develop-moviechat/assets/117621598/da4d4fcf-9a7b-4514-95c0-09c51fd2b101)
+![image](https://github.com/shinkawakami/develop-moviechat/assets/117621598/4019fde8-ffcf-45eb-95e1-4a0861a61606)
 
 ##  機能
 - ログイン
