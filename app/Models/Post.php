@@ -36,6 +36,11 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
     
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'likes', 'post_id', 'user_id');
+    }
+    
     // キーワード検索
     public static function searchByKeyword($keyword)
     {

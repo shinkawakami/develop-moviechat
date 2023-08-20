@@ -50,3 +50,20 @@
 .button {
     margin-bottom: 20px;
 }
+
+.like-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.like-section .like-form {
+    margin-right: 10px;
+}
+
+.like-section .button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

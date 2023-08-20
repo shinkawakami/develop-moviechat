@@ -134,4 +134,18 @@ class PostController extends Controller
 
         return back();
     }
+    
+    // いいねする
+    public function like(Post $post)
+    {
+        $post->likes()->attach(Auth::user());
+        return back();
+    }
+    
+    // いいねを取り消す
+    public function unlike(Post $post)
+    {
+        $post->likes()->detach(Auth::user());
+        return back();
+    }
 }
