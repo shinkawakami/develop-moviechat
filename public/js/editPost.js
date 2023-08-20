@@ -11,9 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     postForm.addEventListener('submit', (event) => {
         if (!selectedMovieId) {
-            console.log('selectedMovieId:', selectedMovieId);
             event.preventDefault();  
             alert('映画を選択してください。'); 
+        } else {
+            const ratingValue = document.getElementById('movie-rating').value;
+            if (!ratingValue) {
+                event.preventDefault();  
+                alert('評価を選択してください。'); 
+            }
         }
     });
    
@@ -25,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     setExistingMovie();
+    setExistingRating();
 
     function setExistingMovie() {
         if (window.postMovieId) {
@@ -54,6 +60,49 @@ document.addEventListener('DOMContentLoaded', () => {
             updateSelectButtons();
         }
     }
+    
+    function setExistingRating() {
+        if (window.postMovieRating) {
+            const ratingContainer = document.createElement('div');
+            ratingContainer.className = 'rating-container';
+        
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement('span');
+                star.textContent = '☆'; 
+                star.className = 'rating-star';
+                star.dataset.value = i;
+    
+                star.addEventListener('click', function() {
+                    const selectedRating = this.dataset.value;
+                    document.getElementById('movie-rating').value = selectedRating;
+        
+                    document.querySelectorAll('.rating-star').forEach(star => {
+                        star.textContent = '☆';
+                    });
+        
+                    for (let j = 1; j <= selectedRating; j++) {
+                        document.querySelector(`.rating-star[data-value="${j}"]`).textContent = '★';
+                    }
+                });
+        
+                ratingContainer.appendChild(star);
+            }
+            
+            selectedMovieContainer.appendChild(ratingContainer);
+                
+            const selectedRating = window.postMovieRating;
+            document.getElementById('movie-rating').value = selectedRating;
+
+            document.querySelectorAll('.rating-star').forEach(star => {
+                star.textContent = '☆';
+            });
+            
+            for (let j = 1; j <= selectedRating; j++) {
+                document.querySelector(`.rating-star[data-value="${j}"]`).textContent = '★';
+            }    
+        }
+    }
+
 
     function fetchMovies(query, page = 1) {
         const url = '/moviechat/movies/search?query=' + query + '&page=' + page;
@@ -111,12 +160,16 @@ document.addEventListener('DOMContentLoaded', () => {
                             selectedMovie.value = '';
                             selectedMovieTitle.remove();
                             removeButton.remove();
+                            
+                            selectedMovieContainer.innerHTML = '';
 
                             updateSelectButtons();
                         });
                         selectedMovieContainer.appendChild(removeButton);
 
                         updateSelectButtons();
+                        
+                        createRatingSystem(selectedMovieContainer);
                     });
                     movieContainer.appendChild(selectButton);
 
@@ -163,5 +216,34 @@ document.addEventListener('DOMContentLoaded', () => {
             button.textContent = selectedMovieId === id ? '選択済み' : '選択';
             button.disabled = selectedMovieId === id;
         });
+    }
+    
+    function createRatingSystem(container) {
+        const ratingContainer = document.createElement('div');
+        ratingContainer.className = 'rating-container';
+    
+        for (let i = 1; i <= 5; i++) {
+            const star = document.createElement('span');
+            star.textContent = '☆'; 
+            star.className = 'rating-star';
+            star.dataset.value = i;
+    
+            star.addEventListener('click', function() {
+                const selectedRating = this.dataset.value;
+                document.getElementById('movie-rating').value = selectedRating;
+    
+                document.querySelectorAll('.rating-star').forEach(star => {
+                    star.textContent = '☆';
+                });
+    
+                for (let j = 1; j <= selectedRating; j++) {
+                    document.querySelector(`.rating-star[data-value="${j}"]`).textContent = '★';
+                }
+            });
+    
+            ratingContainer.appendChild(star);
+        }
+    
+        container.appendChild(ratingContainer);
     }
 });

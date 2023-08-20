@@ -18,6 +18,7 @@ class Post extends Model
         'movie_id',
         'title',
         'content',
+        'rating',
     ];
 
     public function user()

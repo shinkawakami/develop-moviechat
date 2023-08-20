@@ -19,6 +19,11 @@
                 
                 <div class="box">
                     <h2 class="subtitle">{{ $movie->title }}</h2>
+                    @if(!$movie->posts->isEmpty())
+                        <p>
+                            評価：{{ $movie->averageRating() }}
+                        </p>
+                    @endif
                 </div>
 
                 <div class="box">
