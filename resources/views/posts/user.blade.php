@@ -30,6 +30,15 @@
                                         <span class="icon"><i class="fa fa-film"></i></span>
                                         <span class="movie-title">{{ $post->movie->title }}</span>
                                     </div>
+                                    <div>
+                                        @for ($i = 1; $i <=5; $i++) 
+                                            @if($i <= $post->rating)
+                                                <span>★<span>
+                                            @else
+                                                <span>☆<span>
+                                            @endif
+                                        @endfor
+                                    </div>
                                     <p class="post-text">{{ $post->content }}</p>
                                 </div>
                             </div>
