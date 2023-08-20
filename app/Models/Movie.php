@@ -46,4 +46,10 @@ class Movie extends Model
             ['title' => $movieData['title']]
         );
     }
+    
+    // 映画の評価の平均
+    public function averageRating()
+    {
+        return round($this->posts()->avg('rating'), 1);
+    }
 }

@@ -26,6 +26,7 @@
                         <div id="selected-movie" class="field"></div>
          
                         <input type="hidden" name="movie" id="movie"> 
+                        <input type="hidden" name="rating" id="movie-rating" value="">
         
                         <div class="field">
                             <textarea class="textarea" name="content" placeholder="内容" maxlength="255" required></textarea>
