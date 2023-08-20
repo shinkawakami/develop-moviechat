@@ -57,6 +57,10 @@
     margin-bottom: 30px; 
 }
 
+.start_time {
+    width: 200px;
+}
+
 .faint-note {
     font-size: 80%;  
     color: #888;   

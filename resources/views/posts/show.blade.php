@@ -44,6 +44,26 @@
                             @endfor
                         </div>
                         <p class="post-text">{{ $post->content }}</p>
+                        
+                        <div class="like-section">
+                            @if (Auth::user()->isPostLike($post))
+                                <form action="{{ route('posts.unlike', $post->id) }}" method="post" class="like-form">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="button is-light has-text-danger">
+                                        <i class="fas fa-heart"></i> 取り消す
+                                    </button>
+                                </form>
+                            @else
+                                <form action="{{ route('posts.like', $post->id) }}" method="post" class="like-form">
+                                    @csrf
+                                    <button type="submit" class="button is-light has-text-primary">
+                                        <i class="far fa-heart"></i> いいね
+                                    </button>
+                                </form>
+                            @endif
+                            <span class="like-count">{{ $post->likes->count() }}</span>
+                        </div>
 
                         @if (Auth::user()->id == $post->user_id)
                             <div class="control-buttons">
