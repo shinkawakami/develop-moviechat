@@ -28,10 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 同時視聴申請ボタンのクリック
     viewingRequestBtn.addEventListener('click', (event) => {
-        if (!startTime.value || !selectedMovieId) { 
+        const recipients = document.querySelectorAll('input[name="recipients[]"]:checked');
+        if (!recipients.length || !startTime.value || !selectedMovieId) {
             event.preventDefault();
-            alert('視聴開始時間と映画を選択してください。');  
-            return;  
+            alert('申請を送るユーザー、視聴開始時間、映画を選択してください。');
+            return;
         } else {
             viewingSection.style.display = 'none';
         }
