@@ -108,7 +108,7 @@
                            
                             <div class="field">
                                 <label class="label">視聴開始時間</label>
-                                <input class="input" type="datetime-local" name='start_time'>
+                                <input class="input start_time" type="datetime-local" name='start_time'>
                             </div>
                             <br>
                             <label class="label">映画<span class="faint-note">(検索して選択)</span></label>

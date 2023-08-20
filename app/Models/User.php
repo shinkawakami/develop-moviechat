@@ -99,10 +99,20 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'follows', 'follower_id', 'followed_id');
     }
     
+    public function likedPosts()
+    {
+        return $this->belongsToMany(Post::class, 'likes', 'user_id', 'post_id');
+    }
+    
     // フォローしているかチェック
     public function isFollowing(User $user): bool
     {
         return $this->followings->contains($user->id);
     }
-
+    
+    // ある投稿をいいねしているかチェック
+    public function isPostLike(Post $post): bool
+    {
+        return $this->likedPosts->contains($post->id);
+    }
 }

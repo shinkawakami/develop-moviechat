@@ -40,6 +40,12 @@
                                         @endfor
                                     </div>
                                     <p class="post-text">{{ $post->content }}</p>
+                                    <div class="like-section">
+                                        <span type="submit" class="has-text-danger">
+                                            <i class="far fa-heart"></i> いいね
+                                        </span>
+                                        <span class="like-count">{{ $post->likes->count() }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </a>

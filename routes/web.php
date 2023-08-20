@@ -91,6 +91,8 @@ Route::middleware(['auth'])->group(function () {
                 Route::delete('/', [PostController::class, 'destroy'])->name('posts.destroy');
                 Route::get('/edit', [PostController::class, 'edit'])->name('posts.edit');
                 Route::post('/comment', [PostController::class, 'comment'])->name('posts.comment');
+                Route::post('/like', [PostController::class, 'like'])->name('posts.like');
+                Route::delete('/like', [PostController::class, 'unlike'])->name('posts.unlike');
             });
         });
     });
