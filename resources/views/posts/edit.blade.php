@@ -27,6 +27,7 @@
                         <div id="selected-movie" class="field"></div>
         
                         <input type="hidden" name="movie" id="movie">
+                        <input type="hidden" name="rating" id="movie-rating" value="">
         
                         <div class="field">
                             <textarea class="textarea" name="content" placeholder="内容" maxlength="255" required>{{ $post->content }}</textarea>
@@ -48,9 +49,7 @@
                             </div>
                         </div>
                     
-                        <div id="search-results">
-                            <!-- 映画の検索結果はここに表示されます -->
-                        </div>
+                        <div id="search-results"></div>
                     </form>
                 </div>
             </section>
@@ -59,6 +58,7 @@
         <script>
             window.postMovieId = @json($post->movie->tmdb_id);
             window.postMovieTitle = @json($post->movie->title);
+            window.postMovieRating =@json($post->rating);
         </script>
         <script src="{{ asset('js/editPost.js') }}"></script>
       

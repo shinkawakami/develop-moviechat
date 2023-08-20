@@ -47,6 +47,7 @@ class PostController extends Controller
         $post->user_id = Auth::id();
         $post->title = $validatedData['title'];
         $post->content = $validatedData['content'];
+        $post->rating = $validatedData['rating'];
         
         $movieId = $validatedData['movie'];
         $apiKey = config('tmdb.api_key');
@@ -93,6 +94,7 @@ class PostController extends Controller
         $post = Post::findOrFail($postId);
         $post->title = $validatedData['title'];
         $post->content = $validatedData['content'];
+        $post->rating = $validatedData['rating'];
     
         $movieId = $validatedData['movie'];
         $apiKey = config('tmdb.api_key');
