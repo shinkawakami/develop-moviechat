@@ -20,6 +20,8 @@
             <div class="box">
                 <div class="title">{{ $group->name }}</div>
 
+                <div id="viewing-notification"></div>
+
                 <div class="content">
                     @foreach ($viewing->messages as $message)
                         <div class="message-item">
@@ -61,6 +63,12 @@
             </div>
         </div>
     </section>
+    <script>
+        window.groupId = @json($viewing->group->id);
+        window.viewingId = @json($viewing->id);
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('js/indexViewing.js') }}"></script>
 </x-app-layout>
 </body>
 
