@@ -105,4 +105,22 @@ class ViewingController extends Controller
         $message->delete();
         return redirect()->back();
     }
+    
+    // 映画視聴開始時間の通知
+    public function notice($viewingId)
+    {
+        $current_time = Carbon::now();
+        $five_minutes_before = $current_time->copy()->subMinutes(5);
+    
+        if ($viewing->start_time->eq($five_minutes_before)) {
+            return response()->json(['message' => '視聴時間が5分後になります']);
+        } 
+        elseif ($viewing->start_time->eq($current_time)) {
+            return response()->json(['message' => '視聴時間になりました']);
+        }
+    
+    dd($viewing->start_time, $current_time);
+        return response()->json(['message' => '']);
+    }
+    
 }
