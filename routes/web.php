@@ -66,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
                         Route::post('/', [ViewingController::class, 'chat'])->name('viewings.chat');
                         Route::post('/approve', [ViewingController::class, 'approve'])->name('viewings.approve');
                         Route::post('/cancel', [ViewingController::class, 'cancel'])->name('viewings.cancel');
+                        Route::get('/notice', [ViewingController::class, 'notice'])->name('viewings.notice');
                         Route::delete('/{message}', [ViewingController::class, 'destroy'])->name('viewings.destroy');
                     });
                 });
