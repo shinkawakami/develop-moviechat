@@ -15,7 +15,7 @@
             <div class="container">
                 <div class="header-flex">
                     <h1 class="title">チャット</h1>
-                    <a href="{{ url()->previous() }}">戻る</a>
+                    <a href="{{ route('groups.user') }}">戻る</a>
                 </div>
                 
                 <div class="box">
