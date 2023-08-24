@@ -46,6 +46,6 @@ class Post extends Model
     {
         return self::whereHas('movie', function ($query) use ($keyword) {
             $query->where('title', 'like', '%' . $keyword . '%');
-        })->orWhere('title', 'like', '%' . $keyword . '%')->with(['user', 'movie'])->get();
+        })->orWhere('title', 'like', '%' . $keyword . '%')->with(['user', 'movie']);
     }
 }
