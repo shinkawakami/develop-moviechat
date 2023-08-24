@@ -13,13 +13,20 @@ use App\Http\Requests\Group\SearchRequest;
 use App\Http\Requests\Group\EditRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
     // グループ一覧画面の表示
-    public function index()
+    public function index(Request $request)
     {
-        $groups = Group::with(['movies', 'genres', 'eras', 'platforms'])->get();
+        $sort = $request->get('sort', 'newest');
+
+        if($sort == 'newest') {
+            $groups = Group::with(['movies', 'genres', 'eras', 'platforms'])->orderBy('created_at', 'desc')->get();
+        } else {
+            $groups = Group::with(['movies', 'genres', 'eras', 'platforms'])->orderBy('created_at', 'asc')->get();
+        }
         
         foreach ($groups as $group) {
             $group->is_member = $group->isMember(Auth::id());
@@ -110,6 +117,14 @@ class GroupController extends Controller
         if (isset($validatedData['platforms'])) {
             $groups->withPlatforms($validatedData['platforms']);
         }
+        
+        $sort = $request->input('sort', 'newest');
+        
+        if($sort == 'newest') {
+            $groups->orderBy('created_at', 'desc');
+        } else {
+            $groups->orderBy('created_at', 'asc');
+        }
     
         $groups = $groups->with(['movies', 'genres', 'eras', 'platforms'])->get();
     
@@ -122,10 +137,20 @@ class GroupController extends Controller
     }
     
     // 自分のグループの表示
-    public function user()
+    public function user(Request $request)
     {
         $user = Auth::user();
-        $groups = $user->groups()->with(['movies', 'genres', 'eras', 'platforms'])->get();
+        
+        $sortMethod = $request->get('sort', 'newest');
+        $query = $user->groups()->with(['movies', 'genres', 'eras', 'platforms']);
+    
+        if ($sortMethod == 'newest') {
+            $query->orderByDesc('created_at');
+        } else {
+            $query->orderBy('created_at');
+        }
+    
+        $groups = $query->get();
         
         foreach ($groups as $group) {
             $group->is_member = $group->isMember($user->id);

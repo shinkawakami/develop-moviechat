@@ -21,6 +21,21 @@
                     <h1 class="title">グループ一覧</h1>
                 @endif
                 
+                <div class="is-flex sort">
+                    <select name="sort" id="sort" onchange="sortGroups(this)">
+                        <option value="newest" @if(request('sort') == 'newest') selected @endif>新しい順</option>
+                        <option value="oldest" @if(request('sort') == 'oldest') selected @endif>古い順</option>
+                    </select>
+                </div>
+                <script>
+                    function sortGroups(selectElement) {
+                        const selectedValue = selectElement.value;
+                        const currentUrl = new URL(window.location.href);
+                        currentUrl.searchParams.set('sort', selectedValue);
+                        window.location.href = currentUrl.toString();
+                    }
+                </script>
+                
                 @if(!$groups->isEmpty())
                     @foreach($groups as $group)
                         <div class="box">
