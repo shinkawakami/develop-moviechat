@@ -68,7 +68,7 @@
         window.viewingId = @json($viewing->id);
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!--<script src="{{ asset('js/indexViewing.js') }}"></script>-->
+    <script src="{{ asset('js/indexViewing.js') }}"></script>
 </x-app-layout>
 </body>
 

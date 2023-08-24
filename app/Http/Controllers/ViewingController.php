@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Http;
 use App\Events\MessageSent;
 use App\Events\RequestSent;
 use App\Events\ApproveSent;
+use Carbon\Carbon;
 
 class ViewingController extends Controller
 {
@@ -107,20 +108,25 @@ class ViewingController extends Controller
     }
     
     // 映画視聴開始時間の通知
-    public function notice($viewingId)
+    public function notice($groupId, $viewingId)
     {
-        $current_time = Carbon::now();
-        $five_minutes_before = $current_time->copy()->subMinutes(5);
+        $viewing = Viewing::findOrFail($viewingId);
+        
+        $current_time_carbon = Carbon::now();
+        $start_time_carbon = Carbon::parse($viewing->start_time);
+        $minutes_to_start = $current_time_carbon->diffInMinutes($start_time_carbon, false);
     
-        if ($viewing->start_time->eq($five_minutes_before)) {
-            return response()->json(['message' => '視聴時間が5分後になります']);
+        if ($minutes_to_start > 0 && $minutes_to_start <= 30) {
+            return response()->json(['message' => '視聴時間が' . $minutes_to_start . '分前になりました。']);
         } 
-        elseif ($viewing->start_time->eq($current_time)) {
-            return response()->json(['message' => '視聴時間になりました']);
+        elseif ($minutes_to_start == 0) {
+            return response()->json(['message' => '視聴時間になりました。視聴を開始してください。']);
+        } 
+        elseif ($minutes_to_start < 0) {
+            return response()->json(['message' => '視聴中です。']);
         }
     
-    dd($viewing->start_time, $current_time);
-        return response()->json(['message' => '']);
+        return response()->json(['message' => '視聴開始は' . $viewing->start_time . 'です。']);
     }
-    
+
 }
