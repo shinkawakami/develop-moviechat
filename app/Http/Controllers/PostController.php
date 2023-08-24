@@ -36,12 +36,12 @@ class PostController extends Controller
         $keyword = $request->get('keyword');
         $sort = $request->get('sort', 'newest');
         
-        $posts = Post::searchByKeyword($keyword);
+        $query = Post::searchByKeyword($keyword);
         
         if($sort == 'newest') {
-            $posts = $posts->orderBy('created_at', 'desc')->get();
+            $posts = $query->orderBy('created_at', 'desc')->get();
         } else {
-            $posts = $posts->orderBy('created_at', 'asc')->get();
+            $posts = $query->orderBy('created_at', 'asc')->get();
         }
 
         return view('posts.index', compact('posts'));
