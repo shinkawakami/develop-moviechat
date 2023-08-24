@@ -4,6 +4,11 @@
     align-items: center;
 }
 
+.sort {
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
 .label-text {
     display: inline-block;
     width: 150px; 

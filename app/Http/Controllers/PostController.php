@@ -11,13 +11,21 @@ use App\Http\Requests\Post\EditRequest;
 use App\Http\Requests\Post\CommentRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
  
 class PostController extends Controller
 {
     // 投稿一覧画面の表示
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::with(['user', 'movie'])->get();
+        $sort = $request->get('sort', 'newest');
+
+        if($sort == 'newest') {
+            $posts = Post::orderBy('created_at', 'desc')->get();
+        } else {
+            $posts = Post::orderBy('created_at', 'asc')->get();
+        }
+        
         return view('posts.index', compact('posts'));
     }
 
@@ -25,9 +33,16 @@ class PostController extends Controller
     public function search(SearchRequest $request)
     {
         $validatedData = $request->validated();
-        
         $keyword = $request->get('keyword');
+        $sort = $request->get('sort', 'newest');
+        
         $posts = Post::searchByKeyword($keyword);
+        
+        if($sort == 'newest') {
+            $posts = $posts->orderBy('created_at', 'desc')->get();
+        } else {
+            $posts = $posts->orderBy('created_at', 'asc')->get();
+        }
 
         return view('posts.index', compact('posts'));
     }
@@ -65,10 +80,18 @@ class PostController extends Controller
     }
 
     // 自分の投稿画面の表示
-    public function user()
+    public function user(Request $request)
     {
         $user = Auth::user();
-        $posts = $user->posts()->with('movie')->get();
+        
+        $sort = $request->get('sort', 'newest'); 
+    
+        if($sort == 'newest') {
+            $posts = $user->posts()->with('movie')->orderBy('created_at', 'desc')->get();
+        } else {
+            $posts = $user->posts()->with('movie')->orderBy('created_at', 'asc')->get();
+        }
+    
         return view('posts.user', compact('posts'));
     }
 
