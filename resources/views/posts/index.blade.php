@@ -23,6 +23,21 @@
                             <input class="button is-info" type="submit" value="検索">
                         </div>
                     </form>
+                    
+                    <div class="is-flex sort">
+                        <select name="sort" id="sort" onchange="sortPosts(this)">
+                            <option value="newest" @if(request('sort') == 'newest') selected @endif>新しい順</option>
+                            <option value="oldest" @if(request('sort') == 'oldest') selected @endif>古い順</option>
+                        </select>
+                    </div>
+                    <script>
+                        function sortPosts(selectElement) {
+                            const selectedValue = selectElement.value;
+                            const currentUrl = new URL(window.location.href);
+                            currentUrl.searchParams.set('sort', selectedValue);
+                            window.location.href = currentUrl.toString();
+                        }
+                    </script>
 
                     @foreach ($posts as $post)
                         <a href="{{ route('posts.show', $post->id) }}">
