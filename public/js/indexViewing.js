@@ -17,7 +17,7 @@ function checkViewingTime() {
         });
 }
 
-if (window.viewingStatus != '視聴終了') {
+if (window.viewingStatus !== '視聴終了') {
     checkViewingTime();
     interval = setInterval(checkViewingTime, 30000);
 }
