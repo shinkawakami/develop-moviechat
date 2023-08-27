@@ -15,7 +15,6 @@
             <div class="container">
                 <div class="header-flex">
                     <h1 class="title">プロフィール</h1>
-                    <a href="{{ url()->previous() }}">戻る</a>
                 </div>
                 
                 @if(!$isSelfProfile)
