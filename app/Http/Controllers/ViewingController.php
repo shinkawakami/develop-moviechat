@@ -117,16 +117,28 @@ class ViewingController extends Controller
         $minutes_to_start = $current_time_carbon->diffInMinutes($start_time_carbon, false);
     
         if ($minutes_to_start > 0 && $minutes_to_start <= 30) {
-            return response()->json(['message' => '視聴時間が' . $minutes_to_start . '分前になりました。']);
+            return response()->json(['message' => '視聴時間が' . $minutes_to_start . '分前になりました。', 'status' => $viewing->status]);
         } 
         elseif ($minutes_to_start == 0) {
-            return response()->json(['message' => '視聴時間になりました。視聴を開始してください。']);
+            return response()->json(['message' => '視聴時間になりました。視聴を開始してください。', 'status' => $viewing->status]);
         } 
         elseif ($minutes_to_start < 0) {
-            return response()->json(['message' => '視聴中です。']);
+            $viewing->status = '視聴中';
+            $viewing->save();
+            return response()->json(['message' => '視聴中です。', 'status' => $viewing->status]);
         }
+        else {
+            return response()->json(['message' => '視聴開始は' . $viewing->start_time . 'です。', 'status' => $viewing->status]);
+        }
+    }
     
-        return response()->json(['message' => '視聴開始は' . $viewing->start_time . 'です。']);
+    // 視聴の終了
+    public function end($groupId, $viewingId)
+    {
+        $viewing = Viewing::findOrFail($viewingId);
+        $viewing->status = '視聴終了';
+        $viewing->save();
+        return redirect()->back();
     }
 
 }

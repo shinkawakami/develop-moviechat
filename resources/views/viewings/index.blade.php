@@ -19,8 +19,20 @@
             </div>
             <div class="box">
                 <div class="title">{{ $group->name }}</div>
-
-                <div id="viewing-notification"></div>
+                
+                <div class="viewing-notification-container">
+                    <div id="viewing-notification">
+                        @if($viewing->status == '視聴終了')
+                            視聴が終了しました。
+                        @endif
+                    </div>
+                    @if($viewing->status !== '視聴終了')
+                        <form action="{{ route('viewings.end', ['group' => $group->id, 'viewing' => $viewing->id]) }}" method="POST">
+                            @csrf
+                            <button class="button is-danger" type="submit">視聴終了</button>
+                        </form>
+                    @endif
+                </div>
 
                 <div class="content">
                     @foreach ($viewing->messages as $message)
@@ -66,6 +78,7 @@
     <script>
         window.groupId = @json($viewing->group->id);
         window.viewingId = @json($viewing->id);
+        window.viewingStatus = @json($viewing->status);
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/indexViewing.js') }}"></script>
