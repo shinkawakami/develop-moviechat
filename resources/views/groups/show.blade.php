@@ -15,7 +15,6 @@
             <div class="container">
                 <div class="header-flex">
                     <h1 class="title">グループ詳細</h1>
-                    <a href="{{ route('groups.index') }}">戻る</a>
                 </div>
                 
                 <div class="box">
@@ -50,7 +49,9 @@
                             @endforeach
                         </ul>
                         <strong class="label-text">好きな映画：</strong> 
-                        @foreach ($group->movies as $movie) {{ $movie->title }}　 @endforeach
+                        @foreach ($group->movies as $movie) 
+                            <a href="{{ route('movies.show', ['movie' => $movie->tmdb_id]) }}">{{ $movie->title }}　</a>
+                        @endforeach
                         <br>
                         <strong class="label-text">好きなジャンル：</strong>
                         @foreach ($group->genres as $genre) {{ $genre->name }}　 @endforeach

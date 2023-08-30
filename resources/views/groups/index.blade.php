@@ -43,7 +43,9 @@
                             <p>
                                 <span class="label-text">好きな映画：</span>
                                 @foreach ($group->movies as $movie)
-                                <span class="tag is-black">{{ $movie->title }}</span>
+                                <span class="tag is-black">
+                                    <a href="{{ route('movies.show', ['movie' => $movie->tmdb_id]) }}">{{ $movie->title }}</a>
+                                </span>
                                 @endforeach
                             </p>
                             <p>
