@@ -50,7 +50,8 @@
                     @foreach ($viewings as $viewing)
                         @if($viewing->is_requester || $viewing->is_recipient)
                             <div class="notification is-primary">
-                                {{ $viewing->requester->name }} が {{ $viewing->start_time }} に {{ $viewing->movie->title }} の同時視聴を申請しています。
+                                {{ $viewing->requester->name }} が {{ $viewing->start_time }} に
+                                <a href="{{ route('movies.show', ['movie' => $viewing->movie->tmdb_id]) }}"> {{ $viewing->movie->title }} </a>の同時視聴を申請しています。
                                 @foreach ($viewing->approvers as $approver)
                                     <p>{{ $approver->name }}が承認</p>
                                 @endforeach
