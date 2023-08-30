@@ -8,24 +8,94 @@
     <link href="{{ asset('css/movies/index.css') }}" rel="stylesheet">
 </head>
 
+<style>
+    .genre-button {
+        border: 1px solid #ddd;
+        padding: 10px 15px;
+        display: inline-block;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 5px;
+        background-color: #f7f7f7;
+        transition: background-color 0.3s;
+    }
+
+    .genre-button.selected {
+        background-color: #007BFF;
+        color: white;
+    }
+</style>
+
 <body>
     <x-app-layout>
         <section class="section">
             <div class="container">
-                <h1 class="title">映画一覧</h1>
-                 
-                <div class="box">
-                    <h2 class="subtitle">映画検索</h2>
-                    <div class="field has-addons">
-                        <div class="control">
-                            <input type="text" id="movie-search" class="input" placeholder="キーワードを入力">
+                
+                <div class="is-flex is-justify-content-space-between">
+                    <h1 class="title">映画一覧</h1>
+                    <button id="show-search-form" class="button is-info">検索する</button>
+                </div>
+                
+                <div id="search-form-container" style="display: none;" class="block">
+                    <div class="box">
+                        <h2 class="subtitle">映画検索</h2>
+                        
+                        <div class="box">
+                            <label class="label">キーワード</label>
+                            <div class="field has-addons">
+                                <div class="control">
+                                    <input type="text" id="movie-search" class="input" placeholder="キーワードを入力">
+                                </div>
+                                <div class="control">
+                                    <button id="keyword-search-btn" class="button is-info">検索</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="control">
-                            <button id="search-btn" class="button is-info">検索</button>
+                        
+                        <div class="box">
+                            <div class="block">
+                                <label class="label">ジャンル</label>
+                                @foreach($genres as $genre)
+                                    <div class="genre-button" data-genre-id="{{ $genre['id'] }}">
+                                        {{ $genre['name'] }}
+                                    </div>
+                                @endforeach
+                            </div>
+                            
+                            <div class="block">
+                                <label class="label">年代</label>
+                                <select name="startYear" id="start-year">
+                                    <option value="" selected>開始年</option>
+                                    @for($year = 1920; $year <= now()->year; $year++)
+                                        <option value="{{ $year }}">{{ $year }}</option>
+                                    @endfor
+                                </select>
+                                から
+                                <select name="endYear" id="end-year">
+                                    <option value="" selected>終了年</option>
+                                    @for($year = 1920; $year <= now()->year; $year++)
+                                        <option value="{{ $year }}">{{ $year }}</option>
+                                    @endfor
+                                </select>
+                                まで
+                            </div>
+                            
+                            <div class="block">
+                                <button id="filter-search-btn" class="button is-info">検索</button>
+                            </div>
                         </div>
                     </div>
-                    
+                </div>
+                
+                <div class="box block">
                     <div id="search-results"></div>
+                    
+                    <div id="pagination-container" style="display: none;">
+                        <button id="prev-page" class="button is-info">前のページ</button>
+                        
+                        <button id="next-page" class="button is-info">次のページ</button>
+                    </div>
+                    
                     <div id="popular-movies">
                         @foreach($popularMovies as $movie)
                             <div class="movie-container">
@@ -36,10 +106,10 @@
                         @endforeach
                     </div>
                 </div>
+                
             </div>
         </section>
         <script src="{{ asset('js/indexMovie.js') }}"></script>
     </x-app-layout>
 </body>
-
 </html>
