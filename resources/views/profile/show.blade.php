@@ -13,20 +13,21 @@
     <x-app-layout>
         <section class="section">
             <div class="container">
-                <div class="header-flex">
+                <div class="header-flex block">
                     <h1 class="title">プロフィール</h1>
                 </div>
                 
-                @if(!$isSelfProfile)
-                    <form action="{{ $isFollowing ? route('profile.unfollow', $user) : route('profile.follow', $user) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="button is-success">
-                            {{ $isFollowing ? 'フォロー中' : 'フォローする' }}
-                        </button>
-                    </form>
-                @endif
+                <div class="block">
+                    @if(!$isSelfProfile)
+                        <form action="{{ $isFollowing ? route('profile.unfollow', $user) : route('profile.follow', $user) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="button is-success">
+                                {{ $isFollowing ? 'フォロー中' : 'フォローする' }}
+                            </button>
+                        </form>
+                    @endif
+                </div>
                 
-                <br>
                 <div class="modal" id="followingsModal">
                   <div class="modal-background"></div>
                   <div class="modal-content">
@@ -93,7 +94,9 @@
                             <p>{{ $user->introduction }}</p>
                         </div>
                         <strong class="label-text">好きな映画：</strong> 
-                        @foreach ($user->movies as $movie) {{ $movie->title }}　 @endforeach
+                        @foreach ($user->movies as $movie)
+                            <a href="{{ route('movies.show', ['movie' => $movie->tmdb_id]) }}">{{ $movie->title }}　</a>
+                        @endforeach
                         <br>
                         <strong class="label-text">好きなジャンル：</strong>
                         @foreach ($user->genres as $genre) {{ $genre->name }}　 @endforeach

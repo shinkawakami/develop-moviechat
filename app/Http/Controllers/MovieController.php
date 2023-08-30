@@ -77,15 +77,14 @@ class MovieController extends Controller
     // 映画詳細画面の表示
     public function show($tmdb_id)
     {
-        $response = Http::get("{$this->baseApiUrl}/movie/{$tmdb_id}", [
+        $movieData = Http::get("{$this->baseApiUrl}/movie/{$tmdb_id}", [
             'api_key' => $this->apiKey,
-            'language' => 'ja-JP'
-        ]);
-        
-        $movieData = $response->json();
-        
+            'language' => 'ja-JP',
+            'append_to_response' => 'videos'
+        ])->json();
+    
         $movie = Movie::updateOrCreateFromTMDB($movieData)->load(['groups', 'posts']);
-        
-        return view('movies.show', compact('movie'));
+    
+        return view('movies.show', compact('movie', 'movieData'));
     }
 }

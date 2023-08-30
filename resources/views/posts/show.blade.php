@@ -13,7 +13,6 @@
                 <div class="container">
                     <div class="header-flex">
                         <h1 class="title">投稿詳細</h1>
-                        <a href="{{ route('posts.index') }}">戻る</a>
                     </div>
                     
                     <div class="post-card box">
@@ -32,7 +31,9 @@
                         </div>
                         <div class="movie-info">
                             <span class="icon"><i class="fa fa-film"></i></span>
-                            <span class="movie-title">{{ $post->movie->title }}</span>
+                            <span class="movie-title">
+                                <a href="{{ route('movies.show', ['movie' => $post->movie->tmdb_id]) }}">{{ $post->movie->title }}</a>
+                            </span>
                         </div>
                         <div>
                             @for ($i = 1; $i <=5; $i++) 
