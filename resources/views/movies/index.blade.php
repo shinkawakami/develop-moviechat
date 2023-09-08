@@ -8,24 +8,6 @@
     <link href="{{ asset('css/movies/index.css') }}" rel="stylesheet">
 </head>
 
-<style>
-    .genre-button {
-        border: 1px solid #ddd;
-        padding: 10px 15px;
-        display: inline-block;
-        margin: 5px;
-        cursor: pointer;
-        border-radius: 5px;
-        background-color: #f7f7f7;
-        transition: background-color 0.3s;
-    }
-
-    .genre-button.selected {
-        background-color: #007BFF;
-        color: white;
-    }
-</style>
-
 <body>
     <x-app-layout>
         <section class="section">

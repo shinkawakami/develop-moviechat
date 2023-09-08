@@ -70,3 +70,19 @@
 .pagination > button:last-child {
     margin-left: auto;
 }
+
+.genre-button {
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    display: inline-block;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+    transition: background-color 0.3s;
+}
+
+.genre-button.selected {
+    background-color: #007BFF;
+    color: white;
+}
