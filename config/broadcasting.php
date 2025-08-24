@@ -14,5 +14,14 @@ return [
                 'useTLS' => true,
             ],
         ],
+
+        'log' => [
+            'driver' => 'log',
+        ],
+
+        'null' => [
+            'driver' => 'null',
+        ],
     ],
+    
 ];
