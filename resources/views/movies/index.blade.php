@@ -52,14 +52,13 @@
                                         <option value="{{ $year }}">{{ $year }}</option>
                                     @endfor
                                 </select>
-                                から
+                                ～
                                 <select name="endYear" id="end-year">
                                     <option value="" selected>終了年</option>
                                     @for($year = 1920; $year <= now()->year; $year++)
                                         <option value="{{ $year }}">{{ $year }}</option>
                                     @endfor
                                 </select>
-                                まで
                             </div>
                             
                             <div class="block">
@@ -72,7 +71,7 @@
                 <div class="box block">
                     <div id="search-results"></div>
                     
-                    <div id="pagination-container" style="display: none;">
+                    <div id="pagination-container" class="buttons is-right is-hidden">
                         <button id="prev-page" class="button is-info">前のページ</button>
                         
                         <button id="next-page" class="button is-info">次のページ</button>

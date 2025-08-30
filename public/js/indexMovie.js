@@ -121,13 +121,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // 映画取得後の応答処理
     function handleFetchResponse(data) {
         elements.popularMoviesContainer.style.display = 'none';
-        if (data.results && data.results.length) {
+        if (data.results && data.results.length && data.total_pages > 1) {
             displayMovies(data.results);
             updatePaginationButtons(data.total_pages);
-            document.getElementById("pagination-container").style.display = (data.total_pages > 1) ? 'block' : 'none';
+            document.getElementById("pagination-container").classList.remove('is-hidden');
         } else {
-            elements.searchResults.innerHTML = '<p>該当する映画はありませんでした。</p>';
-            document.getElementById("pagination-container").style.display = 'none';
+            elements.searchResults.innerHTML = '<p>該当する映画はありません。</p>';
+            document.getElementById("pagination-container").classList.add('is-hidden');
         }
     }
 });
