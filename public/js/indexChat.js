@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const movies = data.results;
                 const totalPages = data.total_pages;
                 searchResults.innerHTML = '';
-                searchResults.appendChild(cancelButton);
+                searchResults.prepend(cancelButton);
                 selectButtons = []; 
     
                 // 検索結果の作成

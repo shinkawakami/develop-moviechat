@@ -13,43 +13,42 @@
         <section class="section">
             <div class="container has-text-centered">
                 <h1 class="title">MovieChat</h1>
-                <p class="subtitle">「異なる映画を楽しみたいあなたに」</p>
+                <p class="subtitle">「異なる映画体験を、もっと自由に。」</p>
 
                 <div class="content">
                     <div class="box">
-                        <h2 class="subtitle">映画の感想や意見を共有したいユーザー</h2>
+                        <h2 class="subtitle">映画を語りたい人へ</h2>
                         <div class="text-container">
-                            自分の好みに合うグループを作成するか、検索して参加できるよ。
-                            そのグループで自分の好きな映画を語り合おう！
+                            気になる映画の感想や意見をシェアしよう。
+                            自分の好みに合うグループを作成したり、検索して参加して、映画好き同士で語り合える場所です。
                         </div>
                     </div>
                     <div class="box">
-                        <h2 class="subtitle">誰かと映画の同時視聴をしたいユーザー</h2>
+                        <h2 class="subtitle">誰かと一緒に観たい人へ</h2>
                         <div class="text-container">
-                            グループ内で一緒に視聴したいユーザーを探して、同時視聴を申請しよう！
-                            申請が承諾されると、指定のURLで外部アプリで視聴しながら、
-                            視聴中のリアクションや感想を共有できるよ。
+                            同じ映画を同時に楽しみたい仲間をグループで探せます。
+                            申請が承認されれば、外部アプリのURLで一緒に再生しながら、チャットでリアクションや感想を共有できます。
                         </div>
                     </div>
                     <div class="box">
-                        <h2 class="subtitle">映画探索をしたいユーザー</h2>
+                        <h2 class="subtitle">新しい映画を探したい人へ</h2>
                         <div class="text-container">
-                            映画の検索やグループでのチャット、投稿を閲覧しよう！！
-                            自分では気づけないジャンルの映画や映画の魅力に触れることができるかも！？
+                            映画検索やグループ内のチャット・投稿をチェック。
+                            自分では出会えなかったジャンルや新たな魅力を発見できるかもしれません。
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- TMDB attribution -->
+            <footer class="text-xs text-gray-500 text-center py-5">
+                This product uses the TMDB API but is not endorsed or certified by TMDB.
+                <br>
+                <a href="https://www.themoviedb.org" target="_blank" rel="noopener">
+                    <img src="{{ asset('images/tmdb.svg') }}" alt="TMDB logo" class="inline h-4 align-text-bottom">
+                </a>
+            </footer>
         </section>
-        
-        <!-- TMDB attribution -->
-        <footer class="text-xs text-gray-500 text-center py-6">
-            This product uses the TMDB API but is not endorsed or certified by TMDB.
-            <br>
-            <a href="https://www.themoviedb.org" target="_blank" rel="noopener">
-                <img src="{{ asset('images/tmdb.svg') }}" alt="TMDB logo" class="inline h-4 align-text-bottom">
-            </a>
-        </footer>
     </x-app-layout>
 </body>
 </html>

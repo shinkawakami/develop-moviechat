@@ -86,14 +86,28 @@
 }
 
 .movie-container {
-    display: inline-block;
-    width: 30%; 
-    box-sizing: border-box;
-    padding: 1%;
-    vertical-align: top; 
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    margin: 1%;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+}
+
+#popular-movies,
+#search-results {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  padding: 0 8px;
+}
+
+.movie-container img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
 }
 
 .movie-title {
@@ -107,11 +121,6 @@
     font-size: 14px;
     text-align: center;
     padding: 10px;
-}
-
-.movie-container img {
-    width: 100%;
-    height: auto;
 }
 
 .movie-container button {
@@ -128,6 +137,19 @@
 
 .movie-container button:hover {
     background-color: #4a5568;
+}
+
+#search-results .cancel-button {
+  grid-column: 1 / -1;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 5px;
+  border: 1px solid #e2e8f0;
+  color: #fff;
+  cursor: pointer;
+}
+#search-results .cancel-button:hover {
+  opacity: 0.9;
 }
 
 .pagination {
