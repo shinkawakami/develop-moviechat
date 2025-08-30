@@ -28,6 +28,7 @@ class GenreSeeder extends Seeder
         DB::table('genres')->insert(['name' => 'ミュージカル']);
         DB::table('genres')->insert(['name' => 'ファミリー']);
         DB::table('genres')->insert(['name' => 'クライム']);
+        DB::table('genres')->insert(['name' => 'ファンタジー']);
         DB::table('genres')->insert(['name' => 'その他']);
     }
 }
