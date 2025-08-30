@@ -82,7 +82,11 @@
                         @foreach($popularMovies as $movie)
                             <div class="movie-container">
                                 <a href="{{ route('movies.show', ['movie' => $movie['id']]) }}">{{ $movie['title'] }}</a>
-                                <img src="https://image.tmdb.org/t/p/w500{{ $movie['poster_path'] }}">
+                                <img
+                                    src="{{ tmdb_img($movie['poster_path'], 'poster', 'w300') }}"
+                                    alt="{{ $movie['title'] ?? '' }}"
+                                    loading="lazy"
+                                    decoding="async">
                                 <p>{{ $movie['overview'] }}</p>
                             </div>
                         @endforeach
