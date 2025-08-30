@@ -43,10 +43,12 @@
         </section>
         
         <!-- TMDB attribution -->
-        <footer class="footer has-text-centered">
-            <div class="content">
-                <p>Powered by TMDB</p>
-            </div>
+        <footer class="text-xs text-gray-500 text-center py-6">
+            This product uses the TMDB API but is not endorsed or certified by TMDB.
+            <br>
+            <a href="https://www.themoviedb.org" target="_blank" rel="noopener">
+                <img src="{{ asset('images/tmdb.svg') }}" alt="TMDB logo" class="inline h-4 align-text-bottom">
+            </a>
         </footer>
     </x-app-layout>
 </body>
