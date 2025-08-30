@@ -40,10 +40,10 @@
                     <form class="box">
                         <h2 class="subtitle movie-search-title">映画検索</h2>
                         <div class="field has-addons">
-                            <div class="control">
+                            <div class="control mb-0">
                                 <input type="text" id="movie-search" class="input" placeholder="キーワードを入力">
                             </div>
-                            <div class="control">
+                            <div class="control mb-0">
                                 <button id="search-btn" class="button is-info">検索</button>
                             </div>
                         </div>

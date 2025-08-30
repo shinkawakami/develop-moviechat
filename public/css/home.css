@@ -1,9 +1,24 @@
+.section {
+    padding-top: 24px;
+    padding-bottom:0%;
+}
+
 .title {
     font-size: 4em;
 }
 
+.subtitle {
+    font-weight: bold;
+}
+
+.content .subtitle {
+    margin-bottom: 12px;
+}
+
 .text-container {
-            max-width: 430px;
-            margin: 0 auto;
-            text-align: left; 
-        }
+    max-width: 540px;
+    margin: 0 auto;
+    text-align: left;
+    font-style: italic;
+}
+
