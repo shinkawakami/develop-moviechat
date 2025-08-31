@@ -112,26 +112,23 @@
             <x-responsive-nav-link :href="route('posts.user')" :active="request()->routeIs('posts.user')">
                 {{ __('自分の投稿') }}
             </x-responsive-nav-link>
-        </div>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-3 pb-1 border-t border-gray-200">
-            <div class="space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')" class="!mb-0">
-                    {{ __('Profile') }}
+            <div class="border-t border-gray-200 my-2"></div>
+
+            <x-responsive-nav-link :href="route('profile.edit')">
+                {{ __('Profile') }}
+            </x-responsive-nav-link>
+
+            <!-- Authentication -->
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+
+                <x-responsive-nav-link :href="route('logout')"
+                        onclick="event.preventDefault();
+                                    this.closest('form').submit();">
+                    {{ __('Logout') }}
                 </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Logout') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
+            </form>
         </div>
     </div>
 </nav>
