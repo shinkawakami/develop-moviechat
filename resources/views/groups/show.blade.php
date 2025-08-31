@@ -36,8 +36,8 @@
                                     @else
                                         <img src="{{ $user->image_url }}" alt="Profile Image" class="rounded-icon">
                                     @endif
+                                    <span class="user-name">{{ $user->name }}</span>
                                 </a>
-                                <span class="user-name">{{ $user->name }}</span>
                                 @if ($group->is_owner && Auth::user()->id != $user->id)
                                 <form action="{{ route('groups.removeUser', ['group' => $group->id, 'user' => $user->id]) }}" method="POST" class="remove-user-form">
                                     @csrf

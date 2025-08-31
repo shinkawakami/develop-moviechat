@@ -54,7 +54,7 @@
                                             @endif
                                         @endfor
                                     </div>
-                                    <p class="post-text">{{ $post->content }}</p>
+                                    <pre class="post-text">{{ $post->content }}</pre>
                                     <div class="like-section">
                                         <span type="submit" class="has-text-danger">
                                             <i class="far fa-heart"></i> いいね

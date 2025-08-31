@@ -91,7 +91,7 @@
                         
                         <br>
                         <div class="box">
-                            <p>{{ $user->introduction }}</p>
+                            <p>{{!! nl2br(e($user->introduction)) !!}}</p>
                         </div>
                         <strong class="label-text">好きな映画：</strong> 
                         @foreach ($user->movies as $movie)

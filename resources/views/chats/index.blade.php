@@ -30,8 +30,9 @@
                                         @else
                                             <img src="{{ $message->user->image_url }}" alt="Profile Image" class="icon">
                                         @endif
+                                        <span>{{ $message->user->name }}</span>
                                     </a>
-                                    <span>{{ $message->user->name }}: {{ $message->content }}</span>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;{{ $message->content }}</span>
                                 </div>
                                 <div>
                                     {{ $message->created_at }}

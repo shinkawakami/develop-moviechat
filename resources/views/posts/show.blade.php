@@ -18,16 +18,14 @@
                     <div class="post-card box">
                         <div class="post-title"><strong>{{ $post->title }}</strong></div>
                         <div class="user-info">
-                            <span>
-                                <a href="{{ route('profile.show', $post->user) }}">
-                                    @if(empty($post->user->image_url))
-                                        <i class="fas fa-user rounded-icon"></i>
-                                    @else
-                                        <img src="{{ $post->user->image_url }}" alt="Profile Image" class="rounded-icon">
-                                    @endif
-                                </a>
-                            </span>
-                            <span class="username">{{ $post->user->name }}</span>
+                            <a href="{{ route('profile.show', $post->user) }}">
+                                @if(empty($post->user->image_url))
+                                    <i class="fas fa-user rounded-icon"></i>
+                                @else
+                                    <img src="{{ $post->user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                @endif
+                                <span class="username">{{ $post->user->name }}</span>
+                            </a>
                         </div>
                         <div class="movie-info">
                             <span class="icon"><i class="fa fa-film"></i></span>
@@ -44,7 +42,7 @@
                                 @endif
                             @endfor
                         </div>
-                        <p class="post-text">{{ $post->content }}</p>
+                        <pre class="post-text">{{ $post->content }}</pre>
                         
                         <div class="like-section">
                             @if (Auth::user()->isPostLike($post))
@@ -87,18 +85,16 @@
                         @foreach ($post->comments as $comment)
                             <div class="comment-card">
                                 <div class="user-info">
-                                    <span>
-                                        <a href="{{ route('profile.show', $comment->user) }}">
-                                            @if(empty($comment->user->image_url))
-                                                <i class="fas fa-user rounded-icon"></i>
-                                            @else
-                                                <img src="{{ $comment->user->image_url }}" alt="Profile Image" class="rounded-icon">
-                                            @endif
-                                        </a>
-                                    </span>
-                                    <span class="username">{{ $comment->user->name }}</span>
+                                    <a href="{{ route('profile.show', $comment->user) }}">
+                                        @if(empty($comment->user->image_url))
+                                            <i class="fas fa-user rounded-icon"></i>
+                                        @else
+                                            <img src="{{ $comment->user->image_url }}" alt="Profile Image" class="rounded-icon">
+                                        @endif
+                                        <span class="username">{{ $comment->user->name }}</span>
+                                    </a>
                                 </div>
-                                <p>{{ $comment->content }}</p>
+                                <pre>{{ $comment->content }}</pre>
                             </div>
                         @endforeach
                     </div>

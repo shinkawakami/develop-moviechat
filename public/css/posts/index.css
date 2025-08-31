@@ -87,3 +87,6 @@
     gap: 5px;
 }
 
+.card-content {
+    padding-bottom: 10px;
+}
