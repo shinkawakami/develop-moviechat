@@ -288,7 +288,7 @@ class GroupController extends Controller
         
         foreach ($group->viewings as $viewing) {
             $user = Auth::user();
-            if ($viewing->isRequester) {
+            if ($viewing->isRequester($user)) {
                 $viewing->delete();
             }
             else {

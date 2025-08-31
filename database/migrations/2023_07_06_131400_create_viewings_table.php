@@ -17,8 +17,8 @@ return new class extends Migration
         Schema::create('viewings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('group_id')->constrained()->onDelete('cascade');
-            $table->foreignId('requester_id')->nullable()->constrained('users');
-            $table->foreignId('movie_id')->nullable()->constrained();
+            $table->foreignId('requester_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->foreignId('movie_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('url')->nullable();
             $table->timestamp('start_time');
             $table->timestamps();
