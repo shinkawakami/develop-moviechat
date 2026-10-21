@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d68bd0c22d9052ee4c149138356c457",
+    "content-hash": "5e153569f4f37ee47f99446469e46e7d",
     "packages": [
         {
             "name": "brick/math",
@@ -66,12 +66,12 @@
             "version": "2.0.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/cloudinary-devs/cloudinary-laravel.git",
+                "url": "https://github.com/cloudinary-community/cloudinary-laravel.git",
                 "reference": "f331b770b277a75dbde3c61bf1e50096b3e68104"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudinary-devs/cloudinary-laravel/zipball/f331b770b277a75dbde3c61bf1e50096b3e68104",
+                "url": "https://api.github.com/repos/cloudinary-community/cloudinary-laravel/zipball/f331b770b277a75dbde3c61bf1e50096b3e68104",
                 "reference": "f331b770b277a75dbde3c61bf1e50096b3e68104",
                 "shasum": ""
             },
@@ -138,7 +138,7 @@
             "version": "2.11.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:cloudinary/cloudinary_php.git",
+                "url": "https://github.com/cloudinary/cloudinary_php.git",
                 "reference": "d7bf9ddb93be59053e4eb2cf6164ea5f8af77413"
             },
             "dist": {
@@ -204,7 +204,7 @@
             "version": "1.2.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:cloudinary/php-transformation-builder-sdk.git",
+                "url": "https://github.com/cloudinary/php-transformation-builder-sdk.git",
                 "reference": "145d0ebc9638a82ec09bed7de57ea89586839bba"
             },
             "dist": {
@@ -2110,12 +2110,12 @@
             "version": "2.68.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/briannesbitt/Carbon.git",
+                "url": "https://github.com/CarbonPHP/carbon.git",
                 "reference": "4f991ed2a403c85efbc4f23eb4030063fdbe01da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/4f991ed2a403c85efbc4f23eb4030063fdbe01da",
+                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/4f991ed2a403c85efbc4f23eb4030063fdbe01da",
                 "reference": "4f991ed2a403c85efbc4f23eb4030063fdbe01da",
                 "shasum": ""
             },
@@ -5795,12 +5795,12 @@
             "version": "v5.5.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/vlucas/phpdotenv.git",
+                "url": "https://github.com/phpdotenv/phpdotenv.git",
                 "reference": "1a7ea2afc49c3ee6d87061f5a233e3a035d0eae7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/1a7ea2afc49c3ee6d87061f5a233e3a035d0eae7",
+                "url": "https://api.github.com/repos/phpdotenv/phpdotenv/zipball/1a7ea2afc49c3ee6d87061f5a233e3a035d0eae7",
                 "reference": "1a7ea2afc49c3ee6d87061f5a233e3a035d0eae7",
                 "shasum": ""
             },
@@ -8613,12 +8613,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.0.2"
+        "php": "~8.2.35"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
 }
