@@ -20,8 +20,10 @@ RUN apt-get update \
     && a2enmod rewrite
 
 # public/ を公開し、Koyeb から渡される $PORT で待ち受ける
+# Laravel のログは Koyeb のログ画面で見られるよう標準エラーに出す
 ENV PORT=8000 \
-    APACHE_DOCUMENT_ROOT=/var/www/html/public
+    APACHE_DOCUMENT_ROOT=/var/www/html/public \
+    LOG_CHANNEL=stderr
 RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
     && sed -ri 's!<Directory /var/www/>!<Directory ${APACHE_DOCUMENT_ROOT}>!; /<Directory \$\{APACHE_DOCUMENT_ROOT\}>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf \
     && sed -ri 's/^Listen 80$/Listen ${PORT}/' /etc/apache2/ports.conf \
